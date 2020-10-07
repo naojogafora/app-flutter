@@ -12,9 +12,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   FocusNode focusPassword = FocusNode();
-
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -38,7 +36,7 @@ class _LoginState extends State<Login> {
                     onSubmitted: (v) => FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "Password", fillColor: Style.primaryColorDark),
+                    decoration: InputDecoration(hintText: "Senha", fillColor: Style.primaryColorDark),
                     textInputAction: TextInputAction.send,
                     obscureText: true,
                     controller: passwordController,
@@ -62,8 +60,8 @@ class _LoginState extends State<Login> {
   }
 
   void login(){
-    String email = emailController.value.toString();
-    String password = passwordController.value.toString();
+    String email = emailController.text;
+    String password = passwordController.text;
 
     LoginService loginService = new LoginService();
     print("Fazendo login");
