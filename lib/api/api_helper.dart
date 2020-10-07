@@ -12,9 +12,10 @@ class ApiHelper {
   Future<dynamic> get(String url) async {
     print('Api Get, url $url');
     var responseJson;
+    var headers = {'Accept': 'Application/json'};
 
     try {
-      final response = await http.get(_baseUrl + url);
+      final response = await http.get(_baseUrl + url, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
@@ -26,19 +27,24 @@ class ApiHelper {
 
   Future<dynamic> post(String url, Map<String, dynamic> body) async {
     print('Api Post, url $url');
+    var headers = {'Accept': 'Application/json'};
     var responseJson;
 
     try {
-      final response = await http.post(url, body: body);
+      final response = await http.post(_baseUrl + url, body: body, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
       throw FetchDataException('No Internet connection');
     }
+
+    return responseJson;
   }
 }
 
   dynamic _returnResponse(http.Response response) {
+    print("Respnse body:");
+    print(response.body.toString());
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());
