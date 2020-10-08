@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trocado_flutter/feature/home/anuncios_tab.dart';
+import 'package:trocado_flutter/feature/home/grupos_tab.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 import 'package:trocado_flutter/widget/trocado_drawer.dart';
 
@@ -13,7 +15,28 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: trocadoAppBar("Trocado"),
       drawer: TrocadoDrawer(),
-      body: Text("Home Screen Body"),
+      body: DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        child: Column(
+          children: [
+            TabBar(
+              tabs: [
+                Tab(text: "Anúncios"),
+                Tab(text: "Grupos"),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  AnunciosTab(),
+                  GruposTab(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
