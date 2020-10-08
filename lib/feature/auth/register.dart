@@ -37,6 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             Expanded(
               child: ListView(
                 children: [
+                  Image.asset("assets/recycling.png", height: 160, fit: BoxFit.fitHeight),
                   TextField(
                     decoration: InputDecoration(hintText: "Nome"),
                     textInputAction: TextInputAction.next,
@@ -76,12 +77,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     Style.primaryColorDark,
                     Style.clearWhite,
                   ),
-                  GestureDetector(
-                      child: Text("Já tem conta? Faça Login."),
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("/login");
-                      }),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  Center(
+                    child: GestureDetector(
+                        child: Text("Já tem conta? Faça Login!",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline)),
+                        onTap: () => Navigator.of(context).pushReplacementNamed("/login")),
+                  ),
                 ],
               ),
             )

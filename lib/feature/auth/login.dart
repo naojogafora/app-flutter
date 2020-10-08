@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  Image.asset("assets/recycling.png", fit: BoxFit.fitWidth),
+                  Image.asset("assets/recycling.png", height: 160, fit: BoxFit.fitHeight),
                   TextField(
                     decoration: InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
@@ -49,11 +49,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                   StandardButton("Entrar", login, Style.primaryColorDark,
                       Style.clearWhite),
-                  GestureDetector(
-                    child: Text("Nao tem conta? Crie uma agora!"),
-                    onTap: (){
-                      Navigator.of(context).pushReplacementNamed("/registration");
-                    }
+                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  Center(
+                    child: GestureDetector(
+                      child: Text("Nao tem conta? Crie uma agora!",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline)),
+                      onTap: (){
+                        Navigator.of(context).pushReplacementNamed("/registration");
+                      }
+                    ),
                   ),
                 ],
               ),
