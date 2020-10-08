@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trocado_flutter/config/base_theme.dart';
+import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/register_service.dart';
 import 'package:trocado_flutter/widget/dialog.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
 
-import 'login_service.dart';
-
-class Register extends StatefulWidget {
+class RegistrationScreen extends StatefulWidget {
   @override
-  _RegisterState createState() => _RegisterState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   RegisterService registerService = RegisterService();
 
   bool waiting = false;
@@ -28,7 +26,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Style.primaryColor,
+      appBar: AppBar(title: Text("Cadastro")),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -39,7 +37,6 @@ class _RegisterState extends State<Register> {
             Expanded(
               child: ListView(
                 children: [
-                  Text("Cadastro"),
                   TextField(
                     decoration: InputDecoration(hintText: "Nome"),
                     textInputAction: TextInputAction.next,
@@ -73,8 +70,18 @@ class _RegisterState extends State<Register> {
                     onSubmitted: (v) => register(),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  StandardButton("Criar Conta", register,
-                      Style.primaryColorDark, Style.clearWhite),
+                  StandardButton(
+                    "Criar Conta",
+                    register,
+                    Style.primaryColorDark,
+                    Style.clearWhite,
+                  ),
+                  GestureDetector(
+                      child: Text("Já tem conta? Faça Login."),
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed("/login");
+                      }),
                 ],
               ),
             )

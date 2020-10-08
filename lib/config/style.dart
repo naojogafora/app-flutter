@@ -11,7 +11,11 @@ class Style {
     accentColor: accentColor,
     primarySwatch: Colors.green,
     primaryColorDark: primaryColorDark,
-    dividerColor: const Color.fromARGB(0, 0, 0, 0),
+    accentColorBrightness: Brightness.light,
+    hintColor: primaryColorDark,
+    hoverColor: primaryColorDark,
+    focusColor: primaryColorDark,
+    backgroundColor: clearWhite
   );
 
   static const Color primaryColor = Color.fromARGB(255, 182, 235, 122);

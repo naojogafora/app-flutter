@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trocado_flutter/config/base_theme.dart';
+import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
 
 import 'login_service.dart';
 
-class Login extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   FocusNode focusPassword = FocusNode();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -18,8 +18,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Style.primaryColor,
-      body: Container(
+      backgroundColor: Style.clearWhite,
+      appBar: AppBar(title: Text("Login")),
+      body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -29,14 +30,16 @@ class _LoginState extends State<Login> {
             Expanded(
               child: ListView(
                 children: [
+                  Image.asset("assets/recycling.png", fit: BoxFit.fitWidth),
                   TextField(
                     decoration: InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
                     controller: emailController,
-                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusPassword),
+                    onSubmitted: (v) =>
+                        FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "Senha", fillColor: Style.primaryColorDark),
+                    decoration: InputDecoration(hintText: "Senha"),
                     textInputAction: TextInputAction.send,
                     obscureText: true,
                     controller: passwordController,
@@ -44,11 +47,13 @@ class _LoginState extends State<Login> {
                     onSubmitted: (v) => login(),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  StandardButton(
-                      "Entrar",
-                      login,
-                      Style.primaryColorDark,
-                      Style.clearWhite
+                  StandardButton("Entrar", login, Style.primaryColorDark,
+                      Style.clearWhite),
+                  GestureDetector(
+                    child: Text("Nao tem conta? Crie uma agora!"),
+                    onTap: (){
+                      Navigator.of(context).pushReplacementNamed("/registration");
+                    }
                   ),
                 ],
               ),
@@ -59,7 +64,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void login(){
+  void login() {
     String email = emailController.text;
     String password = passwordController.text;
 
