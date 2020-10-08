@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-AppBar trocadoAppBar() {
+AppBar trocadoAppBar(String title) {
   return AppBar(
-    title: Text("Home"),
+    title: Text(title),
   );
 }
