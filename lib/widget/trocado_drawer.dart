@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 
 class TrocadoDrawer extends StatefulWidget {
   @override
@@ -9,6 +11,8 @@ class TrocadoDrawer extends StatefulWidget {
 class _TrocadoDrawerState extends State<TrocadoDrawer> {
   @override
   Widget build(BuildContext context) {
+    AuthenticationProvider authProvider = context.watch<AuthenticationProvider>();
+
     return Drawer(
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         Expanded(
@@ -21,7 +25,10 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      child: Icon(Icons.person, size: 52,),
+                      child: Icon(
+                        Icons.person,
+                        size: 52,
+                      ),
                       minRadius: 48,
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
@@ -31,9 +38,15 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(child: Text("Nome de Pessoa Muito Grande", style: TextStyle(fontSize: 18),)),
+                          Flexible(
+                              child: Text(
+                                authProvider.isUserLogged ? "${authProvider.user.name} ${authProvider.user.lastName}" : "Visitante",
+                            style: TextStyle(fontSize: 18),
+                          )),
                           Padding(padding: EdgeInsets.all(2)),
-                          Flexible(child: Text("Membro desde 20/20/2020", style: TextStyle(color: Colors.black54))),
+                          Flexible(
+                              child: Text(authProvider.isUserLogged ? authProvider.user.email : "",
+                                  style: TextStyle(color: Colors.black54))),
                         ],
                       ),
                     )
@@ -41,15 +54,15 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 ),
                 decoration: BoxDecoration(color: Style.primaryColorDark),
               ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text("Login/Cadastro"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed("/login");
-                },
-              ),
-              Divider(),
+              authProvider.isUserLogged ? Container() :
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text("Login/Cadastro"),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed("/login");
+                  },
+                ),
             ],
           ),
         )

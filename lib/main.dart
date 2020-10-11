@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/auth/login.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/register.dart';
 import 'package:trocado_flutter/feature/home/home_screen.dart';
 
-import 'feature/home/groups_service.dart';
+import 'feature/home/groups_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,8 +18,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<GroupsService>(
-            create: (_) => GroupsService(),
+          ChangeNotifierProvider<GroupsProvider>(
+            create: (_) => GroupsProvider(),
+          ),
+          ChangeNotifierProvider<AuthenticationProvider>(
+            create: (_) => AuthenticationProvider(),
           ),
         ],
         child: MaterialApp(

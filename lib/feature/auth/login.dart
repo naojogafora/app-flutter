@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
-
-import 'login_service.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -73,9 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    LoginService loginService = new LoginService();
     print("Fazendo login");
-    loginService.login(email, password).then(print).catchError(print);
+    Provider.of<AuthenticationProvider>(context, listen: false).login(context, email, password).then((bool success){
+      if(success){
+        Navigator.of(context).pop();
+      }
+    }).catchError(print);
     print("Fim do login");
   }
 }

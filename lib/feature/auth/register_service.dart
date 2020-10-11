@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 
 class RegisterService {
   ApiHelper apiHelper = ApiHelper();
   static const REGISTER_URL = "signup";
 
-  Future<dynamic> register(String name, String lastName, String email, String password) async{
+  Future<dynamic> register(BuildContext context, String name, String lastName, String email, String password) async{
     if(name.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty){
       return false;
     }
@@ -17,7 +18,7 @@ class RegisterService {
     };
 
     print(body);
-    var responseJson = await apiHelper.post(REGISTER_URL, body);
+    var responseJson = await apiHelper.post(context, REGISTER_URL, body);
     return responseJson;
   }
 }

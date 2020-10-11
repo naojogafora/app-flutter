@@ -104,7 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String password = passwordController.text;
 
     print("Fazendo register");
-    registerService.register(name, lastName, email, password).then((value) {
+    registerService.register(context, name, lastName, email, password).then((value) {
       print("Sucesso no register");
       print(value);
       DefaultDialog.show(context, title: "Sucesso!", message: value.toString());

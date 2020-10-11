@@ -1,18 +1,29 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/exception/BadRequestException.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
 import 'package:trocado_flutter/exception/UnauthorizedException.dart';
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
+
 class ApiHelper {
   static const _baseUrl = "https://trocado-api.herokuapp.com/api/";
 
-  Future<dynamic> get(String url) async {
+  Future<dynamic> get(BuildContext context, String url) async {
     print('Api Get, url $url');
     var responseJson;
     var headers = {'Accept': 'Application/json'};
+
+    if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
+      print("get with TOKEN " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken );
+      headers.addAll({'Authorization': "Bearer " + Provider
+          .of<AuthenticationProvider>(context, listen: false)
+          .authenticationToken});
+    }
 
     try {
       final response = await http.get(_baseUrl + url, headers: headers);
@@ -25,10 +36,13 @@ class ApiHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(String url, Map<String, dynamic> body) async {
+  Future<dynamic> post(BuildContext context, String url, Map<String, dynamic> body) async {
     print('Api Post, url $url');
-    var headers = {'Accept': 'Application/json'};
     var responseJson;
+    var headers = {'Accept': 'Application/json'};
+
+    if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null)
+      headers.addAll({'Authorization': "Bearer " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken});
 
     try {
       final response = await http.post(_baseUrl + url, body: body, headers: headers);
