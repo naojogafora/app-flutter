@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trocado_flutter/feature/home/anuncios_tab.dart';
-import 'package:trocado_flutter/feature/home/grupos_tab.dart';
+import 'package:trocado_flutter/feature/home/ads_tab.dart';
+import 'package:trocado_flutter/feature/home/groups_tab.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 import 'package:trocado_flutter/widget/trocado_drawer.dart';
 
@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: TabBarView(
                 children: [
-                  AnunciosTab(),
-                  GruposTab(),
+                  AdsTab(),
+                  GroupsTab(),
                 ],
               ),
             ),

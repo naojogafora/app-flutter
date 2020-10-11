@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AnunciosTab extends StatefulWidget {
+class AdsTab extends StatefulWidget {
   @override
-  _AnunciosTabState createState() => _AnunciosTabState();
+  _AdsTabState createState() => _AdsTabState();
 }
 
-class _AnunciosTabState extends State<AnunciosTab> {
+class _AdsTabState extends State<AdsTab> {
   @override
   Widget build(BuildContext context) {
     return Column(
