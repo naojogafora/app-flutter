@@ -58,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             TabBar(
+              isScrollable: true,
+              unselectedLabelColor: Colors.black54,
               tabs: tabHeaders,
             ),
             Expanded(
