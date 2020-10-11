@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/model/group.dart';
 
 class GroupListTile extends StatelessWidget {
@@ -9,7 +10,7 @@ class GroupListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.group),
+      leading: Icon(Icons.group, color: group.isModerator ? Style.accentColor : Style.primaryColorDark,),
       title: Text(group.name),
     );
   }
