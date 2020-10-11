@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trocado_flutter/model/group.dart';
 
 class GroupListTile extends StatelessWidget {
-  Group group;
+  final Group group;
 
   GroupListTile(this.group);
 
