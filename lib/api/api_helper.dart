@@ -19,7 +19,6 @@ class ApiHelper {
     var headers = {'Accept': 'Application/json'};
 
     if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
-      print("get with TOKEN " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken );
       headers.addAll({'Authorization': "Bearer " + Provider
           .of<AuthenticationProvider>(context, listen: false)
           .authenticationToken});
@@ -57,12 +56,9 @@ class ApiHelper {
 }
 
   dynamic _returnResponse(http.Response response) {
-    print("Respnse body:");
-    print(response.body.toString());
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());
-        print(responseJson);
         return responseJson;
       case 400:
         throw BadRequestException(response.body.toString());

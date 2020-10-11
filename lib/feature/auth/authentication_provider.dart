@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   static const LOGIN_URL = "auth/login";
@@ -26,23 +29,34 @@ class AuthenticationProvider extends ChangeNotifier {
     };
 
     var responseJson = await apiHelper.post(context, LOGIN_URL, body);
-    parseAndSaveUser(responseJson);
+    parseAndSetUser(responseJson);
+    saveAuthToStorage(responseJson);
     notifyListeners();
     return true;
   }
 
-  void parseAndSaveUser(dynamic authJson) {
+  void parseAndSetUser(dynamic authJson) {
     user = User.fromJson(authJson['user']);
     authenticationToken = authJson['access_token'];
-    saveAuthToStorage(authJson);
   }
 
-  void saveAuthToStorage(dynamic authJson) {
-    //TODO Save json to storage
+  void saveAuthToStorage(dynamic authJson) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_json', jsonEncode(authJson));
   }
 
-  void loadAuthFromStorage(){
-    //TODO
+  void loadAuthFromStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String authPref = prefs.getString('auth_json');
+
+    if(authPref == null || authPref.isEmpty){
+      user = null;
+      authenticationToken = null;
+    } else {
+      dynamic authJson = jsonDecode(authPref);
+      parseAndSetUser(authJson);
+    }
+
     notifyListeners();
   }
 
@@ -50,7 +64,6 @@ class AuthenticationProvider extends ChangeNotifier {
     saveAuthToStorage(null);
     user = null;
     authenticationToken = null;
-    //TODO
     notifyListeners();
   }
 }

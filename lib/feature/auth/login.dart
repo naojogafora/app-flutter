@@ -73,12 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    print("Fazendo login");
     Provider.of<AuthenticationProvider>(context, listen: false).login(context, email, password).then((bool success){
       if(success){
         Navigator.of(context).pop();
       }
     }).catchError(print);
-    print("Fim do login");
   }
 }

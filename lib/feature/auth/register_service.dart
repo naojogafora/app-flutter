@@ -17,7 +17,6 @@ class RegisterService {
       'password': password,
     };
 
-    print(body);
     var responseJson = await apiHelper.post(context, REGISTER_URL, body);
     return responseJson;
   }

@@ -13,7 +13,6 @@ class GroupsProvider extends ChangeNotifier {
   List<Group> get userGroups => _userGroups;
 
   GroupsProvider(){
-    print("Group service created");
     loadPublicGroups();
   }
 

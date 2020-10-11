@@ -103,7 +103,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String email = emailController.value.text;
     String password = passwordController.text;
 
-    print("Fazendo register");
     registerService.register(context, name, lastName, email, password).then((value) {
       print("Sucesso no register");
       print(value);
