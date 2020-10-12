@@ -12,6 +12,7 @@ class GroupListTile extends StatelessWidget {
     return ListTile(
       leading: Icon(Icons.group, color: group.isModerator ? Style.accentColor : Style.primaryColorDark,),
       title: Text(group.name),
+      subtitle: Text(group.adCount.toString() + " anúncios disponíveis."),
     );
   }
 }
