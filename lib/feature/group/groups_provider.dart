@@ -36,10 +36,9 @@ class GroupsProvider extends ChangeNotifier {
     try {
       var responseJson = await apiHelper.get(null, GROUPS_PUBLIC_URL);
       _publicGroups = _parseGroups(responseJson);
-    } on Exception {
-      _publicGroups = [];
+    } finally {
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> loadUserGroups(BuildContext context, {bool forceLoad=false}) async {
@@ -50,10 +49,9 @@ class GroupsProvider extends ChangeNotifier {
     try {
       var responseJson = await apiHelper.get(context, GROUPS_USER_URL);
       _userGroups = _parseGroups(responseJson);
-    } on Exception {
-      _userGroups = [];
+    } finally {
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   /// Join a group.
