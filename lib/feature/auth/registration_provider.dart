@@ -17,7 +17,7 @@ class RegistrationProvider {
       'password': password,
     };
 
-    var responseJson = await apiHelper.post(context, REGISTER_URL, body);
+    var responseJson = await apiHelper.post(context, REGISTER_URL, body: body);
     return responseJson;
   }
 }

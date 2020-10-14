@@ -28,7 +28,7 @@ class AuthenticationProvider extends ChangeNotifier {
       'password': password,
     };
 
-    var responseJson = await apiHelper.post(context, LOGIN_URL, body);
+    var responseJson = await apiHelper.post(context, LOGIN_URL, body: body);
     parseAndSetUser(responseJson);
     saveAuthToStorage(responseJson);
     notifyListeners();

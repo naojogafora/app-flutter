@@ -35,7 +35,7 @@ class ApiHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(BuildContext context, String url, Map<String, dynamic> body) async {
+  Future<dynamic> post(BuildContext context, String url, {Map<String, dynamic> body}) async {
     print('Api Post, url $url');
     var responseJson;
     var headers = {'Accept': 'Application/json'};
