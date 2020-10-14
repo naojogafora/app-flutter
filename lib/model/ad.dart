@@ -1,0 +1,27 @@
+import 'package:trocado_flutter/model/ad_photo.dart';
+import 'package:trocado_flutter/model/user.dart';
+
+class Ad {
+  int id;
+  bool finished, suspended;
+  User user;
+  String title, description;
+  List<AdPhoto> photos;
+  DateTime createdAt, updatedAt;
+
+  Ad.fromJson(Map<String, dynamic> json){
+    this.id = json['id'];
+    this.finished = json['finished'] == 1;
+    this.suspended = json['suspended'] == 1;
+    this.user = User.fromJson(json['user']);
+    this.title = json['title'];
+    this.description = json['description'];
+    this.createdAt = DateTime.parse(json['created_at']);
+    this.updatedAt = DateTime.parse(json['updated_at']);
+
+    this.photos = [];
+    for(dynamic photoArray in json['photos']){
+      photos.add(AdPhoto.fromJson(photoArray));
+    }
+  }
+}
