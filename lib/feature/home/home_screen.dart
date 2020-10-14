@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
-import 'package:trocado_flutter/feature/home/ads_tab.dart';
-import 'package:trocado_flutter/feature/home/groups_tab.dart';
+import 'package:trocado_flutter/feature/ad/ads_tab.dart';
+import 'package:trocado_flutter/feature/group/groups_tab.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 import 'package:trocado_flutter/widget/trocado_drawer.dart';
 
-import 'groups_provider.dart';
+import '../group/groups_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,7 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
     tabCount = 2;
 
     tabHeaders.add(Tab(text: "Anúncios"));
-    tabViews.add(AdsTab());
+    tabViews.add(
+        Consumer<AdsProvider>(
+          builder: (BuildContext context, provider, _) => AdsTab(provider.publicAds),
+        )
+    );
 
     if(isLogged){
       Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context);

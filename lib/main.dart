@@ -6,7 +6,8 @@ import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/registraton_screen.dart';
 import 'package:trocado_flutter/feature/home/home_screen.dart';
 
-import 'feature/home/groups_provider.dart';
+import 'feature/ad/ads_provider.dart';
+import 'feature/group/groups_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,11 +19,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<GroupsProvider>(
-            create: (_) => GroupsProvider(),
-          ),
           ChangeNotifierProvider<AuthenticationProvider>(
             create: (_) => AuthenticationProvider(),
+          ),
+          ChangeNotifierProvider<AdsProvider>(
+            create: (_) => AdsProvider(),
+          ),
+          ChangeNotifierProvider<GroupsProvider>(
+            create: (_) => GroupsProvider(),
           ),
         ],
         child: MaterialApp(
