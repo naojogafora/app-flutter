@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
-import 'package:trocado_flutter/feature/auth/login.dart';
+import 'package:trocado_flutter/feature/auth/authentication_screen.dart';
 import 'package:trocado_flutter/config/style.dart';
-import 'package:trocado_flutter/feature/auth/register.dart';
+import 'package:trocado_flutter/feature/auth/registraton_screen.dart';
 import 'package:trocado_flutter/feature/home/home_screen.dart';
 
 import 'feature/home/groups_provider.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           home: HomeScreen(),
           routes: {
             '/home': (context) => HomeScreen(),
-            '/login': (context) => LoginScreen(),
+            '/login': (context) => AuthenticationScreen(),
             '/registration': (context) => RegistrationScreen(),
           },
         ));

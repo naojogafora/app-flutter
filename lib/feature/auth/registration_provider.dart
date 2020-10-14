@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 
-class RegisterService {
+class RegistrationProvider {
   ApiHelper apiHelper = ApiHelper();
   static const REGISTER_URL = "signup";
 

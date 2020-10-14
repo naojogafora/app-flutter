@@ -5,12 +5,12 @@ import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
 
-class LoginScreen extends StatefulWidget {
+class AuthenticationScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _AuthenticationScreenState createState() => _AuthenticationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _AuthenticationScreenState extends State<AuthenticationScreen> {
   FocusNode focusPassword = FocusNode();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();

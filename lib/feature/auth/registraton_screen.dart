@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/config/style.dart';
-import 'package:trocado_flutter/feature/auth/register_service.dart';
+import 'package:trocado_flutter/feature/auth/registration_provider.dart';
 import 'package:trocado_flutter/widget/dialog.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
 
@@ -11,7 +11,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  RegisterService registerService = RegisterService();
+  RegistrationProvider registerService = RegistrationProvider();
 
   bool waiting = false;
   FocusNode focusLastName = FocusNode();
