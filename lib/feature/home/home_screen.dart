@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       tabHeaders.add(Tab(text: "Meus Grupos"));
       tabViews.add(
           Consumer<GroupsProvider>(
-            builder: (BuildContext context, groupsService, _) => GroupsTab(groupsService.userGroups),
+            builder: (BuildContext context, provider, _) => GroupsTab(provider.userGroups, () => provider.loadUserGroups(context, forceLoad: true)),
           )
       );
     }
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     tabHeaders.add(Tab(text: "Grupos Públicos"));
     tabViews.add(
       Consumer<GroupsProvider>(
-        builder: (BuildContext context, groupsService, _) => GroupsTab(groupsService.publicGroups),
+        builder: (BuildContext context, groupsService, _) => GroupsTab(groupsService.publicGroups, () => groupsService.loadPublicGroups(forceLoad: true)),
       )
     );
   }

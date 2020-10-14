@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/model/group.dart';
 
 import 'group_list_tile.dart';
 
 class GroupsTab extends StatelessWidget {
   final List<Group> groups;
+  final Future<void> Function() pullToRefresh;
 
-  GroupsTab(this.groups);
+  GroupsTab(this.groups, this.pullToRefresh);
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +17,14 @@ class GroupsTab extends StatelessWidget {
       children: [
         groups != null
             ? Expanded(
-                child: ListView.builder(
-                  itemCount: groups.length,
-                  itemBuilder: (context, i) {
-                    return GroupListTile(groups[i]);
-                  },
+                child: RefreshIndicator(
+                  onRefresh: pullToRefresh,
+                  child: ListView.builder(
+                    itemCount: groups.length,
+                    itemBuilder: (context, i) {
+                      return GroupListTile(groups[i]);
+                    },
+                  ),
                 ),
               )
             : Padding(
