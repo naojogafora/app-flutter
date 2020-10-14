@@ -14,7 +14,9 @@ class GroupsProvider extends ChangeNotifier {
   List<Group> get userGroups => _userGroups;
 
   GroupsProvider(){
-    loadPublicGroups();
+    try {
+      loadPublicGroups();
+    } catch (e){}
   }
 
   set publicGroups(List<Group> groups) {
@@ -36,6 +38,10 @@ class GroupsProvider extends ChangeNotifier {
     try {
       var responseJson = await apiHelper.get(null, GROUPS_PUBLIC_URL);
       _publicGroups = _parseGroups(responseJson);
+    } catch (e) {
+      if(!forceLoad)
+        _publicGroups = [];
+      throw e;
     } finally {
       notifyListeners();
     }
