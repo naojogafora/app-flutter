@@ -10,7 +10,7 @@ class GroupListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.group, color: group.isModerator ? Style.accentColor : Style.primaryColorDark,),
+      leading: Icon(Icons.group_work, color: group.isModerator ? Style.accentColor : Style.primaryColorDark,),
       title: Text(group.name),
       subtitle: Text(group.adCount.toString() + " anúncios disponíveis."),
     );
