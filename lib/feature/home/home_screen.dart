@@ -5,7 +5,7 @@ import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/ad/ads_tab.dart';
 import 'package:trocado_flutter/feature/group/groups_tab.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
-import 'package:trocado_flutter/widget/trocado_drawer.dart';
+import 'package:trocado_flutter/feature/home/trocado_drawer.dart';
 
 import '../group/groups_provider.dart';
 

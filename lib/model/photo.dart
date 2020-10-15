@@ -1,8 +1,8 @@
-class AdPhoto {
+class Photo {
   int id, order, advertisementId;
   String url;
 
-  AdPhoto.fromJson(Map<String, dynamic> json){
+  Photo.fromJson(Map<String, dynamic> json){
     this.id = json["id"];
     this.advertisementId = json["advertisement_id"];
     this.order = json["order"];

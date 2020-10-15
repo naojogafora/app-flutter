@@ -1,4 +1,4 @@
-import 'package:trocado_flutter/model/ad_photo.dart';
+import 'package:trocado_flutter/model/photo.dart';
 import 'package:trocado_flutter/model/user.dart';
 
 class Ad {
@@ -6,7 +6,7 @@ class Ad {
   bool finished, suspended;
   User user;
   String title, description;
-  List<AdPhoto> photos;
+  List<Photo> photos;
   DateTime createdAt, updatedAt;
 
   Ad.fromJson(Map<String, dynamic> json){
@@ -21,7 +21,7 @@ class Ad {
 
     this.photos = [];
     for(dynamic photoArray in json['photos']){
-      photos.add(AdPhoto.fromJson(photoArray));
+      photos.add(Photo.fromJson(photoArray));
     }
   }
 }
