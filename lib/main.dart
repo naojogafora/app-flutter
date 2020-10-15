@@ -8,6 +8,7 @@ import 'package:trocado_flutter/feature/home/home_screen.dart';
 
 import 'feature/ad/ads_provider.dart';
 import 'feature/group/groups_provider.dart';
+import 'feature/transactions/transactions_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<GroupsProvider>(
             create: (_) => GroupsProvider(),
+          ),
+          ChangeNotifierProvider<TransactionsProvider>(
+            create: (_) => TransactionsProvider(),
           ),
         ],
         child: MaterialApp(
