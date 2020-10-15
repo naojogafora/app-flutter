@@ -9,6 +9,8 @@ class Ad {
   List<Photo> photos;
   DateTime createdAt, updatedAt;
 
+  get firstPhoto => photos != null && photos.length > 0 ? photos[0] : null;
+
   Ad.fromJson(Map<String, dynamic> json){
     this.id = json['id'];
     this.finished = json['finished'] == 1;
