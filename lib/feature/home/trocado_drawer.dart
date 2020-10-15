@@ -70,7 +70,6 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 leading: Icon(Icons.list_alt_outlined),
                 title: Text("Meus Pedidos"),
                 onTap: () {
-                  Provider.of<TransactionsProvider>(context, listen: false).loadOrdersList(context);
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => MyOrdersScreen())
                   );
@@ -80,7 +79,6 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 leading: Icon(Icons.unarchive_outlined),
                 title: Text("Minhas Doações"),
                 onTap: () {
-                  Provider.of<TransactionsProvider>(context, listen: false).loadDonationsList(context);
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => MyDonationsScreen())
                   );

@@ -12,15 +12,25 @@ class TransactionsProvider extends ChangeNotifier {
   TransactionListResponse ordersList;
   TransactionListResponse donationsList;
 
-  Future<void> loadOrdersList(BuildContext context) async {
+  Future<TransactionListResponse> loadOrdersList(BuildContext context, {forceLoad = false}) async {
+    if(!forceLoad && ordersList != null){
+      return ordersList;
+    }
+
     var jsonResponse = await apiHelper.get(context, ORDERS_LIST);
     ordersList = TransactionListResponse.fromJson(jsonResponse);
     notifyListeners();
+    return ordersList;
   }
 
-  Future<void> loadDonationsList(BuildContext context) async {
+  Future<TransactionListResponse> loadDonationsList(BuildContext context, {forceLoad = false}) async {
+    if(!forceLoad && donationsList != null){
+      return donationsList;
+    }
+
     var jsonResponse = await apiHelper.get(context, DONATIONS_LIST);
     donationsList = TransactionListResponse.fromJson(jsonResponse);
     notifyListeners();
+    return donationsList;
   }
 }
