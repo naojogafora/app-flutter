@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     tabHeaders.add(Tab(text: "Anúncios"));
     tabViews.add(
         Consumer<AdsProvider>(
-          builder: (BuildContext context, provider, _) => AdsTab(provider.publicAds),
+          builder: (BuildContext context, provider, _) => AdsTab(provider.publicAds, () => provider.loadPublicAds(forceLoad: true)),
         )
     );
 

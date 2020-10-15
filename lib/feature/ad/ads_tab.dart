@@ -5,8 +5,9 @@ import 'ad_list_tile.dart';
 
 class AdsTab extends StatelessWidget {
   final List<Ad> ads;
+  final Future<void> Function() pullToRefresh;
 
-  AdsTab(this.ads);
+  AdsTab(this.ads, this.pullToRefresh);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +15,14 @@ class AdsTab extends StatelessWidget {
       children: [
         ads != null
             ? Expanded(
-          child: ListView.builder(
-            itemCount: ads.length,
-            itemBuilder: (context, i) {
-              return AdListTile(ads[i]);
-            },
+          child: RefreshIndicator(
+            onRefresh: pullToRefresh,
+            child: ListView.builder(
+              itemCount: ads.length,
+              itemBuilder: (context, i) {
+                return AdListTile(ads[i]);
+              },
+            ),
           ),
         )
             : Padding(
