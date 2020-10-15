@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/model/ad.dart';
-import 'package:trocado_flutter/request/ads_list.dart';
+import 'package:trocado_flutter/response/ads_list.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";
@@ -28,10 +28,10 @@ class AdsProvider extends ChangeNotifier {
     }
   }
 
-  Future<AdsListRequest> loadAdsForGroup(context, int id) async{
+  Future<AdsListResponse> loadAdsForGroup(context, int id) async{
     String listByGroupURL = ADS_LIST_BY_GROUP.replaceAll("{GROUP_ID}", id.toString());
     var responseJson = await apiHelper.get(context, listByGroupURL);
-    return AdsListRequest.fromJson(responseJson);
+    return AdsListResponse.fromJson(responseJson);
   }
 
   List<Ad> _parseAds(dynamic jsonData){

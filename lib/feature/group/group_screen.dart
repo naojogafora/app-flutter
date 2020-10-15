@@ -5,7 +5,7 @@ import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/ad/ad_list_tile.dart';
 import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/model/group.dart';
-import 'package:trocado_flutter/request/ads_list.dart';
+import 'package:trocado_flutter/response/ads_list.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
 class GroupScreen extends StatelessWidget {
@@ -57,9 +57,9 @@ class GroupScreen extends StatelessWidget {
           Consumer<AdsProvider>(
             builder: (context, provider, _) => FutureBuilder(
               future: provider.loadAdsForGroup(context, group.id),
-              builder: (context, AsyncSnapshot<AdsListRequest> response) {
+              builder: (context, AsyncSnapshot<AdsListResponse> response) {
                 if(response.hasData){
-                  AdsListRequest adsListRequest = response.data;
+                  AdsListResponse adsListRequest = response.data;
                   this.group.adsRequest = adsListRequest;
 
                   if(adsListRequest.data.length == 0){

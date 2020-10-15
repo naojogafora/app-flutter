@@ -1,7 +1,7 @@
-class JoinGroupRequest {
+class JoinGroupResponse {
   String message;
   bool joined;
-  JoinGroupRequest.fromJson(Map<String, dynamic> json){
+  JoinGroupResponse.fromJson(Map<String, dynamic> json){
     this.message = json['message'];
     this.joined = json['joined'];
   }

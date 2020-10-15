@@ -1,11 +1,11 @@
 import 'package:trocado_flutter/model/ad.dart';
 
-class AdsListRequest {
+class AdsListResponse {
   int currentPage, lastPage, perPage, from, to, total;
   String nextPageURL, prevPageURL, lastPageURL, firstPageURL;
   List<Ad> data;
 
-  AdsListRequest.fromJson(Map<String, dynamic> json){
+  AdsListResponse.fromJson(Map<String, dynamic> json){
     this.currentPage = json["current_page"];
     this.lastPage = json["last_page"];
     this.perPage = json["per_page"];

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
+import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
+import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
 
 class TrocadoDrawer extends StatefulWidget {
   @override
@@ -63,6 +65,24 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                     Navigator.of(context).pushNamed("/login");
                   },
                 ),
+              authProvider.isUserLogged ? ListTile(
+                leading: Icon(Icons.list_alt_outlined),
+                title: Text("Meus Pedidos"),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MyOrdersScreen())
+                  );
+                }
+              ) : Container(),
+              authProvider.isUserLogged ? ListTile(
+                leading: Icon(Icons.unarchive_outlined),
+                title: Text("Minhas Doações"),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MyDonationsScreen())
+                  );
+                }
+              ) : Container(),
             ],
           ),
         )

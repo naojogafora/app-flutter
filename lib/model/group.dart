@@ -1,4 +1,4 @@
-import 'package:trocado_flutter/request/ads_list.dart';
+import 'package:trocado_flutter/response/ads_list.dart';
 
 class Group {
   int id;
@@ -7,7 +7,7 @@ class Group {
   int adCount, memberCount;
 
   /// Optional field, loaded only when the user sees the full group page.
-  AdsListRequest adsRequest;
+  AdsListResponse adsRequest;
 
   Group.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
