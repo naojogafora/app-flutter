@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
+import 'package:trocado_flutter/feature/account/addresses_screen.dart';
+import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
@@ -63,6 +65,11 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 ),
                 decoration: BoxDecoration(color: Style.primaryColorDark),
               ),
+              ListTile(
+                leading: Icon(Icons.search),
+                title: Text("Buscar Grupos TODO"),
+                onTap: () => print("TODO"), //TODO
+              ),
               authProvider.isUserLogged
                   ? Container()
                   : ListTile(
@@ -74,22 +81,42 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                       },
                     ),
               authProvider.isUserLogged
-                  ? ListTile(
-                      leading: Icon(Icons.list_alt_outlined),
-                      title: Text("Meus Pedidos"),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyOrdersScreen()));
-                      })
-                  : Container(),
-              authProvider.isUserLogged
-                  ? ListTile(
-                      leading: Icon(Icons.unarchive_outlined),
-                      title: Text("Minhas Doações"),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyDonationsScreen()));
-                      })
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                            leading: Icon(Icons.list_alt_outlined),
+                            title: Text("Pedidos"),
+                            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => MyOrdersScreen())),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.unarchive_outlined),
+                          title: Text("Minhas Doações"),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => MyDonationsScreen())),
+                        ),
+                        ListTile(
+                          title: Text("Conta"),
+                          visualDensity: VisualDensity.compact
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.directions),
+                          title: Text("Endereços"),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => AddressesScreen())),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.account_box),
+                          title: Text("Editar Perfil"),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileEditScreen())),
+                        ),
+                      ],
+                    )
                   : Container(),
             ],
           ),
