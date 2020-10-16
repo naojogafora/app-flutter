@@ -96,15 +96,24 @@ class ApiHelper {
   }
 
   dynamic _returnResponse(http.Response response) {
+    dynamic responseJson;
+    String message;
+
+    try {
+      responseJson = json.decode(response.body.toString());
+
+      if(responseJson != null && responseJson['message'] != null)
+        message = responseJson['message'].toString();
+    } catch (e) {}
+
     switch (response.statusCode) {
       case 200:
-        var responseJson = json.decode(response.body.toString());
         return responseJson;
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestException(message);
       case 401:
       case 403:
-        throw UnauthorizedException(response.body.toString());
+        throw UnauthorizedException(message);
       case 500:
       default:
         throw FetchDataException(

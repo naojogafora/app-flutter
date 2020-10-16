@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/feature/addresses/address_form_screen.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
@@ -10,8 +11,9 @@ class AddressListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AddressProvider provider = Provider.of<AddressProvider>(context, listen: false);
-    
+    AddressProvider provider =
+        Provider.of<AddressProvider>(context, listen: false);
+
     return ExpansionTile(
       title: Text(address.title),
       subtitle: Text(
@@ -39,8 +41,14 @@ class AddressListTile extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.delete),
                 tooltip: "Apagar",
-                // onPressed: () => provider.deleteAddress(context, address), //todo
-                onPressed: () => print("todo"), //todo confirmation dialog
+                onPressed: () {
+                  provider.deleteAddress(context, address).catchError((e) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(e.toString()),
+                      backgroundColor: Colors.red,
+                    ));
+                  });
+                },
               )
             ],
           ),

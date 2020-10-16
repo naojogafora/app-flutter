@@ -5,5 +5,5 @@ class BadRequestException implements AppException {
 
   const BadRequestException(this.msg);
 
-  String toString() => 'Erro de Requisição: $msg';
+  String toString() => 'Erro na solicitação: $msg';
 }
