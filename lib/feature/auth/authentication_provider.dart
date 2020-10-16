@@ -38,8 +38,8 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   void parseAndSetUser(dynamic authJson) {
-    user = User.fromJson(authJson['user']);
     authenticationToken = authJson['access_token'];
+    user = User.fromJson(authJson['user']);
   }
 
   void saveAuthToStorage(dynamic authJson) async {

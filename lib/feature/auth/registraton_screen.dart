@@ -13,7 +13,6 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   RegistrationProvider registerService = RegistrationProvider();
 
-  bool waiting = false;
   FocusNode focusLastName = FocusNode();
   FocusNode focusEmail = FocusNode();
   FocusNode focusPassword = FocusNode();
@@ -95,29 +94,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void register() {
-    setState(() {
-      waiting = true;
-    });
     String name = nameController.text;
     String lastName = lastNameController.text;
     String email = emailController.value.text;
     String password = passwordController.text;
 
     registerService.register(context, name, lastName, email, password).then((value) {
-      print("Sucesso no register");
-      print(value);
       DefaultDialog.show(context, title: "Sucesso!", message: value.toString());
-      setState(() {
-        waiting = false;
-      });
       Navigator.of(context).pop();
     }).catchError((error) {
-      print("Erro no register");
-      print(error);
       DefaultDialog.show(context, title: "Erro!", message: error.toString());
-      setState(() {
-        waiting = false;
-      });
     });
   }
 }
