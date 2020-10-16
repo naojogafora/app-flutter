@@ -25,7 +25,7 @@ class AdDetailsScreen extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Expanded(child: Image.network(ad.firstPhoto.url, fit: BoxFit.cover)),
+                          Expanded(child: Hero(tag: "ad-image-" + ad.id.toString(), child: Image.network(ad.firstPhoto.url, fit: BoxFit.cover))),
                         ],
                       ),
                       Padding(
