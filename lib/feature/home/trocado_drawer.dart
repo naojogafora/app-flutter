@@ -14,7 +14,8 @@ class TrocadoDrawer extends StatefulWidget {
 class _TrocadoDrawerState extends State<TrocadoDrawer> {
   @override
   Widget build(BuildContext context) {
-    AuthenticationProvider authProvider = context.watch<AuthenticationProvider>();
+    AuthenticationProvider authProvider =
+        context.watch<AuthenticationProvider>();
 
     return Drawer(
       child: Column(mainAxisSize: MainAxisSize.max, children: [
@@ -43,12 +44,17 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                         children: [
                           Flexible(
                               child: Text(
-                                authProvider.isUserLogged ? "${authProvider.user.name} ${authProvider.user.lastName}" : "Visitante",
+                            authProvider.isUserLogged
+                                ? "${authProvider.user.name} ${authProvider.user.lastName}"
+                                : "Visitante",
                             style: TextStyle(fontSize: 18),
                           )),
                           Padding(padding: EdgeInsets.all(2)),
                           Flexible(
-                              child: Text(authProvider.isUserLogged ? authProvider.user.email : "",
+                              child: Text(
+                                  authProvider.isUserLogged
+                                      ? authProvider.user.email
+                                      : "",
                                   style: TextStyle(color: Colors.black54))),
                         ],
                       ),
@@ -57,36 +63,47 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 ),
                 decoration: BoxDecoration(color: Style.primaryColorDark),
               ),
-              authProvider.isUserLogged ? Container() :
-                ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text("Login/Cadastro"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed("/login");
-                  },
-                ),
-              authProvider.isUserLogged ? ListTile(
-                leading: Icon(Icons.list_alt_outlined),
-                title: Text("Meus Pedidos"),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyOrdersScreen())
-                  );
-                }
-              ) : Container(),
-              authProvider.isUserLogged ? ListTile(
-                leading: Icon(Icons.unarchive_outlined),
-                title: Text("Minhas Doações"),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyDonationsScreen())
-                  );
-                }
-              ) : Container(),
+              authProvider.isUserLogged
+                  ? Container()
+                  : ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text("Login/Cadastro"),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushNamed("/login");
+                      },
+                    ),
+              authProvider.isUserLogged
+                  ? ListTile(
+                      leading: Icon(Icons.list_alt_outlined),
+                      title: Text("Meus Pedidos"),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MyOrdersScreen()));
+                      })
+                  : Container(),
+              authProvider.isUserLogged
+                  ? ListTile(
+                      leading: Icon(Icons.unarchive_outlined),
+                      title: Text("Minhas Doações"),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MyDonationsScreen()));
+                      })
+                  : Container(),
             ],
           ),
-        )
+        ),
+        authProvider.isUserLogged
+            ? ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Sair da Conta"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  authProvider.logout(context);
+                },
+              )
+            : Container(),
       ]),
     );
   }

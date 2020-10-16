@@ -35,12 +35,14 @@ class ApiHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(BuildContext context, String url, {Map<String, dynamic> body}) async {
+  Future<dynamic> post(BuildContext context, String url, {Map<String, dynamic> body, String token}) async {
     print('Api Post, url $url');
     var responseJson;
     var headers = {'Accept': 'Application/json'};
 
-    if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null)
+    if(token != null){
+      headers.addAll({'Authorization': "Bearer " + token});
+    } else if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null)
       headers.addAll({'Authorization': "Bearer " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken});
 
     try {
