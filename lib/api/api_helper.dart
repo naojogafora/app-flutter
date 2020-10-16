@@ -55,7 +55,24 @@ class ApiHelper {
 
     return responseJson;
   }
-}
+
+  Future<dynamic> delete(BuildContext context, String url) async {
+    var responseJson;
+    var headers = {'Accept': 'Application/json'};
+
+    if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null)
+      headers.addAll({'Authorization': "Bearer " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken});
+
+    try{
+      final response = await http.delete(url);
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      print('No net');
+      throw FetchDataException('No Internet connection');
+    }
+
+    return responseJson;
+  }
 
   dynamic _returnResponse(http.Response response) {
     switch (response.statusCode) {
@@ -72,4 +89,5 @@ class ApiHelper {
         throw FetchDataException(
             'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
     }
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
-import 'package:trocado_flutter/feature/account/addresses_screen.dart';
+import 'package:trocado_flutter/feature/addresses/addresses_screen.dart';
 import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
