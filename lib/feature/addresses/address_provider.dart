@@ -27,7 +27,7 @@ class AddressProvider extends ChangeNotifier {
 
   /// Returns true if the address was saved, Exception otherwise.
   Future<bool> saveNewAddress(BuildContext context, Address address) async {
-    var jsonResponse = await apiHelper.post(context, NEW_ADDRESS_URL, body: address.toJson());
+    await apiHelper.post(context, NEW_ADDRESS_URL, body: address.toJson());
     userAddresses.add(address);
     notifyListeners();
     return true; // If theres no exception, it means all went well.
@@ -35,7 +35,7 @@ class AddressProvider extends ChangeNotifier {
 
   Future<bool> deleteAddress(BuildContext context, Address address) async {
     String deleteUrl = DELETE_ADDRESS_URL.replaceAll("{ADDRESS_ID}", address.id.toString());
-    var jsonResponse = await apiHelper.delete(context, deleteUrl);
+    await apiHelper.delete(context, deleteUrl);
     userAddresses.remove(address);
     notifyListeners();
     return true;

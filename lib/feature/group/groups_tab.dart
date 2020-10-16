@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:trocado_flutter/model/group.dart';
 
 import 'group_list_tile.dart';
