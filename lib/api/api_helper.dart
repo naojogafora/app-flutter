@@ -18,10 +18,15 @@ class ApiHelper {
     var responseJson;
     var headers = {'Accept': 'Application/json'};
 
-    if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
-      headers.addAll({'Authorization': "Bearer " + Provider
-          .of<AuthenticationProvider>(context, listen: false)
-          .authenticationToken});
+    if (context != null &&
+        Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken !=
+            null) {
+      headers.addAll({
+        'Authorization': "Bearer " +
+            Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken
+      });
     }
 
     try {
@@ -35,18 +40,27 @@ class ApiHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(BuildContext context, String url, {Map<String, dynamic> body, String token}) async {
+  Future<dynamic> post(BuildContext context, String url,
+      {Map<String, dynamic> body, String token}) async {
     print('Api Post, url $url');
     var responseJson;
     var headers = {'Accept': 'Application/json'};
 
-    if(token != null){
+    if (token != null) {
       headers.addAll({'Authorization': "Bearer " + token});
-    } else if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null)
-      headers.addAll({'Authorization': "Bearer " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken});
+    } else if (context != null &&
+        Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken !=
+            null)
+      headers.addAll({
+        'Authorization': "Bearer " +
+            Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken
+      });
 
     try {
-      final response = await http.post(_baseUrl + url, body: body, headers: headers);
+      final response =
+          await http.post(_baseUrl + url, body: body, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
@@ -60,11 +74,18 @@ class ApiHelper {
     var responseJson;
     var headers = {'Accept': 'Application/json'};
 
-    if(context != null && Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null)
-      headers.addAll({'Authorization': "Bearer " + Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken});
+    if (context != null &&
+        Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken !=
+            null)
+      headers.addAll({
+        'Authorization': "Bearer " +
+            Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken
+      });
 
-    try{
-      final response = await http.delete(url);
+    try {
+      final response = await http.delete(_baseUrl + url, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
