@@ -6,6 +6,8 @@ class Address {
   String street, city, state, zipCode, country;
   TrocadoCoordinates coordinates;
 
+  Address();
+
   Address.fromJson(Map<String, dynamic> json){
     this.id = json['id'];
     this.title = json['title'];

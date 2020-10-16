@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/feature/addresses/address_provider.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/auth/authentication_screen.dart';
 import 'package:trocado_flutter/config/style.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<TransactionsProvider>(
             create: (_) => TransactionsProvider(),
+          ),
+          ChangeNotifierProvider<AddressProvider>(
+            create: (_) => AddressProvider(),
           ),
         ],
         child: MaterialApp(

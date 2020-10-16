@@ -6,7 +6,6 @@ import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
-import 'package:trocado_flutter/feature/transactions/transactions_provider.dart';
 
 class TrocadoDrawer extends StatefulWidget {
   @override
