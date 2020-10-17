@@ -51,7 +51,7 @@ class AuthenticationProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authPref = prefs.getString('auth_json');
 
-    if(authPref == null || authPref.isEmpty){
+    if(authPref == null || authPref.isEmpty || authPref == "null"){
       user = null;
       authenticationToken = null;
     } else {
