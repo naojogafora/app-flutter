@@ -14,24 +14,27 @@ class AddressesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: trocadoAppBar("Meus Endereços"),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          FutureBuilder(
-            future: addressProvider.loadUserAddresses(context),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data != null
-                    ? buildList(snapshot.data)
-                    : Text("Nada aqui por enquanto :)");
-              } else if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-        ],
+      body: RefreshIndicator(
+        onRefresh: () => addressProvider.loadUserAddresses(context, forceLoad: true),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            FutureBuilder(
+              future: addressProvider.loadUserAddresses(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data != null
+                      ? buildList(snapshot.data)
+                      : Text("Nada aqui por enquanto :)");
+                } else if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Style.clearWhite),
