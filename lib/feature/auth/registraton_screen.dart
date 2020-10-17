@@ -22,6 +22,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +72,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onSubmitted: (v) => register(),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  StandardButton(
+                  loading ? Center(child: CircularProgressIndicator()) : StandardButton(
                     "Criar Conta",
                     register,
                     Style.primaryColorDark,
@@ -94,15 +96,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void register() {
+    loading = true;
+    setState(() {});
     String name = nameController.text;
     String lastName = lastNameController.text;
     String email = emailController.value.text;
     String password = passwordController.text;
 
     registerService.register(context, name, lastName, email, password).then((value) {
-      DefaultDialog.show(context, title: "Sucesso!", message: value.toString());
-      Navigator.of(context).pop();
+      loading = false;
+      setState(() {});
+      DefaultDialog.show(context, title: "Sucesso!", message: value.toString(), okCallback: () => Navigator.of(context).pop());
     }).catchError((error) {
+      loading = false;
+      setState(() {});
       DefaultDialog.show(context, title: "Erro!", message: error.toString());
     });
   }
