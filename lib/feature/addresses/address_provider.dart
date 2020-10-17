@@ -41,4 +41,13 @@ class AddressProvider extends ChangeNotifier {
     notifyListeners();
     return true;
   }
+
+  Future<bool> updateAddress(BuildContext context, Address address) async {
+    String updateUrl = DELETE_ADDRESS_URL.replaceAll("{ADDRESS_ID}", address.id.toString()) + "?_method=PUT";
+    await apiHelper.post(context, updateUrl, body: address.toJson());
+    userAddresses.removeWhere((Address element) => element.id == address.id);
+    userAddresses.add(address);
+    notifyListeners();
+    return true;
+  }
 }

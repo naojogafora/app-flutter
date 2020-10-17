@@ -35,7 +35,7 @@ class AddressListTile extends StatelessWidget {
                 icon: Icon(Icons.edit),
                 tooltip: "Editar",
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AddressFormScreen(address))),
+                    builder: (context) => AddressFormScreen(existingAddress: address))),
               ),
               IconButton(
                 icon: Icon(Icons.delete),

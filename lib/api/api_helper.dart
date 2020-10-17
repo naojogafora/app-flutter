@@ -14,9 +14,10 @@ class ApiHelper {
   static const _baseUrl = "https://trocado-api.herokuapp.com/api/";
 
   Future<dynamic> get(BuildContext context, String url) async {
-    print('Api Get, url $url');
+    String fullUrl = _baseUrl + url;
     var responseJson;
     var headers = {'Accept': 'Application/json'};
+    print('Api Get, url $fullUrl');
 
     if (context != null &&
         Provider.of<AuthenticationProvider>(context, listen: false)
@@ -30,7 +31,7 @@ class ApiHelper {
     }
 
     try {
-      final response = await http.get(_baseUrl + url, headers: headers);
+      final response = await http.get(fullUrl, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
@@ -41,10 +42,11 @@ class ApiHelper {
   }
 
   Future<dynamic> post(BuildContext context, String url,
-      {Map<String, dynamic> body = const {}, String token}) async {
-    print('Api Post, url $url');
+      {Map<String, dynamic> body = const {}, String token, Map<String, String> extraHeaders}) async {
+    String fullUrl = _baseUrl + url;
     var responseJson;
     var headers = {'Accept': 'Application/json'};
+    print('Api Post, url $fullUrl');
 
     if (token != null) {
       headers.addAll({'Authorization': "Bearer " + token});
@@ -59,7 +61,7 @@ class ApiHelper {
 
     try {
       final response =
-          await http.post(_baseUrl + url, body: body, headers: headers);
+          await http.post(fullUrl, body: body, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
@@ -100,6 +102,7 @@ class ApiHelper {
 
     try {
       responseJson = json.decode(response.body.toString());
+      print(responseJson);
 
       if (responseJson != null && responseJson['message'] != null)
         message = responseJson['message'].toString();

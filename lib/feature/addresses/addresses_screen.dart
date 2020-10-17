@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/config/style.dart';
+import 'package:trocado_flutter/feature/addresses/address_form_screen.dart';
 import 'package:trocado_flutter/feature/addresses/address_list_tile.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
 import 'package:trocado_flutter/model/address.dart';
@@ -30,6 +32,10 @@ class AddressesScreen extends StatelessWidget {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, color: Style.clearWhite),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddressFormScreen())),
       ),
     );
   }

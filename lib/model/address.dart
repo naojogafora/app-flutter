@@ -1,5 +1,3 @@
-import 'package:trocado_flutter/model/coordinates.dart';
-
 class Address {
   int id;
   String title;
