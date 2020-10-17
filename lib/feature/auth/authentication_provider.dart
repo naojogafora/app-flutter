@@ -57,7 +57,7 @@ class AuthenticationProvider extends ChangeNotifier {
     } else {
       dynamic authJson = jsonDecode(authPref);
       parseAndSetUser(authJson);
-      Future.delayed(Duration(seconds: 5), () => refreshToken(authenticationToken));
+      Future.delayed(Duration(seconds: 1), () => refreshToken(authenticationToken));
     }
 
     notifyListeners();

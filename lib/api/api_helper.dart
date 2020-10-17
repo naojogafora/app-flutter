@@ -41,22 +41,21 @@ class ApiHelper {
   }
 
   Future<dynamic> post(BuildContext context, String url,
-      {Map<String, dynamic> body, String token}) async {
+      {Map<String, dynamic> body = const {}, String token}) async {
     print('Api Post, url $url');
     var responseJson;
     var headers = {'Accept': 'Application/json'};
 
     if (token != null) {
       headers.addAll({'Authorization': "Bearer " + token});
-    } else if (context != null &&
-        Provider.of<AuthenticationProvider>(context, listen: false)
-                .authenticationToken !=
-            null)
-      headers.addAll({
-        'Authorization': "Bearer " +
-            Provider.of<AuthenticationProvider>(context, listen: false)
-                .authenticationToken
-      });
+    } else if (context != null) {
+      String savedToken =
+          Provider.of<AuthenticationProvider>(context, listen: false)
+              .authenticationToken;
+      if (savedToken != null) {
+        headers.addAll({'Authorization': "Bearer " + savedToken});
+      }
+    }
 
     try {
       final response =
@@ -102,7 +101,7 @@ class ApiHelper {
     try {
       responseJson = json.decode(response.body.toString());
 
-      if(responseJson != null && responseJson['message'] != null)
+      if (responseJson != null && responseJson['message'] != null)
         message = responseJson['message'].toString();
     } catch (e) {}
 
@@ -117,7 +116,8 @@ class ApiHelper {
       case 500:
       default:
         throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+            'Request Error (code ${response.statusCode}). ' +
+                message?.toString());
     }
   }
 }

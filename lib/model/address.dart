@@ -4,9 +4,10 @@ class Address {
   int id;
   String title;
   String street, city, state, zipCode, country;
-  TrocadoCoordinates coordinates;
 
-  Address();
+  Address(){
+    this.country = "Brasil";
+  }
 
   Address.fromJson(Map<String, dynamic> json){
     this.id = json['id'];

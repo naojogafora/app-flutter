@@ -28,6 +28,7 @@ class AddressProvider extends ChangeNotifier {
   /// Returns true if the address was saved, Exception otherwise.
   Future<bool> saveNewAddress(BuildContext context, Address address) async {
     await apiHelper.post(context, NEW_ADDRESS_URL, body: address.toJson());
+    if(userAddresses == null) userAddresses = [];
     userAddresses.add(address);
     notifyListeners();
     return true; // If theres no exception, it means all went well.
