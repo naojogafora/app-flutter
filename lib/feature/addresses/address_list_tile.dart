@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/feature/addresses/address_form_screen.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';

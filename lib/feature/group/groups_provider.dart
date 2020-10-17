@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/model/group.dart';
+import 'package:trocado_flutter/response/group_list.dart';
 
 class GroupsProvider extends ChangeNotifier {
   static const GROUPS_PUBLIC_URL = "group/public_list";
@@ -8,25 +9,15 @@ class GroupsProvider extends ChangeNotifier {
   static const JOIN_URL = "group/{GROUP_ID}/join";
 
   ApiHelper apiHelper = ApiHelper();
-  List<Group> _publicGroups;
-  List<Group> _userGroups;
-  List<Group> get publicGroups => _publicGroups;
-  List<Group> get userGroups => _userGroups;
+  GroupListResponse _publicGroups;
+  GroupListResponse _userGroups;
+  List<Group> get publicGroups => _publicGroups?.data;
+  List<Group> get userGroups => _userGroups?.data;
 
   GroupsProvider(){
     try {
       loadPublicGroups();
     } catch (e){}
-  }
-
-  set publicGroups(List<Group> groups) {
-    _publicGroups = groups;
-    notifyListeners();
-  }
-
-  set userGroups(List<Group> groups) {
-    _userGroups = groups;
-    notifyListeners();
   }
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
@@ -39,8 +30,6 @@ class GroupsProvider extends ChangeNotifier {
       var responseJson = await apiHelper.get(null, GROUPS_PUBLIC_URL);
       _publicGroups = _parseGroups(responseJson);
     } catch (e) {
-      if(!forceLoad)
-        _publicGroups = [];
       throw e;
     } finally {
       notifyListeners();
@@ -75,15 +64,8 @@ class GroupsProvider extends ChangeNotifier {
     return JoinGroupResponse.fromJson(responseJson);
   }
 
-  List<Group> _parseGroups(dynamic jsonData){
-    List<dynamic> jsonGroups = jsonData['data'];
-    List<Group> groups = [];
-    for (dynamic obj in jsonGroups) {
-      try {
-        groups.add(Group.fromJson(obj));
-      } catch (e) {}
-    }
-    return groups;
+  GroupListResponse _parseGroups(dynamic jsonData){
+    return GroupListResponse.fromJson(jsonData);
   }
 }
 
