@@ -68,12 +68,3 @@ class GroupsProvider extends ChangeNotifier {
     return GroupListResponse.fromJson(jsonData);
   }
 }
-
-class JoinGroupResponse {
-  String message;
-  bool joined;
-  JoinGroupResponse.fromJson(Map<String, dynamic> json){
-    this.message = json['message'];
-    this.joined = json['joined'];
-  }
-}
