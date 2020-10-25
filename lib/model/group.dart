@@ -14,7 +14,7 @@ class Group {
     this.name = json['name'];
     this.description = json['description'];
     this.private = json['private'] == 0 ? false : true;
-    this.isModerator = json['pivot'] != null && json['pivot']['is_moderator'] == 1 ? true : false;
+    this.isModerator = json['is_moderator'];
     this.adCount = json['ad_count'];
     this.memberCount = json['member_count'];
     this.isMember = json['is_member'];
