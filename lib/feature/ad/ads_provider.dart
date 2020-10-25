@@ -5,10 +5,12 @@ import 'package:trocado_flutter/response/ads_list.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";
+  static const ADS_USER_URL = "ad/list_self";
   static const ADS_LIST_BY_GROUP = "ad/list_by_group/{GROUP_ID}";
 
   ApiHelper apiHelper = ApiHelper();
   List<Ad> publicAds;
+  AdsListResponse userAds;
 
   AdsProvider(){
     loadPublicAds();
@@ -26,6 +28,21 @@ class AdsProvider extends ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  Future<AdsListResponse> loadUserAds(BuildContext context, {bool forceLoad = false}) async {
+    if(userAds != null && !forceLoad){
+      return userAds;
+    }
+
+    try {
+      var responseJson = await apiHelper.get(context, ADS_USER_URL);
+      userAds = AdsListResponse.fromJson(responseJson);
+    } finally {
+      notifyListeners();
+    }
+
+    return userAds;
   }
 
   Future<AdsListResponse> loadAdsForGroup(context, int id) async{

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
+import 'package:trocado_flutter/feature/ad/my_ads_screen.dart';
 import 'package:trocado_flutter/feature/addresses/addresses_screen.dart';
 import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
@@ -84,10 +85,11 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ListTile(
-                            leading: Icon(Icons.list_alt_outlined),
-                            title: Text("Pedidos"),
-                            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MyOrdersScreen())),
+                          leading: Icon(Icons.list_alt_outlined),
+                          title: Text("Meus Anúncios"),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => MyAdsScreen())),
                         ),
                         ListTile(
                           leading: Icon(Icons.unarchive_outlined),
@@ -95,6 +97,12 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) => MyDonationsScreen())),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.archive_outlined),
+                          title: Text("Pedidos"),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MyOrdersScreen())),
                         ),
                         ListTile(
                           title: Text("Conta"),
