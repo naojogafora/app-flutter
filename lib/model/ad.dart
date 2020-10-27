@@ -11,6 +11,11 @@ class Ad {
 
   get firstPhoto => photos != null && photos.length > 0 ? photos[0] : null;
 
+  Ad(){
+    finished = false;
+    suspended = false;
+  }
+
   Ad.fromJson(Map<String, dynamic> json){
     this.id = json['id'];
     this.finished = json['finished'] == 1;
