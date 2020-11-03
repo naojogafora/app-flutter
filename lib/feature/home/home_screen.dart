@@ -22,9 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void setTabsLists(bool isLogged) {
     tabHeaders = [];
     tabViews = [];
-    tabCount = 2;
 
-    tabHeaders.add(Tab(text: "Anúncios"));
+    tabHeaders.add(Tab(text: "Anúncios Disponíveis"));
     tabViews.add(
         Consumer<AdsProvider>(
           builder: (BuildContext context, provider, _) => AdsTab(provider.publicAds, () => provider.loadPublicAds(forceLoad: true)),
@@ -33,21 +32,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if(isLogged){
       Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context);
-      tabCount = 3;
       tabHeaders.add(Tab(text: "Meus Grupos"));
       tabViews.add(
           Consumer<GroupsProvider>(
             builder: (BuildContext context, provider, _) => GroupsTab(provider.userGroups, () => provider.loadUserGroups(context, forceLoad: true)),
           )
       );
+    } else {
+      tabHeaders.add(Tab(text: "Grupos Públicos"));
+      tabViews.add(
+          Consumer<GroupsProvider>(
+            builder: (BuildContext context, groupsService, _) =>
+                GroupsTab(groupsService.publicGroups, () =>
+                    groupsService.loadPublicGroups(forceLoad: true)),
+          )
+      );
     }
 
-    tabHeaders.add(Tab(text: "Grupos Públicos"));
-    tabViews.add(
-      Consumer<GroupsProvider>(
-        builder: (BuildContext context, groupsService, _) => GroupsTab(groupsService.publicGroups, () => groupsService.loadPublicGroups(forceLoad: true)),
-      )
-    );
+    tabCount = tabViews.length;
   }
 
   @override
