@@ -5,6 +5,7 @@ import 'package:trocado_flutter/feature/ad/my_ads_screen.dart';
 import 'package:trocado_flutter/feature/addresses/addresses_screen.dart';
 import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
+import 'package:trocado_flutter/feature/group/groups_find_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
 
@@ -67,8 +68,10 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
               ),
               ListTile(
                 leading: Icon(Icons.search),
-                title: Text("Buscar Grupos TODO"),
-                onTap: () => print("TODO"), //TODO
+                title: Text("Encontrar Grupos"),
+                onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => GroupsFindScreen())),
               ),
               authProvider.isUserLogged
                   ? Container()
@@ -84,6 +87,10 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                   ? Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        ListTile(
+                            title: Text("Transações"),
+                            visualDensity: VisualDensity.compact
+                        ),
                         ListTile(
                           leading: Icon(Icons.list_alt_outlined),
                           title: Text("Meus Anúncios"),
