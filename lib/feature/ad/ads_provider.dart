@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/model/ad.dart';
@@ -7,6 +9,7 @@ class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";
   static const ADS_USER_URL = "ad/list_self";
   static const ADS_LIST_BY_GROUP = "ad/list_by_group/{GROUP_ID}";
+  static const CREATE_AD_URL = "ad";
 
   ApiHelper apiHelper = ApiHelper();
   List<Ad> publicAds;
@@ -45,10 +48,20 @@ class AdsProvider extends ChangeNotifier {
     return userAds;
   }
 
-  Future<AdsListResponse> loadAdsForGroup(context, int id) async{
+  Future<AdsListResponse> loadAdsForGroup(context, int id) async {
     String listByGroupURL = ADS_LIST_BY_GROUP.replaceAll("{GROUP_ID}", id.toString());
     var responseJson = await apiHelper.get(context, listByGroupURL);
     return AdsListResponse.fromJson(responseJson);
+  }
+
+  Future<bool> createAd(BuildContext context, Ad ad) async {
+    var responseJson = await apiHelper.post(context, CREATE_AD_URL, body: ad.toJson());
+    print("createAd Response:");
+    print(responseJson);
+    print("Converted anuncioL");
+    Ad adCreated = Ad.fromJson(responseJson);
+    print(adCreated);
+    return true;
   }
 
   List<Ad> _parseAds(dynamic jsonData){

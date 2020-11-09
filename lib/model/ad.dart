@@ -20,6 +20,7 @@ class Ad {
   get firstPhoto => photos != null && photos.length > 0 ? photos[0] : null;
 
   Ad(){
+    photoFiles = [];
     photos = [];
     addresses = [];
     groups = [];
@@ -37,30 +38,32 @@ class Ad {
     this.createdAt = DateTime.parse(json['created_at']);
     this.updatedAt = DateTime.parse(json['updated_at']);
 
+    this.groups = [];
     this.photos = [];
     for(dynamic photoArray in json['photos']){
       photos.add(Photo.fromJson(photoArray));
     }
   }
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {
+  // Every field must be String: String due to limitations of the POST body type.
+  Map<String, String> toJson() {
+    Map<String, String> json = {
     'title': this.title,
     'description': this.description,
-    'finished': this.finished,
-    'suspended': this.suspended
+    'finished': this.finished.toString(),
+    'suspended': this.suspended.toString()
     };
 
     for(int i = 0; i < groups.length; i++) {
-      json.addAll({ "group_ids[$i]": groups[i].id });
+      json.addAll({ "group_ids[$i]": groups[i].id.toString() });
     }
 
     for(int i = 0; i < addresses.length; i++) {
-      json.addAll({ "address_ids[$i]": addresses[i].id });
+      json.addAll({ "address_ids[$i]": addresses[i].id.toString() });
     }
 
     for(int i = 0; i < photoFiles.length; i++) {
-      json.addAll({ "photos[$i]": photoFiles[i] });
+      json.addAll({ "photos[$i]": photoFiles[i].readAsStringSync() });
     }
 
     return json;

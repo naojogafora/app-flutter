@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
@@ -12,6 +13,8 @@ import 'package:trocado_flutter/model/photo.dart';
 import 'package:trocado_flutter/widget/dialog.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'ads_provider.dart';
 
 const double IMAGE_SIZE = 65;
 
@@ -180,19 +183,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     });
   }
 
-  Future<bool> submit() async {
-    print("Enviando anuncio:");
-    print(ad);
-    print("Como json:");
-    print(ad.toJson());
-
-    try {
-      //TODO Send to the API
-      return true;
-    } catch (e) {
-      //TODO Just throws exceptions, if any.
-    }
-    return false;
+  Future<bool> submit(BuildContext context) async {
+    ad.photoFiles = newImages;
+    return await Provider.of<AdsProvider>(context, listen: false).createAd(context, ad);
   }
 
   @override
@@ -254,64 +247,62 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         child: Text("Fotos (Até 5 imagens)"),
       ),
       totalImageCount() < 5
-          ? Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () => getImage(ImageSource.gallery),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          color: Colors.grey[300],
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text("Galeria"),
-                              )
-                            ],
-                          ),
-                        ),
+          ? Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () => getImage(ImageSource.gallery),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.grey[300],
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text("Galeria"),
+                          )
+                        ],
                       ),
                     ),
-                    VerticalDivider(
-                      width: 6,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () => getImage(ImageSource.camera),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          color: Colors.grey[300],
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add_a_photo),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text("Câmera"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            )
+                VerticalDivider(
+                  width: 6,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () => getImage(ImageSource.camera),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.grey[300],
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_a_photo),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text("Câmera"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
           : Container(),
       Row(
         mainAxisSize: MainAxisSize.max,
@@ -330,9 +321,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   // Groups and Addresses selection
   List<Widget> _adStep2(BuildContext context) {
     AddressProvider addressProvider =
-        Provider.of<AddressProvider>(context, listen: true);
+        Provider.of<AddressProvider>(context, listen: false);
     GroupsProvider groupsProvider =
-        Provider.of<GroupsProvider>(context, listen: true);
+        Provider.of<GroupsProvider>(context, listen: false);
 
     return [
       Text("Endereços de Retirada do Item (visível apenas para o Receptor)"),
@@ -400,18 +391,19 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   List<Widget> _adStep3(BuildContext context) {
     return [
       FutureBuilder<bool>(
-        future: submit(),
+        future: submit(context),
         builder: (context, snapshot) {
           if (!snapshot.hasData && !snapshot.hasError) {
             return CircularProgressIndicator();
           }
 
           if (snapshot.hasError) {
-            Future.delayed(Duration(seconds: 3), () {
+            Future.delayed(Duration(seconds: 2), () {
               // 5s over, navigate to a new page
               previousPage(context);
             });
-            //TODO Show error message
+            print(snapshot.error);
+            showErrorSnack(context, snapshot.error.toString());
             return Icon(Icons.close, color: Colors.red);
           }
 
@@ -420,10 +412,27 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             Navigator.of(context).pop();
           });
 
-          //TODO Show success message
+          showSuccessSnack(context, "Anúncio publicado!");
           return Icon(Icons.check_circle, color: Colors.green);
         },
       )
     ];
   }
+
+  void showErrorSnack(context, String message){
+    print(message);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ));
+    });}
+
+  void showSuccessSnack(context, String message){
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green,
+      ));
+    });}
 }
