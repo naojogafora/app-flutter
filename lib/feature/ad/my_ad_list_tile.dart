@@ -29,7 +29,7 @@ class MyAdListTile extends StatelessWidget {
       ),
       title: Text(ad.title),
       subtitle: Text(
-        ad.description,
+        "Anunciado em " + ad.groups.length.toString() + " grupos",
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
       ),

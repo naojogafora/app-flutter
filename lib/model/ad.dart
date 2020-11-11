@@ -39,6 +39,15 @@ class Ad {
     this.updatedAt = DateTime.parse(json['updated_at']);
 
     this.groups = [];
+    for(dynamic groupItem in json['groups']){
+      groups.add(Group.fromJson(groupItem));
+    }
+
+    this.addresses = [];
+    for(dynamic addressItem in json['addresses']){
+      addresses.add(Address.fromJson(addressItem));
+    }
+
     this.photos = [];
     for(dynamic photoArray in json['photos']){
       photos.add(Photo.fromJson(photoArray));
