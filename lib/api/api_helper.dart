@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:trocado_flutter/exception/BadRequestException.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
 import 'package:trocado_flutter/exception/UnauthorizedException.dart';
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 import 'dart:convert';
 import 'dart:async';
 
@@ -62,6 +64,50 @@ class ApiHelper {
     try {
       final response =
           await http.post(fullUrl, body: body, headers: headers);
+
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      print('No net');
+      throw FetchDataException('No Internet connection');
+    }
+
+    return responseJson;
+  }
+
+  Future<dynamic> multipartRequest(BuildContext context, String url,
+      {Map<String, dynamic> body = const {}, List<File> files, String token, Map<String, String> extraHeaders}) async {
+    String fullUrl = _baseUrl + url;
+    var responseJson;
+    var headers = {'Accept': 'Application/json'};
+    print('Api multipartRequest, url $fullUrl');
+
+    List<http.MultipartFile> multipartFiles = [];
+    for(int i = 0; i < files.length; i++){
+      http.MultipartFile mFile = http.MultipartFile.fromBytes("photos[$i]", files[i].readAsBytesSync(), filename: getFileName(files[i].path), contentType: getMediaTypeFromFile(files[i].path));
+      multipartFiles.add(mFile);
+    }
+
+    Uri postUri = Uri.parse(fullUrl);
+
+    if (token != null) {
+      headers.addAll({'Authorization': "Bearer " + token});
+    } else if (context != null) {
+      String savedToken =
+          Provider.of<AuthenticationProvider>(context, listen: false)
+              .authenticationToken;
+      if (savedToken != null) {
+        headers.addAll({'Authorization': "Bearer " + savedToken});
+      }
+    }
+
+    try {
+      http.MultipartRequest request = new http.MultipartRequest("POST", postUri);
+      request.fields.addAll(body);
+      request.files.addAll(multipartFiles);
+      request.headers.addAll(headers);
+      final streamedResponse = await request.send();
+
+      var response = await http.Response.fromStream(streamedResponse);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
@@ -122,5 +168,14 @@ class ApiHelper {
             'Request Error (code ${response.statusCode}). ' +
                 message?.toString());
     }
+  }
+
+  MediaType getMediaTypeFromFile(String _path){
+    return MediaType.parse(lookupMimeType(_path));
+  }
+
+  String getFileName(String _path){
+    List<String> parts = _path.split("/");
+    return parts.last;
   }
 }

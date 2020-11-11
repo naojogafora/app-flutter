@@ -55,7 +55,7 @@ class AdsProvider extends ChangeNotifier {
   }
 
   Future<bool> createAd(BuildContext context, Ad ad) async {
-    var responseJson = await apiHelper.post(context, CREATE_AD_URL, body: ad.toJson());
+    var responseJson = await apiHelper.multipartRequest(context, CREATE_AD_URL, body: ad.toJson(), files: ad.photoFiles);
     print("createAd Response:");
     print(responseJson);
     print("Converted anuncioL");

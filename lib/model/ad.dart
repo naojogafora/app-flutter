@@ -62,10 +62,6 @@ class Ad {
       json.addAll({ "address_ids[$i]": addresses[i].id.toString() });
     }
 
-    for(int i = 0; i < photoFiles.length; i++) {
-      json.addAll({ "photos[$i]": photoFiles[i].readAsStringSync() });
-    }
-
     return json;
   }
 

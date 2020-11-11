@@ -68,8 +68,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     if (newImages != null)
       for (File file in newImages) {
         imageList.add(GestureDetector(
-          child: Image.asset(
-            file.path,
+          child: Image.file(
+            file,
             width: IMAGE_SIZE,
             height: IMAGE_SIZE,
           ),
@@ -188,28 +188,36 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     return await Provider.of<AdsProvider>(context, listen: false).createAd(context, ad);
   }
 
+  Future<bool> onWillPop() async {
+    previousPage(context);
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     _body = buildCurrentPage(context);
 
-    return Scaffold(
-      appBar: trocadoAppBar("Detalhes do Anúncio"),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Form(
-                autovalidateMode: AutovalidateMode.always,
-                key: _formKey,
-                child: ListView(
-                  children: _body,
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: trocadoAppBar("Detalhes do Anúncio"),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  autovalidateMode: AutovalidateMode.always,
+                  key: _formKey,
+                  child: ListView(
+                    children: _body,
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
