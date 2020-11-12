@@ -14,10 +14,6 @@ class GroupsFindScreen extends StatefulWidget {
 class _GroupsFindScreenState extends State<GroupsFindScreen> {
   TextEditingController searchController = TextEditingController(text: "");
 
-  Future<void> emptyFuture() async {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     GroupsProvider provider = Provider.of<GroupsProvider>(context, listen: false);
@@ -52,7 +48,7 @@ class _GroupsFindScreenState extends State<GroupsFindScreen> {
                 return Text(snapshot.error.toString());
               }
 
-              return Expanded(child: GroupsTab(snapshot.data.data, emptyFuture));
+              return Expanded(child: GroupsTab(snapshot.data.data, null));
             },
           ),
         ],

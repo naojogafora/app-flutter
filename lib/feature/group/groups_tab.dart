@@ -17,7 +17,7 @@ class GroupsTab extends StatelessWidget {
         groups != null
             ? Expanded(
                 child: RefreshIndicator(
-                  onRefresh: pullToRefresh,
+                  onRefresh: pullToRefresh ?? emptyFuture,
                   child: ListView.builder(
                     itemCount: groups.length,
                     itemBuilder: (context, i) {
@@ -33,4 +33,8 @@ class GroupsTab extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<void> emptyFuture() async {
+  return;
 }
