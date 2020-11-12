@@ -37,7 +37,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection');
+      throw FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -68,7 +68,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection');
+      throw FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -111,7 +111,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection');
+      throw FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -136,7 +136,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection');
+      throw FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -166,7 +166,7 @@ class ApiHelper {
       default:
         throw FetchDataException(
             'Request Error (code ${response.statusCode}). ' +
-                message?.toString());
+                message?.toString(), response.statusCode);
     }
   }
 

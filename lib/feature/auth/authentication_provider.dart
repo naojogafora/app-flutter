@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
+import 'package:trocado_flutter/exception/FetchDataException.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,10 +66,17 @@ class AuthenticationProvider extends ChangeNotifier {
 
   void refreshToken(String currentToken) async {
     print("Refreshing token");
-    var responseJson = await apiHelper.post(null, REFRESH_TOKEN_URL, token: currentToken);
-    parseAndSetUser(responseJson);
-    saveAuthToStorage(responseJson);
-    print("Token refreshed");
+    try {
+      var responseJson = await apiHelper.post(
+          null, REFRESH_TOKEN_URL, token: currentToken);
+      parseAndSetUser(responseJson);
+      saveAuthToStorage(responseJson);
+      print("Token refreshed");
+    } on FetchDataException catch (e) {
+      if(e.httpCode == 500) {
+        saveAuthToStorage(null);
+      }
+    }
   }
 
   void logout(BuildContext context){
