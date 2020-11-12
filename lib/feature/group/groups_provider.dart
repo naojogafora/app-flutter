@@ -8,6 +8,7 @@ import 'package:trocado_flutter/response/group_list.dart';
 class GroupsProvider extends ChangeNotifier {
   static const GROUPS_PUBLIC_URL = "group/public_list";
   static const GROUPS_USER_URL = "group/list";
+  static const GROUPS_SEARCH_URL = "group/find?query={QUERY}";
   static const JOIN_URL = "group/{GROUP_ID}/join";
   static const LEAVE_URL = "group/{GROUP_ID}/leave";
 
@@ -24,9 +25,9 @@ class GroupsProvider extends ChangeNotifier {
   }
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
-  Future<void> loadPublicGroups({bool forceLoad=false}) async {
+  Future<GroupListResponse> loadPublicGroups({bool forceLoad=false}) async {
     if(_publicGroups != null && !forceLoad) {
-      return;
+      return _publicGroups;
     }
 
     try {
@@ -37,6 +38,15 @@ class GroupsProvider extends ChangeNotifier {
     } finally {
       notifyListeners();
     }
+
+    return _publicGroups;
+  }
+
+  Future<GroupListResponse> searchGroups(BuildContext context, String search) async {
+    final String url = GROUPS_SEARCH_URL.replaceAll("{QUERY}", search);
+
+    var responseJson = await apiHelper.get(context, url);
+    return _parseGroups(responseJson);
   }
 
   Future<void> loadUserGroups(BuildContext context, {bool forceLoad=false}) async {
