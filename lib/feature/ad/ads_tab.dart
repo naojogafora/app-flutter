@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trocado_flutter/feature/group/groups_tab.dart';
 import 'package:trocado_flutter/model/ad.dart';
 
 import 'ad_list_tile.dart';
@@ -16,7 +17,7 @@ class AdsTab extends StatelessWidget {
         ads != null
             ? Expanded(
           child: RefreshIndicator(
-            onRefresh: pullToRefresh,
+            onRefresh: pullToRefresh ?? emptyFuture,
             child: ListView.builder(
               itemCount: ads.length,
               itemBuilder: (context, i) {

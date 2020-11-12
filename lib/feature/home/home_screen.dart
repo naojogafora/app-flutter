@@ -16,7 +16,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final int tabCount = 2;
   List<Widget> tabViews;
   TabController _tabController;
@@ -24,32 +25,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void setTabsLists(bool isLogged) {
     tabViews = [];
 
-      tabViews.add(
-          Consumer<AdsProvider>(
-            builder: (BuildContext context, provider, _) =>
-                AdsTab(provider.publicAds, () =>
-                    provider.loadPublicAds(forceLoad: true)),
-          )
-      );
+    tabViews.add(Consumer<AdsProvider>(
+      builder: (BuildContext context, provider, _) => AdsTab(
+          provider.publicAds?.data,
+          () => provider.loadAvailableAds(context, forceLoad: true)),
+    ));
 
-    if(!isLogged) {
-      tabViews.add(
-          Consumer<GroupsProvider>(
-            builder: (BuildContext context, GroupsProvider provider, _) =>
-                GroupsTab(provider.publicGroups, () =>
-                    provider.loadPublicGroups(forceLoad: true)),
-          )
-      );
+    if (!isLogged) {
+      tabViews.add(Consumer<GroupsProvider>(
+        builder: (BuildContext context, GroupsProvider provider, _) =>
+            GroupsTab(provider.publicGroups,
+                () => provider.loadPublicGroups(forceLoad: true)),
+      ));
     } else {
-      Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(
-          context);
-      tabViews.add(
-          Consumer<GroupsProvider>(
-            builder: (BuildContext context, GroupsProvider provider, _) =>
-                GroupsTab(provider.userGroups, () =>
-                    provider.loadUserGroups(context, forceLoad: true)),
-          )
-      );
+      Provider.of<GroupsProvider>(context, listen: false)
+          .loadUserGroups(context);
+      tabViews.add(Consumer<GroupsProvider>(
+        builder: (BuildContext context, GroupsProvider provider, _) =>
+            GroupsTab(provider.userGroups,
+                () => provider.loadUserGroups(context, forceLoad: true)),
+      ));
     }
   }
 
@@ -76,7 +71,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           onPressed: () {
             showSearch(
               context: context,
-              delegate: _tabController.index == 0 ? AdSearchDelegate() : GroupSearchDelegate(),
+              delegate: _tabController.index == 0
+                  ? AdSearchDelegate()
+                  : GroupSearchDelegate(),
             );
           },
         ),
@@ -94,10 +91,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             controller: _tabController,
           ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: tabViews
-            ),
+            child: TabBarView(controller: _tabController, children: tabViews),
           ),
         ],
       ),

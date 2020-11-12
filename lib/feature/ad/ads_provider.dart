@@ -1,18 +1,20 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/model/ad.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";
   static const ADS_USER_URL = "ad/list_self";
+  static const ADS_USER_GROUPS_URL = "ad/list_for_user_groups";
   static const ADS_LIST_BY_GROUP = "ad/list_by_group/{GROUP_ID}";
   static const CREATE_AD_URL = "ad";
 
   ApiHelper apiHelper = ApiHelper();
-  List<Ad> publicAds;
+  AdsListResponse publicAds;
+  AdsListResponse groupsAds;
   AdsListResponse userAds;
 
   AdsProvider(){
@@ -20,17 +22,60 @@ class AdsProvider extends ChangeNotifier {
   }
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
-  Future<void> loadPublicAds({bool forceLoad=false}) async {
-    if(publicAds != null && !forceLoad) {
-      return;
+  Future<AdsListResponse> loadPublicAds({bool forceLoad=false, String query}) async {
+    if(publicAds != null && !forceLoad && (query == null || query.isEmpty)) {
+      return publicAds;
     }
 
+    String url = ADS_PUBLIC_URL;
+    if(query != null && query.isNotEmpty){
+      url = url + "?query=" + query;
+    }
+
+    AdsListResponse result;
+
     try {
-      var responseJson = await apiHelper.get(null, ADS_PUBLIC_URL);
-      publicAds = _parseAds(responseJson);
+      var responseJson = await apiHelper.get(null, url);
+      result = _parseAdsResponse(responseJson);
+
+      if(query == null || query.isEmpty){
+        publicAds = result;
+      }
+
     } finally {
       notifyListeners();
     }
+
+    return result;
+  }
+
+  Future<AdsListResponse> loadAvailableAds(BuildContext context, {bool forceLoad = false, String query}) async {
+    if(context == null || !Provider.of<AuthenticationProvider>(context, listen: false).isUserLogged){
+      return await loadPublicAds(forceLoad: forceLoad, query: query);
+    }
+
+    if(groupsAds != null && !forceLoad && (query == null || query.isEmpty)) {
+      return groupsAds;
+    }
+
+    String _url = ADS_USER_GROUPS_URL;
+    if(query != null && query.isNotEmpty){
+      _url = _url + "?query=" + query;
+    }
+
+    AdsListResponse result;
+    try {
+      var responseJson = await apiHelper.get(context, _url);
+      result = AdsListResponse.fromJson(responseJson);
+
+      if(query == null || query.isEmpty){
+        groupsAds = result;
+      }
+    } finally {
+      notifyListeners();
+    }
+
+    return result;
   }
 
   Future<AdsListResponse> loadUserAds(BuildContext context, {bool forceLoad = false}) async {
@@ -64,14 +109,7 @@ class AdsProvider extends ChangeNotifier {
     return true;
   }
 
-  List<Ad> _parseAds(dynamic jsonData){
-    List<dynamic> jsonList = jsonData['data'];
-    List<Ad> objList = [];
-    for (dynamic obj in jsonList) {
-      try {
-        objList.add(Ad.fromJson(obj));
-      } catch (e) {}
-    }
-    return objList;
+  AdsListResponse _parseAdsResponse(dynamic jsonData){
+    return AdsListResponse.fromJson(jsonData);
   }
 }
