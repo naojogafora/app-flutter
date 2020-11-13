@@ -28,9 +28,14 @@ class _HomeScreenState extends State<HomeScreen>
     tabViews = [];
 
     tabViews.add(Consumer<AdsProvider>(
-      builder: (BuildContext context, provider, _) => AdsTab(
-          provider.publicAds?.data,
-          () => provider.loadAvailableAds(context, forceLoad: true)),
+      builder: (BuildContext context, provider, _) {
+        provider.loadAvailableAds(context);
+
+        return AdsTab(
+          provider.availableAds,
+          () => provider.loadAvailableAds(context, forceLoad: true)
+        );
+      },
     ));
 
     if (!isLogged) {

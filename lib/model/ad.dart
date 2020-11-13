@@ -32,26 +32,31 @@ class Ad {
     this.id = json['id'];
     this.finished = json['finished'] == 1;
     this.suspended = json['suspended'] == 1;
-    this.user = User.fromJson(json['user']);
     this.title = json['title'];
     this.description = json['description'];
     this.createdAt = DateTime.parse(json['created_at']);
     this.updatedAt = DateTime.parse(json['updated_at']);
 
+    if(json['user'] != null)
+      this.user = User.fromJson(json['user']);
+
     this.groups = [];
-    for(dynamic groupItem in json['groups']){
-      groups.add(Group.fromJson(groupItem));
-    }
+    if(json['groups'] != null)
+      for(dynamic groupItem in json['groups']){
+        groups.add(Group.fromJson(groupItem));
+      }
 
     this.addresses = [];
-    for(dynamic addressItem in json['addresses']){
-      addresses.add(Address.fromJson(addressItem));
-    }
+    if(json['addresses'] != null)
+      for(dynamic addressItem in json['addresses']){
+        addresses.add(Address.fromJson(addressItem));
+      }
 
     this.photos = [];
-    for(dynamic photoArray in json['photos']){
-      photos.add(Photo.fromJson(photoArray));
-    }
+    if(json['photos'] != null)
+      for(dynamic photoArray in json['photos']){
+        photos.add(Photo.fromJson(photoArray));
+      }
   }
 
   // Every field must be String: String due to limitations of the POST body type.

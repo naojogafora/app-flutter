@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
+import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,7 +50,7 @@ class AuthenticationProvider extends ChangeNotifier {
     await prefs.setString('auth_json', jsonEncode(authJson));
   }
 
-  void loadAuthFromStorage() async {
+  Future<void> loadAuthFromStorage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authPref = prefs.getString('auth_json');
 
@@ -77,6 +79,7 @@ class AuthenticationProvider extends ChangeNotifier {
         saveAuthToStorage(null);
       }
     }
+    notifyListeners();
   }
 
   void logout(BuildContext context){

@@ -11,15 +11,13 @@ class AdsProvider extends ChangeNotifier {
   static const ADS_USER_GROUPS_URL = "ad/list_for_user_groups";
   static const ADS_LIST_BY_GROUP = "ad/list_by_group/{GROUP_ID}";
   static const CREATE_AD_URL = "ad";
+  static const DELETE_URL = "ad/{AD_ID}";
 
   ApiHelper apiHelper = ApiHelper();
   AdsListResponse publicAds;
   AdsListResponse groupsAds;
   AdsListResponse userAds;
-
-  AdsProvider(){
-    loadPublicAds();
-  }
+  List<Ad> get availableAds => groupsAds?.data ?? publicAds?.data;
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
   Future<AdsListResponse> loadPublicAds({bool forceLoad=false, String query}) async {
@@ -41,7 +39,6 @@ class AdsProvider extends ChangeNotifier {
       if(query == null || query.isEmpty){
         publicAds = result;
       }
-
     } finally {
       notifyListeners();
     }
