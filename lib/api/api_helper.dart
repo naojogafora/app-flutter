@@ -27,7 +27,7 @@ class ApiHelper {
             null) {
       headers.addAll({
         'Authorization': "Bearer " +
-            Provider.of<AuthenticationProvider>(context, listen: false)
+            await Provider.of<AuthenticationProvider>(context, listen: false)
                 .authenticationToken
       });
     }
@@ -54,7 +54,7 @@ class ApiHelper {
       headers.addAll({'Authorization': "Bearer " + token});
     } else if (context != null) {
       String savedToken =
-          Provider.of<AuthenticationProvider>(context, listen: false)
+          await Provider.of<AuthenticationProvider>(context, listen: false)
               .authenticationToken;
       if (savedToken != null) {
         headers.addAll({'Authorization': "Bearer " + savedToken});
@@ -93,7 +93,7 @@ class ApiHelper {
       headers.addAll({'Authorization': "Bearer " + token});
     } else if (context != null) {
       String savedToken =
-          Provider.of<AuthenticationProvider>(context, listen: false)
+          await Provider.of<AuthenticationProvider>(context, listen: false)
               .authenticationToken;
       if (savedToken != null) {
         headers.addAll({'Authorization': "Bearer " + savedToken});
@@ -127,7 +127,7 @@ class ApiHelper {
             null)
       headers.addAll({
         'Authorization': "Bearer " +
-            Provider.of<AuthenticationProvider>(context, listen: false)
+            await Provider.of<AuthenticationProvider>(context, listen: false)
                 .authenticationToken
       });
 

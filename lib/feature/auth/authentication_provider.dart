@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
-import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +13,14 @@ class AuthenticationProvider extends ChangeNotifier {
   static const LOGOUT_URL = "auth/logout";
 
   User user;
-  String authenticationToken;
+  String _authenticationToken;
   ApiHelper apiHelper = ApiHelper();
+
+  Lock authTokenLock = Lock(reentrant: true);
+  set authenticationToken(val) => authTokenLock.synchronized(() => this._authenticationToken = val);
+  Future<String> get authenticationToken async {
+    return await authTokenLock.synchronized<String>(() => this._authenticationToken);
+  }
 
   bool get isUserLogged => user != null;
 
@@ -60,37 +65,40 @@ class AuthenticationProvider extends ChangeNotifier {
     } else {
       dynamic authJson = jsonDecode(authPref);
       parseAndSetUser(authJson);
-      Future.delayed(Duration(seconds: 1), () => refreshToken(authenticationToken));
+      refreshToken();
     }
 
     notifyListeners();
   }
 
-  void refreshToken(String currentToken) async {
+  Future<void> refreshToken() async {
     print("Refreshing token");
-    try {
-      var responseJson = await apiHelper.post(
-          null, REFRESH_TOKEN_URL, token: currentToken);
-      parseAndSetUser(responseJson);
-      saveAuthToStorage(responseJson);
-      print("Token refreshed");
-    } on FetchDataException catch (e) {
-      if(e.httpCode == 500) {
-        saveAuthToStorage(null);
+    authTokenLock.synchronized(() async {
+      print("Refreshing inside sync");
+      try {
+        var responseJson = await apiHelper.post(
+            null, REFRESH_TOKEN_URL, token: _authenticationToken);
+        parseAndSetUser(responseJson);
+        saveAuthToStorage(responseJson);
+        print("Token refreshed");
+      } on FetchDataException catch (e) {
+        if(e.httpCode == 500) {
+          saveAuthToStorage(null);
+        }
       }
-    }
+    });
     notifyListeners();
   }
 
-  void logout(BuildContext context){
+  void logout(BuildContext context) async {
     saveAuthToStorage(null);
-    invalidateToken(authenticationToken);
+    await invalidateCurrentToken();
     user = null;
     authenticationToken = null;
     notifyListeners();
   }
 
-  void invalidateToken(String token){
-    apiHelper.post(null, LOGOUT_URL, token: token);
+  Future<void> invalidateCurrentToken() async {
+    apiHelper.post(null, LOGOUT_URL, token: _authenticationToken);
   }
 }
