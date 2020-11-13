@@ -421,7 +421,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           });
 
           showSuccessSnack(context, "Anúncio publicado!");
-          return Icon(Icons.check_circle, color: Colors.green);
+          return Icon(Icons.check, color: Colors.green, size: 86,);
         },
       )
     ];

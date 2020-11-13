@@ -17,6 +17,7 @@ class MyAdListTile extends StatelessWidget {
     return ExpansionTile(
       leading: Container(
         width: 50,
+        height: 50,
         color: Style.primaryColor,
         child: ad.photos != null && ad.photos.length > 0
             ? Hero(
@@ -26,13 +27,13 @@ class MyAdListTile extends StatelessWidget {
                   fit: BoxFit.cover,
                 ))
             : Icon(
-                Icons.group,
+                Icons.no_photography_outlined,
                 color: Style.primaryColorDark,
               ),
       ),
       title: Text(ad.title),
       subtitle: Text(
-        "Anunciado em " + ad.groups.length.toString() + " grupos",
+        "Anunciado em " + ad.groups.length.toString() + " grupo" + (ad.groups.length != 1 ? "s" : ""),
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
       ),
@@ -41,16 +42,16 @@ class MyAdListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              icon: Icon(Icons.visibility),
+              icon: Icon(Icons.visibility, color: Colors.blue),
               onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
             ),
             IconButton(
-                icon: Icon(Icons.edit),
+                icon: Icon(Icons.edit, color: Colors.green),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => null))), //TODO Edit ad
             IconButton(
-                icon: Icon(Icons.delete),
+                icon: Icon(Icons.delete, color: Colors.red,),
                 onPressed: () async {
                   String message;
                   Color color = Colors.green;

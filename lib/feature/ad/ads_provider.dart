@@ -102,7 +102,8 @@ class AdsProvider extends ChangeNotifier {
     print(responseJson);
     print("Converted anuncioL");
     Ad adCreated = Ad.fromJson(responseJson);
-    print(adCreated);
+    userAds.data.insert(0, adCreated);
+    notifyListeners();
     return true;
   }
 
