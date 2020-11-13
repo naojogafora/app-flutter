@@ -112,4 +112,11 @@ class AdsProvider extends ChangeNotifier {
   AdsListResponse _parseAdsResponse(dynamic jsonData){
     return AdsListResponse.fromJson(jsonData);
   }
+
+  Future<bool> deleteAd(BuildContext context, Ad ad) async  {
+    var responseJson = await apiHelper.delete(context, DELETE_URL.replaceAll("{AD_ID}", ad.id.toString()));
+    userAds.data.remove(ad);
+    notifyListeners();
+    return true;
+  }
 }

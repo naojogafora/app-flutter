@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/model/ad.dart';
 
 import 'ad_details_screen.dart';
+import 'ads_provider.dart';
 
 class MyAdListTile extends StatelessWidget {
   final Ad ad;
@@ -48,8 +51,25 @@ class MyAdListTile extends StatelessWidget {
                     builder: (context) => null))), //TODO Edit ad
             IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => null))), //TODO Delete ad
+                onPressed: () async {
+                  String message;
+                  Color color = Colors.green;
+                  try {
+                    await Provider.of<AdsProvider>(context, listen: false)
+                        .deleteAd(context, ad);
+                    message = "Anúncio apagado";
+                  } catch (e) {
+                    color = Colors.red;
+                    message = e.toString();
+                  }
+
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(message),
+                      backgroundColor: color,
+                    ));
+                  });
+                }),
           ],
         ),
       ],
