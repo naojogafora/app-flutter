@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/ad/ad_search_delegate.dart';
 import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen>
   final int tabCount = 2;
   List<Widget> tabViews;
   TabController _tabController;
+  int currentIndex = 0;
 
   void setTabsLists(bool isLogged) {
     tabViews = [];
@@ -52,6 +54,11 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, length: tabCount);
+    _tabController.addListener(() {
+      setState(() {
+        currentIndex = _tabController.index;
+      });
+    });
   }
 
   @override
@@ -65,19 +72,7 @@ class _HomeScreenState extends State<HomeScreen>
     setTabsLists(Provider.of<AuthenticationProvider>(context).isUserLogged);
 
     return Scaffold(
-      appBar: trocadoAppBar("Trocado", actions: [
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            showSearch(
-              context: context,
-              delegate: _tabController.index == 0
-                  ? AdSearchDelegate()
-                  : GroupSearchDelegate(),
-            );
-          },
-        ),
-      ]),
+      appBar: trocadoAppBar("Trocado"),
       drawer: TrocadoDrawer(),
       body: Column(
         children: [
@@ -85,8 +80,8 @@ class _HomeScreenState extends State<HomeScreen>
             isScrollable: true,
             unselectedLabelColor: Colors.black54,
             tabs: [
-              Tab(text: "Anúncios Disponíveis"),
-              Tab(text: "Grupos"),
+              const Tab(text: "Anúncios Disponíveis"),
+              const Tab(text: "Grupos"),
             ],
             controller: _tabController,
           ),
@@ -94,6 +89,30 @@ class _HomeScreenState extends State<HomeScreen>
             child: TabBarView(controller: _tabController, children: tabViews),
           ),
         ],
+      ),
+      floatingActionButton: Material(
+        elevation: 5,
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+            color: currentIndex == 0 ? Style.accentColor : Style.primaryColorDark,
+          ),
+          child: FloatingActionButton(
+            child: Icon(Icons.search, color: Style.clearWhite),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: _tabController.index == 0
+                    ? AdSearchDelegate()
+                    : GroupSearchDelegate(),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
