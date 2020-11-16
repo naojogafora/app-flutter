@@ -15,7 +15,7 @@ class GroupListTile extends StatelessWidget {
       title: Text(group.name),
       subtitle: group.isModerator
           ? Text("Você é moderador(a)")
-          : Text(group.adCount.toString() + " anúncios disponíveis."),
+          : (!group.isMember && group.private ? Text("Grupo Privado") : Text(group.adCount.toString() + " anúncios disponíveis.")),
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => GroupScreen(group))),
     );

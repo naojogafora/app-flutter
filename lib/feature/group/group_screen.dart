@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/ad/ad_list_tile.dart';
@@ -31,8 +30,11 @@ class _GroupScreenState extends State<GroupScreen> {
       key: _scaffoldKey,
       appBar: trocadoAppBar(widget.group.name),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
@@ -50,10 +52,8 @@ class _GroupScreenState extends State<GroupScreen> {
                           overflow: TextOverflow.fade,
                           style: TextStyle(color: Style.clearWhite)),
                       GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    GroupDetailsScreen(widget.group))),
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => GroupDetailsScreen(widget.group))),
                         child: Text("Ver mais detalhes",
                             style: TextStyle(
                                 color: Style.clearWhite,
@@ -82,13 +82,21 @@ class _GroupScreenState extends State<GroupScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Text("Anúncios"),
           ),
-          widget.group.private ? Text("Grupo Fechado. Solicite a entrada para ter acesso aos anúncios disponíveis") : _adsList(),
+          widget.group.private && !widget.group.isMember
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Grupo Privado - Solicite a entrada no botão acima, caso tenha sido convidado ou deseje participar.",
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : _adsList(),
         ],
       ),
     );
   }
 
-  Widget _adsList(){
+  Widget _adsList() {
     return Consumer<AdsProvider>(
       builder: (context, provider, _) => FutureBuilder(
         future: provider.loadAdsForGroup(context, widget.group.id),
@@ -104,18 +112,11 @@ class _GroupScreenState extends State<GroupScreen> {
             return Expanded(
               child: ListView.builder(
                 itemCount: adsListRequest.data.length,
-                itemBuilder: (context, i) =>
-                    AdListTile(adsListRequest.data[i]),
+                itemBuilder: (context, i) => AdListTile(adsListRequest.data[i]),
               ),
             );
           } else if (response.hasError) {
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(response.error.toString()),
-                backgroundColor: Colors.red,
-              ));
-            });
-            return Container();
+            return Center(child: Text(response.error.toString()));
           } else {
             return CircularProgressIndicator();
           }
@@ -124,28 +125,109 @@ class _GroupScreenState extends State<GroupScreen> {
     );
   }
 
-  void joinGroup(GroupsProvider provider){
-    if(widget.group.private){
-      //TODO
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("TODO - A SER IMPLEMENTADO"),
-        backgroundColor: Colors.yellow,));
+  void joinGroup(GroupsProvider provider) async {
+    if (widget.group.private) {
+      showJoinDialog(context, provider);
     } else {
-      provider.joinGroup(context, widget.group).then(
-              (JoinGroupResponse joinResponse) {
-            if (joinResponse.joined) {
-              this.widget.group.isMember = true;
-              setState(() {});
-              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                content: Text(joinResponse.message),
-                backgroundColor: Colors.green,));
-            } else {
-              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                content: Text(joinResponse.message),
-                backgroundColor: Colors.yellow[900],));
-            }
-          }
-      );
+      provider.joinGroup(context, widget.group).then(joinGroupResult);
     }
+  }
+
+  void joinGroupResult(JoinGroupResponse joinResponse) {
+    if (joinResponse.joined) {
+      this.widget.group.isMember = true;
+      setState(() {});
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(joinResponse.message),
+        backgroundColor: Colors.green,
+      ));
+    } else {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(joinResponse.message),
+        backgroundColor: Colors.yellow[900],
+      ));
+    }
+  }
+
+  Future<String> showJoinDialog(BuildContext context, GroupsProvider provider) async {
+    TextEditingController inputController = TextEditingController();
+    TextEditingController joinCodeController = TextEditingController();
+    bool enabled = true;
+
+    return await showDialog<String>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        titlePadding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Solicitar Entrada"),
+            IconButton(
+              icon: Icon(Icons.close),
+              padding: EdgeInsets.all(0),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+        children: [
+          TextField(
+            decoration: const InputDecoration(
+              labelText: "(Opcional) Escreva uma mensagem para os moderadores do grupo.",
+              icon: Icon(Icons.description),
+            ),
+            minLines: 2,
+            maxLines: 5,
+            maxLength: 1000,
+            controller: inputController,
+          ),
+          Divider(
+            color: Colors.transparent,
+            height: 4,
+          ),
+          MaterialButton(
+            color: Style.primaryColorDark,
+            textColor: Style.clearWhite,
+            onPressed: () async {
+              if (!enabled) return;
+
+              enabled = false;
+              await provider
+                  .joinGroup(context, widget.group, message: inputController.text)
+                  .then(joinGroupResult);
+              Navigator.of(context).pop();
+            },
+            child: Text("Enviar Solicitação"),
+          ),
+          Container(
+            padding: EdgeInsets.all(8),
+            alignment: Alignment.center,
+            child: Text("OU"),
+          ),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: "Código de Entrada",
+              icon: Icon(Icons.confirmation_number),
+            ),
+            maxLines: 1,
+            controller: joinCodeController,
+          ),
+          MaterialButton(
+            color: Style.primaryColorDark,
+            textColor: Style.clearWhite,
+            onPressed: () async {
+              if (!enabled) return;
+
+              enabled = false;
+              await provider
+                  .joinGroupByInviteCode(context, widget.group, joinCodeController.text)
+                  .then(joinGroupResult);
+              Navigator.of(context).pop();
+            },
+            child: Text("Entrar"),
+          ),
+        ],
+      ),
+    );
   }
 }
