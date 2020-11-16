@@ -14,6 +14,7 @@ class AdListTile extends StatelessWidget {
     return ListTile(
       leading: Container(
         width: 50,
+        height: 50,
         color: Style.primaryColor,
         child: ad.photos != null && ad.photos.length > 0 ?
           Hero(tag: "ad-image-" + ad.id.toString(), child: Image.network(ad.photos[0].url, fit: BoxFit.cover,))
