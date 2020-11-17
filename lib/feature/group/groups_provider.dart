@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/app_exception.dart';
 import 'package:trocado_flutter/model/group.dart';
+import 'package:trocado_flutter/model/group_join_request.dart';
+import 'package:trocado_flutter/response/basic_message_response.dart';
 import 'package:trocado_flutter/response/group_join.dart';
 import 'package:trocado_flutter/response/group_list.dart';
 
@@ -13,6 +15,9 @@ class GroupsProvider extends ChangeNotifier {
   static const JOIN_URL = "group/{GROUP_ID}/join";
   static const JOIN_CODE_URL = "group/{GROUP_ID}/join_by_invite_code";
   static const LEAVE_URL = "group/{GROUP_ID}/leave";
+
+  /* MODERATION ROUTES */
+  static const UPDATE_JOIN_REQUEST = "group/{GROUP_ID}/update_join_request";
 
   ApiHelper apiHelper = ApiHelper();
   GroupListResponse _publicGroups;
@@ -134,5 +139,16 @@ class GroupsProvider extends ChangeNotifier {
     String _url = GROUPS_READ_URL.replaceAll("{GROUP_ID}", id.toString());
     var response = await apiHelper.get(context, _url);
     return Group.fromJson(response);
+  }
+
+  Future<BasicMessageResponse> updateJoinRequest(BuildContext context, GroupJoinRequest request,
+      {@required bool accept}) async {
+    String _url = UPDATE_JOIN_REQUEST.replaceAll("{GROUP_ID}", request.groupId.toString());
+    var response = await apiHelper.post(context, _url, body: {
+      'id': request.id.toString(),
+      'accept': accept? "1" : "0",
+    });
+
+    return BasicMessageResponse.fromJson(response);
   }
 }

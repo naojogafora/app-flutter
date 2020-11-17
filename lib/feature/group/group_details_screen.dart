@@ -5,9 +5,10 @@ import 'package:trocado_flutter/feature/group/groups_provider.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
+import 'group_join_list_screen.dart';
+
 class GroupDetailsScreen extends StatelessWidget {
   final Group group;
-  final ObjectKey _scaffoldKey = ObjectKey("Scaffold-group");
 
   GroupDetailsScreen(this.group);
 
@@ -16,7 +17,6 @@ class GroupDetailsScreen extends StatelessWidget {
     GroupsProvider provider = Provider.of<GroupsProvider>(context, listen: false);
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: trocadoAppBar("Detalhes sobre " + group.name),
       body: Column(
         children: [
@@ -33,8 +33,7 @@ class GroupDetailsScreen extends StatelessWidget {
                         "Descrição:",
                         style: TextStyle(color: Style.primaryColor),
                       ),
-                      Text(group.description,
-                          style: TextStyle(color: Style.clearWhite)),
+                      Text(group.description, style: TextStyle(color: Style.clearWhite)),
                     ],
                   ),
                   color: Style.primaryColorDark,
@@ -42,21 +41,91 @@ class GroupDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(),
-          group.isMember ? RaisedButton(
-            child: Text("Sair do Grupo"),
-            color: Colors.red,
-            textColor: Style.clearWhite,
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal:26),
-            onPressed: (){
-              provider.leaveGroup(context, group).then((bool success){
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              });
-            },
-          ) : Container(),
+          Expanded(
+            child: _GroupDetailsBody(group),
+          ),
+          group.isMember
+              ? RaisedButton(
+                  child: Text("Sair do Grupo"),
+                  color: Colors.red,
+                  textColor: Style.clearWhite,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 26),
+                  onPressed: () {
+                    provider.leaveGroup(context, group).then((bool success) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    });
+                  },
+                )
+              : Container(),
         ],
       ),
+    );
+  }
+}
+
+class _GroupDetailsBody extends StatefulWidget {
+  final Group group;
+  _GroupDetailsBody(this.group);
+
+  @override
+  _GroupDetailsBodyState createState() => _GroupDetailsBodyState();
+}
+
+class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Provider.of<GroupsProvider>(context).readGroupDetails(context, widget.group.id),
+      builder: (context, AsyncSnapshot<Group> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(child: Text(snapshot.error.toString()));
+        }
+
+        Group group = snapshot.data;
+        return ListView(
+          padding: EdgeInsets.all(8),
+          children: [
+            group.isModerator &&
+                    group.groupJoinRequests != null &&
+                    group.groupJoinRequests.length > 0
+                ? ListTile(
+                    trailing: CircleAvatar(
+                      backgroundColor: Style.accentColor,
+                      foregroundColor: Style.clearWhite,
+                      child: Center(
+                        child: Text(
+                          group.groupJoinRequests.length.toString(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    title: const Text("Solicitações de entrada:"),
+                    visualDensity: VisualDensity.compact,
+                    onTap: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => GroupJoinListScreen(group))),
+                  )
+                : Container(),
+            const Text(
+              "Moderadores",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Column(
+              children: List.generate(
+                  group.moderators?.length,
+                  (index) => ListTile(
+                        leading: Icon(Icons.person),
+                        title: Text(group.moderators[index].name),
+                        visualDensity: VisualDensity.compact,
+                      )),
+            ),
+          ],
+        );
+      },
     );
   }
 }
