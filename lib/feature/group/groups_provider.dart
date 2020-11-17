@@ -9,6 +9,7 @@ class GroupsProvider extends ChangeNotifier {
   static const GROUPS_PUBLIC_URL = "group/public_list";
   static const GROUPS_USER_URL = "group/list";
   static const GROUPS_SEARCH_URL = "group/find?query={QUERY}";
+  static const GROUPS_READ_URL = "group/{GROUP_ID}/read";
   static const JOIN_URL = "group/{GROUP_ID}/join";
   static const JOIN_CODE_URL = "group/{GROUP_ID}/join_by_invite_code";
   static const LEAVE_URL = "group/{GROUP_ID}/leave";
@@ -117,8 +118,8 @@ class GroupsProvider extends ChangeNotifier {
   Future<bool> leaveGroup(BuildContext context, Group group) async {
     if (group.id == null || !group.isMember) throw new Exception("Grupo Inválido");
 
-    String url = LEAVE_URL.replaceAll("{GROUP_ID}", group.id.toString());
-    await apiHelper.post(context, url);
+    String _url = LEAVE_URL.replaceAll("{GROUP_ID}", group.id.toString());
+    await apiHelper.post(context, _url);
     _userGroups.data.remove(group);
     notifyListeners();
     return true;
@@ -126,5 +127,12 @@ class GroupsProvider extends ChangeNotifier {
 
   GroupListResponse _parseGroups(dynamic jsonData) {
     return GroupListResponse.fromJson(jsonData);
+  }
+
+  /// Reads the group with all available attributes for a normal user or for a moderator
+  Future<Group> readGroupDetails(BuildContext context, int id) async {
+    String _url = GROUPS_READ_URL.replaceAll("{GROUP_ID}", id.toString());
+    var response = await apiHelper.get(context, _url);
+    return Group.fromJson(response);
   }
 }
