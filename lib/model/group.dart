@@ -7,7 +7,7 @@ class Group {
   int id;
   String name, description;
   bool private = false, isModerator = false, isMember = false;
-  int adCount, memberCount;
+  int adCount, memberCount, ownerId;
   List<User> moderators = [];
   /// Available only when the user is a moderator of the group
   List<User> members = [];
@@ -24,6 +24,7 @@ class Group {
     this.isModerator = json['is_moderator'];
     this.adCount = json['ad_count'];
     this.memberCount = json['member_count'];
+    this.ownerId = json['owner_id'];
     this.isMember = json['is_member'];
 
     if(json['moderators'] != null)

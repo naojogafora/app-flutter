@@ -21,7 +21,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: trocadoAppBar("Membros do Grupo"),
+      appBar: trocadoAppBar("Membros"),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -33,7 +33,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                 User member = widget.group.members[i];
 
                 return ListTile(
-                  leading: const Icon(Icons.person),
+                  leading: Icon(getIconForMember(member)),
                   title: Text(member.fullName),
                   subtitle: Text(member.email),
                   trailing: IconButton(
@@ -68,5 +68,14 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
       content: Text(e.toString()),
       backgroundColor: Colors.red,
     ));
+  }
+
+  IconData getIconForMember(User member){
+    if(member.id == widget.group.ownerId)
+      return Icons.star;
+    else if (member.isModerator)
+      return Icons.supervisor_account;
+
+    return Icons.person;
   }
 }

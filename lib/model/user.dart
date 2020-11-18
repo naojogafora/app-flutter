@@ -3,6 +3,8 @@ class User {
   String name, lastName;
   String email;
   int accountStatusId;
+  /// Present only in requests through groups, with Pivot column
+  bool isModerator;
 
   String get fullName => name + " " + lastName;
 
@@ -12,5 +14,6 @@ class User {
     this.lastName = json['last_name'] ?? "";
     this.email = json['email'] ?? "";
     this.accountStatusId = json['account_status_id'] ?? 1;
+    this.isModerator = json['is_moderator'] ?? false;
   }
 }
