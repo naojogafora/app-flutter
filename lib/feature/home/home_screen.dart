@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen>
             unselectedLabelColor: Colors.black54,
             tabs: [
               const Tab(text: "Anúncios Disponíveis"),
-              const Tab(text: "Grupos"),
+              const Tab(text: "Meus Grupos"),
             ],
             controller: _tabController,
           ),
