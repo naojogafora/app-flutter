@@ -15,9 +15,9 @@ class GroupsProvider extends ChangeNotifier {
   static const JOIN_URL = "group/{GROUP_ID}/join";
   static const JOIN_CODE_URL = "group/{GROUP_ID}/join_by_invite_code";
   static const LEAVE_URL = "group/{GROUP_ID}/leave";
-
   /* MODERATION ROUTES */
   static const UPDATE_JOIN_REQUEST = "group/{GROUP_ID}/update_join_request";
+  static const BAN_URL = "group/{GROUP_ID}/ban";
 
   ApiHelper apiHelper = ApiHelper();
   GroupListResponse _publicGroups;
@@ -146,9 +146,15 @@ class GroupsProvider extends ChangeNotifier {
     String _url = UPDATE_JOIN_REQUEST.replaceAll("{GROUP_ID}", request.groupId.toString());
     var response = await apiHelper.post(context, _url, body: {
       'id': request.id.toString(),
-      'accept': accept? "1" : "0",
+      'accept': accept ? "1" : "0",
     });
 
+    return BasicMessageResponse.fromJson(response);
+  }
+
+  Future<BasicMessageResponse> banGroupMember(BuildContext context, int groupId, int userId) async {
+    String _url = BAN_URL.replaceAll("{GROUP_ID}", groupId.toString());
+    var response = await apiHelper.post(context, _url, body: {'user_id': userId.toString()});
     return BasicMessageResponse.fromJson(response);
   }
 }

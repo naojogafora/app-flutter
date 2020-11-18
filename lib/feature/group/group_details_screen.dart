@@ -6,6 +6,7 @@ import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
 import 'group_join_list_screen.dart';
+import 'group_member_list_screen.dart';
 
 class GroupDetailsScreen extends StatelessWidget {
   final Group group;
@@ -110,6 +111,26 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                         .push(MaterialPageRoute(builder: (context) => GroupJoinListScreen(group))),
                   )
                 : Container(),
+            group.isModerator &&
+                    group.members != null &&
+                    group.members.length > 0
+                ? ListTile(
+                    trailing: CircleAvatar(
+                      backgroundColor: Style.accentColor,
+                      foregroundColor: Style.clearWhite,
+                      child: Center(
+                        child: Text(
+                          group.members.length.toString(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    title: const Text("Ver Membros"),
+                    visualDensity: VisualDensity.compact,
+                    onTap: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => GroupMemberListScreen(group))),
+                  )
+                : Container(),
             const Text(
               "Moderadores",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -119,7 +140,7 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                   group.moderators?.length,
                   (index) => ListTile(
                         leading: Icon(Icons.person),
-                        title: Text(group.moderators[index].name),
+                        title: Text(group.moderators[index].fullName),
                         visualDensity: VisualDensity.compact,
                       )),
             ),
