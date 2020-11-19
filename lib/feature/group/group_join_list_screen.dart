@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trocado_flutter/exception/BadRequestException.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/model/group_join_request.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';

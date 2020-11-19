@@ -23,4 +23,11 @@ class User {
     this.isModerator = json['is_moderator'] ?? false;
     this.createdAt = DateTime.tryParse(json['created_at']) ?? DateTime.now();
   }
+
+  /// Returns a JSON only with fields for the account update
+  Map<String, String> toJson() => {
+    'id': this.id.toString(),
+    'name': this.name,
+    'last_name': this.lastName,
+  };
 }

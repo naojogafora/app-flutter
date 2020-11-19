@@ -6,11 +6,14 @@ import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trocado_flutter/response/basic_message_response.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   static const LOGIN_URL = "auth/login";
   static const REFRESH_TOKEN_URL = "auth/refresh";
   static const LOGOUT_URL = "auth/logout";
+  static const CHANGE_PASSWORD = "password/change";
+  static const USER_UPDATE = "account/update";
 
   User user;
   String _authenticationToken;
@@ -24,7 +27,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   bool get isUserLogged => user != null;
 
-  AuthenticationProvider(){
+  AuthenticationProvider() {
     loadAuthFromStorage();
   }
 
@@ -59,7 +62,7 @@ class AuthenticationProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authPref = prefs.getString('auth_json');
 
-    if(authPref == null || authPref.isEmpty || authPref == "null"){
+    if (authPref == null || authPref.isEmpty || authPref == "null") {
       user = null;
       authenticationToken = null;
     } else {
@@ -76,13 +79,13 @@ class AuthenticationProvider extends ChangeNotifier {
     authTokenLock.synchronized(() async {
       print("Refreshing inside sync");
       try {
-        var responseJson = await apiHelper.post(
-            null, REFRESH_TOKEN_URL, token: _authenticationToken);
+        var responseJson =
+            await apiHelper.post(null, REFRESH_TOKEN_URL, token: _authenticationToken);
         parseAndSetUser(responseJson);
         saveAuthToStorage(responseJson);
         print("Token refreshed");
       } on FetchDataException catch (e) {
-        if(e.httpCode == 500) {
+        if (e.httpCode == 500) {
           saveAuthToStorage(null);
         }
       }
@@ -100,5 +103,22 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> invalidateCurrentToken() async {
     apiHelper.post(null, LOGOUT_URL, token: _authenticationToken);
+  }
+
+  Future<BasicMessageResponse> updateProfile(BuildContext context, User user) async {
+    var response = await apiHelper.post(context, USER_UPDATE, body: user.toJson());
+    User updatedUser = User.fromJson(response);
+    this.user = updatedUser;
+    notifyListeners();
+    return BasicMessageResponse("Usuário atualizado", success: true);
+  }
+
+  Future<BasicMessageResponse> changePassword(
+      BuildContext context, String oldPassword, String newPassword) async {
+    var response = await apiHelper.post(context, CHANGE_PASSWORD, body: {
+      'old_password': oldPassword,
+      'new_password': newPassword
+    });
+    return BasicMessageResponse.fromJson(response);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+                                                                                              import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
@@ -59,7 +61,7 @@ class ProfileViewScreen extends StatelessWidget {
           : FloatingActionButton(
               child: const Icon(Icons.edit, color: Style.clearWhite),
               onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ProfileEditScreen()),
+                MaterialPageRoute(builder: (context) => ProfileEditScreen(Provider.of<AuthenticationProvider>(context, listen: false).user)),
               ),
             ),
     );

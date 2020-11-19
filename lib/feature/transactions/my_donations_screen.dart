@@ -50,7 +50,7 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                             provider.donationsList.data[i], true),
                       );
                     } else if (snapshot.hasError) {
-                      return Text(snapshot.error);
+                      return Text(snapshot.error.toString());
                     } else {
                       return CircularProgressIndicator();
                     }
