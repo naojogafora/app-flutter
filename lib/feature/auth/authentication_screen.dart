@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
+import 'package:trocado_flutter/feature/auth/password_reset_screen.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
 
 class AuthenticationScreen extends StatefulWidget {
@@ -35,8 +36,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     decoration: InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
                     controller: emailController,
-                    onSubmitted: (v) =>
-                        FocusScope.of(context).requestFocus(focusPassword),
+                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
                     decoration: InputDecoration(hintText: "Senha"),
@@ -46,19 +46,30 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     focusNode: focusPassword,
                     onSubmitted: (v) => login(),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  StandardButton("Entrar", login, Style.primaryColorDark,
-                      Style.clearWhite),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  const Divider(
+                    height: 6
+                  ),
+                  GestureDetector(
+                    child: Align(
+                      child: Text(
+                        "Esqueci a senha",
+                        style: TextStyle(
+                            color: Style.primaryColorDark, decoration: TextDecoration.underline,),
+                      ),
+                      alignment: Alignment.centerRight,
+                    ),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordResetScreen())),
+                  ),
+                  const Divider(height: 6),
+                  StandardButton("Entrar", login, Style.primaryColorDark, Style.clearWhite),
+                  const Divider(height: 6),
                   Center(
                     child: GestureDetector(
-                      child: Text("Nao tem conta? Crie uma agora!",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline)),
-                      onTap: (){
-                        Navigator.of(context).pushReplacementNamed("/registration");
-                      }
-                    ),
+                        child: Text("Nao tem conta? Crie uma agora!",
+                            style: TextStyle(decoration: TextDecoration.underline)),
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed("/registration");
+                        }),
                   ),
                 ],
               ),
@@ -73,8 +84,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    Provider.of<AuthenticationProvider>(context, listen: false).login(context, email, password).then((bool success){
-      if(success){
+    Provider.of<AuthenticationProvider>(context, listen: false)
+        .login(context, email, password)
+        .then((bool success) {
+      if (success) {
         Navigator.of(context).pop();
       }
     }).catchError(print);

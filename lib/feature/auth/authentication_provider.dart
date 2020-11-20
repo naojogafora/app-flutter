@@ -13,6 +13,8 @@ class AuthenticationProvider extends ChangeNotifier {
   static const REFRESH_TOKEN_URL = "auth/refresh";
   static const LOGOUT_URL = "auth/logout";
   static const CHANGE_PASSWORD = "password/change";
+  static const REQUEST_PASSWORD_RESET = "password/request_reset";
+  static const RESET_PASSWORD = "password/reset";
   static const USER_UPDATE = "account/update";
 
   User user;
@@ -118,6 +120,20 @@ class AuthenticationProvider extends ChangeNotifier {
     var response = await apiHelper.post(context, CHANGE_PASSWORD, body: {
       'old_password': oldPassword,
       'new_password': newPassword
+    });
+    return BasicMessageResponse.fromJson(response);
+  }
+
+  Future<BasicMessageResponse> requestPasswordReset(BuildContext context, String email) async {
+    var response = await apiHelper.post(context, REQUEST_PASSWORD_RESET, body: {'email': email});
+    return BasicMessageResponse.fromJson(response);
+  }
+
+  Future<BasicMessageResponse> resetPassword(BuildContext context, String email, String code, String newPassword) async {
+    var response = await apiHelper.post(context, RESET_PASSWORD, body: {
+      'email': email,
+      'code': code,
+      'new_password': newPassword,
     });
     return BasicMessageResponse.fromJson(response);
   }
