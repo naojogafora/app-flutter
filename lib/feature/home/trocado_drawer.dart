@@ -41,7 +41,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                           minRadius: 48,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
+                      const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
                       Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -68,7 +68,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                     ],
                   ),
                 ),
-                decoration: BoxDecoration(color: Style.primaryColorDark),
+                decoration: BoxDecoration(color: Style.primaryColor),
               ),
               authProvider.isUserLogged
                   ? Container()
