@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen>
           TabBar(
             isScrollable: true,
             unselectedLabelColor: Colors.black54,
+            indicatorColor: currentIndex == 0 ? Style.accentColor : Style.primaryColorDark,
             tabs: [
               const Tab(text: "Anúncios Disponíveis"),
               const Tab(text: "Meus Grupos"),

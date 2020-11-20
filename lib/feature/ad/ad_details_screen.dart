@@ -16,33 +16,37 @@ class AdDetailsScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text("Anúncio"),
             floating: true,
-            expandedHeight: ad.firstPhoto != null ? 240 : 0,
+            pinned: true,
+            title: ad.firstPhoto != null ? null : const Icon(Icons.no_photography_outlined),
+            expandedHeight: ad.firstPhoto != null ? 240 : 60,
             flexibleSpace: ad.firstPhoto != null
                 ? Stack(
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Expanded(child: Hero(tag: "ad-image-" + ad.id.toString(), child: Image.network(ad.firstPhoto.url, fit: BoxFit.cover))),
+                          Expanded(
+                              child: Hero(
+                                  tag: "ad-image-" + ad.id.toString(),
+                                  child: Image.network(ad.firstPhoto.url, fit: BoxFit.cover))),
                         ],
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           child: Container(
-                            padding:
-                                EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
                             decoration: ShapeDecoration(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(14))),
+                                    borderRadius: BorderRadius.all(Radius.circular(14))),
                                 color: Colors.white54),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.camera_alt,
                                   size: 22,
                                 ),
@@ -50,7 +54,7 @@ class AdDetailsScreen extends StatelessWidget {
                                   padding: const EdgeInsets.all(2.0),
                                   child: Text(
                                     ad.photos.length.toString(),
-                                    style: TextStyle(fontSize: 20),
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ),
                               ],
@@ -67,10 +71,15 @@ class AdDetailsScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate([
               Container(
-                padding: EdgeInsets.all(8),
-                child: Text(ad.title, style: TextStyle(fontSize: 24), textAlign: TextAlign.center,),
+                padding: const EdgeInsets.all(6),
+                child: Text(
+                  ad.title,
+                  style: const TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              Divider(color: Style.accentColor, height: 4, thickness: 4, indent: 20, endIndent: 20,)
+              const Divider(
+                  color: Style.accentColor, height: 4, thickness: 2, indent: 20, endIndent: 20),
             ]),
           ),
         ],
