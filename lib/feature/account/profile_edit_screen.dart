@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
@@ -21,6 +24,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       newPasswordController;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final picker = ImagePicker();
+  bool loadingImage = false;
 
   @override
   void initState() {
@@ -48,6 +53,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 Expanded(
                   child: ListView(
                     children: [
+                      GestureDetector(
+                        child: Center(
+                            child: CircleAvatar(
+                                radius: 65,
+                                backgroundImage: widget.user.avatarImage,
+                                child: loadingImage
+                                    ? CircularProgressIndicator() : Container(),
+        )),
+                        onTap: () => pickProfileImage(),
+                      ),
                       TextFormField(
                         enabled: false,
                         initialValue: widget.user.email,
@@ -141,6 +156,36 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             ),
           ),
         ));
+  }
+
+  Future pickProfileImage() async {
+    if (loadingImage) return;
+
+    final pickedFile = await picker.getImage(
+        source: ImageSource.gallery, imageQuality: 80, maxHeight: 300, maxWidth: 300);
+
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      setState(() {
+        loadingImage = true;
+      });
+
+      Provider.of<AuthenticationProvider>(context, listen: false)
+          .uploadProfileImage(context, file)
+          .then((String newUrl) {
+        setState(() {
+          widget.user.profilePhotoUrl = newUrl;
+          loadingImage = false;
+        });
+        handleSuccess("Foto Salva");
+      }).catchError((e, StackTrace st) {
+        print(st);
+        setState(() {
+          loadingImage = false;
+        });
+        handleError(e);
+      });
+    }
   }
 
   void submitProfile(BuildContext context) async {

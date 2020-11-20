@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
@@ -16,6 +18,7 @@ class AuthenticationProvider extends ChangeNotifier {
   static const REQUEST_PASSWORD_RESET = "password/request_reset";
   static const RESET_PASSWORD = "password/reset";
   static const USER_UPDATE = "account/update";
+  static const PHOTO_UPLOAD = "account/image";
 
   User user;
   String _authenticationToken;
@@ -136,5 +139,16 @@ class AuthenticationProvider extends ChangeNotifier {
       'new_password': newPassword,
     });
     return BasicMessageResponse.fromJson(response);
+  }
+
+  Future<String> uploadProfileImage(BuildContext context, File image) async {
+    List<http.MultipartFile> files = [];
+    files.add(http.MultipartFile.fromBytes(
+        "photo", image.readAsBytesSync(), filename: apiHelper.getFileName(image.path),
+        contentType: apiHelper.getMediaTypeFromFile(image.path)));
+    var response = await apiHelper.multipartRequest(context, PHOTO_UPLOAD, multipartFiles: files);
+    user.profilePhotoUrl = response["profile_photo_url"];
+    notifyListeners();
+    return user.profilePhotoUrl;
   }
 }

@@ -75,16 +75,22 @@ class ApiHelper {
   }
 
   Future<dynamic> multipartRequest(BuildContext context, String url,
-      {Map<String, dynamic> body = const {}, List<File> files, String token, Map<String, String> extraHeaders}) async {
+      {Map<String, dynamic> body, List<File> files, String token, Map<String, String> extraHeaders, List<http.MultipartFile> multipartFiles}) async {
+    assert(files == null || multipartFiles == null);
+
     String fullUrl = _baseUrl + url;
     var responseJson;
     var headers = {'Accept': 'Application/json'};
     print('Api multipartRequest, url $fullUrl');
 
-    List<http.MultipartFile> multipartFiles = [];
-    for(int i = 0; i < files.length; i++){
-      http.MultipartFile mFile = http.MultipartFile.fromBytes("photos[$i]", files[i].readAsBytesSync(), filename: getFileName(files[i].path), contentType: getMediaTypeFromFile(files[i].path));
-      multipartFiles.add(mFile);
+    if(multipartFiles == null) {
+      multipartFiles = [];
+      for (int i = 0; i < files.length; i++) {
+        http.MultipartFile mFile = http.MultipartFile.fromBytes(
+            "photos[$i]", files[i].readAsBytesSync(), filename: getFileName(files[i].path),
+            contentType: getMediaTypeFromFile(files[i].path));
+        multipartFiles.add(mFile);
+      }
     }
 
     Uri postUri = Uri.parse(fullUrl);
@@ -102,7 +108,8 @@ class ApiHelper {
 
     try {
       http.MultipartRequest request = new http.MultipartRequest("POST", postUri);
-      request.fields.addAll(body);
+      if(body != null)
+        request.fields.addAll(body);
       request.files.addAll(multipartFiles);
       request.headers.addAll(headers);
       final streamedResponse = await request.send();

@@ -28,7 +28,7 @@ class ProfileViewScreen extends StatelessWidget {
                   tag: "user_" + user.id.toString(),
                   child: CircleAvatar(
                     radius: 60,
-                    child: user.avatarImage(radius: 60),
+                    backgroundImage: user.avatarImage,
                   ),
                 ),
                 const VerticalDivider(),

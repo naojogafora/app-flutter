@@ -8,6 +8,7 @@ import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
+import 'package:trocado_flutter/model/user.dart';
 
 class TrocadoDrawer extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                       Hero(
                         tag: "user_" + authProvider.user?.id.toString(),
                         child: CircleAvatar(
-                          child: authProvider.user?.avatarImage(radius: 52) ?? const Icon(Icons.person, size: 52),
+                          backgroundImage: authProvider.user?.avatarImage ?? User.profileImagePlaceholder,
                           minRadius: 48,
                         ),
                       ),
