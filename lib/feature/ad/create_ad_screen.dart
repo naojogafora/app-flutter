@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
@@ -31,9 +30,10 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   Ad ad;
   List<Widget> _body;
   int _step;
-  bool editing;
+  bool editing, loading = false;
   List<File> newImages = [];
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final picker = ImagePicker();
 
   int totalImageCount() {
@@ -104,8 +104,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     }
     super.initState();
 
-    Provider.of<AddressProvider>(context, listen: false)
-        .loadUserAddresses(context);
+    Provider.of<AddressProvider>(context, listen: false).loadUserAddresses(context);
     Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context);
   }
 
@@ -116,9 +115,6 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         break;
       case 2:
         return _adStep2(context);
-        break;
-      case 3:
-        return _adStep3(context);
         break;
       default:
         return null;
@@ -136,10 +132,6 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     switch (_step) {
       case 1:
         _step = 2;
-        setState(() {});
-        break;
-      case 2:
-        _step = 3;
         setState(() {});
         break;
       default:
@@ -182,16 +174,6 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     });
   }
 
-  Future<bool> submit(BuildContext context) async {
-    ad.photoFiles = newImages;
-    return await Provider.of<AdsProvider>(context, listen: false).createAd(context, ad);
-  }
-
-  Future<bool> onWillPop() async {
-    previousPage(context);
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     _body = buildCurrentPage(context);
@@ -199,6 +181,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: trocadoAppBar("Detalhes do Anúncio"),
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -225,22 +208,18 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   List<Widget> _adStep1(BuildContext context) {
     return [
       TextFormField(
-        validator: (value) =>
-            value.isEmpty || value.length < 3 || value.length > 150
-                ? "Deve ter de 3 a 150 caracteres"
-                : null,
+        validator: (value) => value.isEmpty || value.length < 3 || value.length > 150
+            ? "Deve ter de 3 a 150 caracteres"
+            : null,
         decoration: InputDecoration(
-            hintText: "Ex: Mesa de Madeira...",
-            labelText: "Título",
-            icon: Icon(Icons.short_text)),
+            hintText: "Ex: Mesa de Madeira...", labelText: "Título", icon: Icon(Icons.short_text)),
         initialValue: ad.title,
         onSaved: (val) => ad.title = val,
       ),
       TextFormField(
-        validator: (value) =>
-            value.isEmpty || value.length < 20 || value.length > 500
-                ? "Deve ter de 20 a 500 caracteres"
-                : null,
+        validator: (value) => value.isEmpty || value.length < 20 || value.length > 500
+            ? "Deve ter de 20 a 500 caracteres"
+            : null,
         decoration: InputDecoration(
             hintText: "Fale sobre seu item...",
             labelText: "Descrição",
@@ -255,61 +234,59 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       ),
       totalImageCount() < 5
           ? Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () => getImage(ImageSource.gallery),
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      color: Colors.grey[300],
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text("Galeria"),
-                          )
-                        ],
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () => getImage(ImageSource.gallery),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        color: Colors.grey[300],
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text("Galeria"),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                VerticalDivider(
-                  width: 6,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () => getImage(ImageSource.camera),
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      color: Colors.grey[300],
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_a_photo),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text("Câmera"),
-                          ),
-                        ],
+                  VerticalDivider(
+                    width: 6,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () => getImage(ImageSource.camera),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        color: Colors.grey[300],
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add_a_photo),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text("Câmera"),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          )
+                ],
+              ),
+            )
           : Container(),
       Row(
         mainAxisSize: MainAxisSize.max,
@@ -327,10 +304,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
 
   // Groups and Addresses selection
   List<Widget> _adStep2(BuildContext context) {
-    AddressProvider addressProvider =
-        Provider.of<AddressProvider>(context, listen: false);
-    GroupsProvider groupsProvider =
-        Provider.of<GroupsProvider>(context, listen: false);
+    AddressProvider addressProvider = Provider.of<AddressProvider>(context, listen: false);
+    GroupsProvider groupsProvider = Provider.of<GroupsProvider>(context, listen: false);
 
     return [
       Text("Endereços de Retirada do Item (visível apenas para o Receptor)"),
@@ -343,7 +318,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             return CheckboxListTile(
               value: ad.addresses.contains(address),
               onChanged: (bool checked) {
-                if(checked){
+                if (checked) {
                   ad.addAddress(address);
                 } else {
                   ad.removeAddress(address);
@@ -366,7 +341,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             return CheckboxListTile(
               value: ad.containsGroup(group),
               onChanged: (bool checked) {
-                if(checked){
+                if (checked) {
                   ad.addGroup(group);
                 } else {
                   ad.removeGroup(group);
@@ -380,8 +355,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       ),
       Divider(),
       RaisedButton(
-        child: Text("Publicar Anúncio"),
-        onPressed: () => nextPage(context),
+        child: loading ? CircularProgressIndicator() : const Text("Publicar Anúncio"),
+        onPressed: () => _publish(context),
         padding: EdgeInsets.all(14),
         color: Colors.green,
         textColor: Style.clearWhite,
@@ -395,53 +370,52 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   }
 
   // Loading and Success message
-  List<Widget> _adStep3(BuildContext context) {
-    return [
-      Center(
-        child: FutureBuilder<bool>(
-          future: submit(context),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData && !snapshot.hasError) {
-              return Center(child: CircularProgressIndicator());
-            }
+  Future _publish(BuildContext context) async {
+    if (loading) return;
+    setState(() {
+      loading = true;
+    });
 
-            if (snapshot.hasError) {
-              Future.delayed(Duration(seconds: 2), () {
-                // 5s over, navigate to a new page
-                previousPage(context);
-              });
-              print(snapshot.error);
-              showErrorSnack(context, snapshot.error.toString());
-              return Icon(Icons.close, color: Colors.red);
-            }
+    if(ad.addresses.length == 0){
+      showErrorSnack("Selecione pelo menos um endereço");
+      return;
+    } else if(ad.groups.length == 0){
+      showErrorSnack("Selecione pelo menos um grupo");
+      return;
+    }
 
-            Future.delayed(Duration(seconds: 2), () {
-              // 5s over, navigate to a new page
-              Navigator.of(context).pop();
-            });
-
-            showSuccessSnack(context, "Anúncio publicado!");
-            return const Icon(Icons.check, color: Colors.green, size: 86);
-          },
-        ),
-      )
-    ];
+    ad.photoFiles = newImages;
+    Provider.of<AdsProvider>(context, listen: false).createAd(context, ad).then((bool result) {
+      showSuccessSnack("Anúncio publicado!");
+      Future.delayed(Duration(seconds: 2), () {
+        // 5s over, navigate to a new page
+        Navigator.of(context).pop();
+      });
+    }).catchError((e) {
+      showErrorSnack(e.toString());
+    });
   }
 
-  void showErrorSnack(context, String message){
-    print(message);
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ));
-    });}
+  Future<bool> onWillPop() async {
+    previousPage(context);
+    return false;
+  }
 
-  void showSuccessSnack(context, String message){
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-      ));
-    });}
+  void showErrorSnack(String message) {
+    setState(() {
+      loading = false;
+    });
+    print(message);
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
+  }
+
+  void showSuccessSnack(String message) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    ));
+  }
 }
