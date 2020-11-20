@@ -102,7 +102,6 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       ad = widget.existingAd;
       editing = true;
     }
-
     super.initState();
 
     Provider.of<AddressProvider>(context, listen: false)
@@ -398,31 +397,33 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   // Loading and Success message
   List<Widget> _adStep3(BuildContext context) {
     return [
-      FutureBuilder<bool>(
-        future: submit(context),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData && !snapshot.hasError) {
-            return CircularProgressIndicator();
-          }
+      Center(
+        child: FutureBuilder<bool>(
+          future: submit(context),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData && !snapshot.hasError) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-          if (snapshot.hasError) {
+            if (snapshot.hasError) {
+              Future.delayed(Duration(seconds: 2), () {
+                // 5s over, navigate to a new page
+                previousPage(context);
+              });
+              print(snapshot.error);
+              showErrorSnack(context, snapshot.error.toString());
+              return Icon(Icons.close, color: Colors.red);
+            }
+
             Future.delayed(Duration(seconds: 2), () {
               // 5s over, navigate to a new page
-              previousPage(context);
+              Navigator.of(context).pop();
             });
-            print(snapshot.error);
-            showErrorSnack(context, snapshot.error.toString());
-            return Icon(Icons.close, color: Colors.red);
-          }
 
-          Future.delayed(Duration(seconds: 2), () {
-            // 5s over, navigate to a new page
-            Navigator.of(context).pop();
-          });
-
-          showSuccessSnack(context, "Anúncio publicado!");
-          return Icon(Icons.check, color: Colors.green, size: 86,);
-        },
+            showSuccessSnack(context, "Anúncio publicado!");
+            return const Icon(Icons.check, color: Colors.green, size: 86);
+          },
+        ),
       )
     ];
   }
