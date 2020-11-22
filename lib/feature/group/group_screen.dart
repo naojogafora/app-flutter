@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/ad/ad_list_tile.dart';
 import 'package:trocado_flutter/feature/ad/ads_provider.dart';
+import 'package:trocado_flutter/feature/ad/create_ad_screen.dart';
 import 'package:trocado_flutter/feature/group/group_details_screen.dart';
 import 'package:trocado_flutter/feature/group/groups_provider.dart';
 import 'package:trocado_flutter/model/group.dart';
@@ -93,6 +94,14 @@ class _GroupScreenState extends State<GroupScreen> {
               : _adsList(),
         ],
       ),
+      floatingActionButton: widget.group.isMember
+          ? FloatingActionButton(
+              child: Icon(Icons.add, color: Style.clearWhite),
+              tooltip: "Novo Anúncio",
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CreateAdScreen())),
+            )
+          : null,
     );
   }
 
