@@ -29,11 +29,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   @override
   void initState() {
+    super.initState();
     nameController = TextEditingController(text: widget.user.name);
     lastNameController = TextEditingController(text: widget.user.lastName);
     oldPasswordController = TextEditingController();
     newPasswordController = TextEditingController();
-    super.initState();
   }
 
   @override

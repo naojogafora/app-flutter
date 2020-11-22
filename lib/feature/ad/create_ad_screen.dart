@@ -93,8 +93,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
 
   @override
   void initState() {
-    _step = 1;
+    super.initState();
 
+    _step = 1;
     if (widget.existingAd == null) {
       ad = Ad();
       editing = false;
@@ -102,7 +103,6 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       ad = widget.existingAd;
       editing = true;
     }
-    super.initState();
 
     Provider.of<AddressProvider>(context, listen: false).loadUserAddresses(context);
     Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context);
