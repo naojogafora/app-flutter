@@ -6,8 +6,10 @@ import 'group_join_request.dart';
 class Group {
   int id;
   String name, description;
+  String inviteCode;
   bool private = false, isModerator = false, isMember = false;
   int adCount, memberCount, ownerId;
+  User owner;
   List<User> moderators = [];
   /// Available only when the user is a moderator of the group
   List<User> members = [];
@@ -22,6 +24,7 @@ class Group {
     this.id = json['id'];
     this.name = json['name'];
     this.description = json['description'];
+    this.inviteCode = json['invite_code'];
     this.private = json['private'] == 0 ? false : true;
     this.isModerator = json['is_moderator'];
     this.adCount = json['ad_count'];
@@ -40,6 +43,9 @@ class Group {
     if(json['group_join_requests'] != null)
       for(dynamic obj in json['group_join_requests'])
         groupJoinRequests.add(GroupJoinRequest.fromJson(obj));
+
+    if(json['owner'] != null)
+      this.owner = User.fromJson(json['owner']);
   }
 
   /// JSON with fields required on the Create POST Route of the API
