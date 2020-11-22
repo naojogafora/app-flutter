@@ -16,6 +16,8 @@ class Group {
   /// Optional field, loaded only when the user sees the full group page.
   AdsListResponse adsRequest;
 
+  Group();
+
   Group.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
     this.name = json['name'];

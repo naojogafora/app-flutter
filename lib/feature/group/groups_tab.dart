@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/model/group.dart';
 
+import 'group_form_screen.dart';
 import 'group_list_tile.dart';
 
 class GroupsTab extends StatelessWidget {
@@ -30,7 +31,7 @@ class GroupsTab extends StatelessWidget {
                               leading: const Icon(Icons.add, color: Style.primaryColorDark, size: 28),
                               title: const Text("Criar Novo Grupo", style: TextStyle(color: Style.primaryColorDark),),
                               subtitle: const Text("Não encontrou o que queria? Crie o seu grupo! Vocẽ pode convidar amigos, colegas de trabalho ou conhecidos do bairro!"),
-                              onTap: () => Navigator.of(context).push(null), //TODO
+                              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupFormScreen())), //TODO
                             ),
                           ],
                         );
