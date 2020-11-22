@@ -79,9 +79,9 @@ class _GroupScreenState extends State<GroupScreen> {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Anúncios"),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text("Anúncios", style: TextStyle(color: Colors.black54)),
           ),
           widget.group.private && !widget.group.isMember
               ? Padding(
@@ -115,7 +115,10 @@ class _GroupScreenState extends State<GroupScreen> {
             this.widget.group.adsRequest = adsListRequest;
 
             if (adsListRequest.data.length == 0) {
-              return Text("Nenhum anúncio disponível");
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text("Não há anúncios aqui ainda, que tal publicar um?!", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+              );
             }
 
             return Expanded(

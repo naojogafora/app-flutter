@@ -41,4 +41,11 @@ class Group {
       for(dynamic obj in json['group_join_requests'])
         groupJoinRequests.add(GroupJoinRequest.fromJson(obj));
   }
+
+  /// JSON with fields required on the Create POST Route of the API
+  Map<String, String> toCreateJson() => {
+    "name": this.name,
+    "description": this.description,
+    "private": this.private ? "1" : "0",
+  };
 }

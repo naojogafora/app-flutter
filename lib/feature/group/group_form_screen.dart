@@ -52,11 +52,15 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
                     decoration:
                         InputDecoration(labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
                     onSaved: (String val) => group.name = val,
+                    validator: (val) => val.isEmpty || val.length < 5 ? "Deve ter no mínimo 5 caracteres" : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                   TextFormField(
                     decoration: InputDecoration(
                         labelText: "Descrição", icon: Icon(Icons.description_outlined)),
                     onSaved: (String val) => group.description = val,
+                    validator: (val) => val.isEmpty || val.length < 20 ? "Deve ter no mínimo 20 caracteres" : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     minLines: 3,
                     maxLines: 6,
                   ),
@@ -100,10 +104,15 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
 
     _formKey.currentState.save();
     if (editing) {
-      //TODO
-    } else {}
-    //TODO enviar pro servidor
-    //TODO mostrar resposta
+      //TODO Salvar edição do grupo
+    } else {
+      provider.createGroup(context, group).then((Group group){
+        showSuccessSnack("Grupo criado");
+        Future.delayed(Duration(seconds: 2), (){
+          Navigator.of(context).pop();
+        });
+      }).catchError((e) => showErrorSnack(e.toString()));
+    }
   }
 
   void showErrorSnack(String message) {

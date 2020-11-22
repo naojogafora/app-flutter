@@ -15,6 +15,7 @@ class GroupsProvider extends ChangeNotifier {
   static const JOIN_URL = "group/{GROUP_ID}/join";
   static const JOIN_CODE_URL = "group/{GROUP_ID}/join_by_invite_code";
   static const LEAVE_URL = "group/{GROUP_ID}/leave";
+  static const CREATE_URL = "group/create";
   /* MODERATION ROUTES */
   static const UPDATE_JOIN_REQUEST = "group/{GROUP_ID}/update_join_request";
   static const BAN_URL = "group/{GROUP_ID}/ban";
@@ -156,5 +157,17 @@ class GroupsProvider extends ChangeNotifier {
     String _url = BAN_URL.replaceAll("{GROUP_ID}", groupId.toString());
     var response = await apiHelper.post(context, _url, body: {'user_id': userId.toString()});
     return BasicMessageResponse.fromJson(response);
+  }
+
+  Future<Group> createGroup(BuildContext context, Group group) async {
+    var response = await apiHelper.post(context, CREATE_URL, body: group.toCreateJson());
+    Group createdGroup = Group.fromJson(response);
+
+    if(_userGroups?.data != null) {
+      _userGroups.data.insert(0, createdGroup);
+      notifyListeners();
+    }
+
+    return createdGroup;
   }
 }
