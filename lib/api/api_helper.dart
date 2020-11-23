@@ -47,7 +47,7 @@ class ApiHelper {
       {Map<String, dynamic> body = const {}, String token, Map<String, String> extraHeaders}) async {
     String fullUrl = _baseUrl + url;
     var responseJson;
-    var headers = {'Accept': 'Application/json'};
+    var headers = {'Accept': 'application/json'};
     print('Api Post, url $fullUrl');
 
     if (token != null) {

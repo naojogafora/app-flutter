@@ -180,8 +180,8 @@ class GroupsProvider extends ChangeNotifier {
 
   Future<Group> saveGroupConfiguration(BuildContext context, Group group) async {
     String _url = CONFIGURATION_URL.replaceAll("{GROUP_ID}", group.id.toString());
-    Map<String, String> _body = group.toSaveConfigurationsJson()
-      ..addAll({"_method": "PUT"});
+    Map<String, String> _body = group.toSaveConfigurationsJson();
+    _body.addAll({"_method": "PUT"});
     var response = await apiHelper.post(context, _url, body: _body);
     return Group.fromJson(response);
   }

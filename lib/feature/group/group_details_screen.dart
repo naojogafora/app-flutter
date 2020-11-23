@@ -5,11 +5,13 @@ import 'package:trocado_flutter/feature/group/groups_provider.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
+import 'group_configuration_form_screen.dart';
 import 'group_join_list_screen.dart';
 import 'group_member_list_screen.dart';
 
 class GroupDetailsScreen extends StatelessWidget {
   final Group group;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   GroupDetailsScreen(this.group);
 
@@ -42,7 +44,7 @@ class GroupDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
-          group.isModerator ? _GroupConfigurationDetails(group) : Container(),
+          group.isModerator ? _GroupConfigurationDetails(group.id) : Container(),
           Expanded(
             child: _GroupDetailsBody(group),
           ),
@@ -62,12 +64,6 @@ class GroupDetailsScreen extends StatelessWidget {
               : Container(),
         ],
       ),
-      floatingActionButton: group.isModerator ? FloatingActionButton(
-        child: Icon(Icons.edit),
-        backgroundColor: Style.primaryColorDark,
-        foregroundColor: Style.clearWhite,
-        onPressed: () => Navigator.of(context).push(null), //TODO
-      ) : null,
     );
   }
 }
@@ -158,14 +154,14 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
 }
 
 class _GroupConfigurationDetails extends StatelessWidget {
-  final Group group;
-  _GroupConfigurationDetails(this.group);
+  final int groupId;
+  _GroupConfigurationDetails(this.groupId);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: Provider.of<GroupsProvider>(context, listen: false)
-          .readGroupConfiguration(context, group.id),
+          .readGroupConfiguration(context, groupId),
       builder: (context, AsyncSnapshot<Group> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return const CircularProgressIndicator();
@@ -175,6 +171,8 @@ class _GroupConfigurationDetails extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 4),
             child: Text("Não foi possível carregar mais detalhes do grupo"),
           );
+
+        Group group = snapshot.data;
 
         return Container(
           color: Style.accentColor,
@@ -203,6 +201,20 @@ class _GroupConfigurationDetails extends StatelessWidget {
                     ? group.owner.fullName + " | " + group.owner.email
                     : "Não definido",
                 style: const TextStyle(color: Style.clearWhite)),
+            const Divider(height: 6, color: Colors.transparent),
+            MaterialButton(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.edit, color: Style.clearWhite),
+                  const VerticalDivider(color: Colors.transparent),
+                  Text("Editar Grupo", style: const TextStyle(color: Style.clearWhite)),
+                ],
+              ),
+              color: Style.primaryColorDark,
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupConfigurationFormScreen(group))),
+            )
           ]),
         );
       },
