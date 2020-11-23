@@ -19,6 +19,7 @@ class GroupsProvider extends ChangeNotifier {
   /* MODERATION ROUTES */
   static const UPDATE_JOIN_REQUEST = "group/{GROUP_ID}/update_join_request";
   static const BAN_URL = "group/{GROUP_ID}/ban";
+  static const CONFIGURATION_URL = "group/{GROUP_ID}/configuration";
 
   ApiHelper apiHelper = ApiHelper();
   GroupListResponse _publicGroups;
@@ -169,5 +170,19 @@ class GroupsProvider extends ChangeNotifier {
     }
 
     return createdGroup;
+  }
+
+  Future<Group> readGroupConfiguration(BuildContext context, int groupId) async {
+    String _url = CONFIGURATION_URL.replaceAll("{GROUP_ID}", groupId.toString());
+    var response = await apiHelper.get(context, _url);
+    return Group.fromJson(response);
+  }
+
+  Future<Group> saveGroupConfiguration(BuildContext context, Group group) async {
+    String _url = CONFIGURATION_URL.replaceAll("{GROUP_ID}", group.id.toString());
+    Map<String, String> _body = group.toSaveConfigurationsJson()
+      ..addAll({"_method": "PUT"});
+    var response = await apiHelper.post(context, _url, body: _body);
+    return Group.fromJson(response);
   }
 }
