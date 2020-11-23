@@ -202,18 +202,20 @@ class _GroupConfigurationDetails extends StatelessWidget {
                     : "Não definido",
                 style: const TextStyle(color: Style.clearWhite)),
             const Divider(height: 6, color: Colors.transparent),
-            MaterialButton(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.edit, color: Style.clearWhite),
-                  const VerticalDivider(color: Colors.transparent),
-                  Text("Editar Grupo", style: const TextStyle(color: Style.clearWhite)),
-                ],
+            Center(
+              child: MaterialButton(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.edit, color: Style.clearWhite),
+                    const VerticalDivider(color: Colors.transparent),
+                    Text("Editar Grupo", style: const TextStyle(color: Style.clearWhite)),
+                  ],
+                ),
+                color: Style.primaryColorDark,
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupConfigurationFormScreen(group))),
               ),
-              color: Style.primaryColorDark,
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupConfigurationFormScreen(group))),
             )
           ]),
         );
