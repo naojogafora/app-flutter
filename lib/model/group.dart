@@ -8,7 +8,7 @@ class Group {
   String name, description;
   String inviteCode;
   bool private = false, isModerator = false, isMember = false;
-  int adCount, memberCount, ownerId;
+  int adCount, memberCount;
   User owner;
   List<User> moderators = [];
   /// Available only when the user is a moderator of the group
@@ -29,7 +29,6 @@ class Group {
     this.isModerator = json['is_moderator'];
     this.adCount = json['ad_count'];
     this.memberCount = json['member_count'];
-    this.ownerId = json['owner_id'];
     this.isMember = json['is_member'];
 
     if(json['moderators'] != null)
@@ -53,5 +52,13 @@ class Group {
     "name": this.name,
     "description": this.description,
     "private": this.private ? "1" : "0",
+  };
+
+  Map<String, String> toSaveConfigurationsJson() => {
+    "name": this.name,
+    "description": this.description,
+    "private": this.private ? "1" : "0",
+    "owner_id": this.owner.id?.toString(),
+    "invite_code": this.inviteCode,
   };
 }

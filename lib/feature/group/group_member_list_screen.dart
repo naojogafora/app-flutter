@@ -69,7 +69,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
   }
 
   IconData getIconForMember(User member){
-    if(member.id == widget.group.ownerId)
+    if(member.id == widget.group.owner?.id)
       return Icons.star;
     else if (member.isModerator)
       return Icons.supervisor_account;
