@@ -34,7 +34,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                   leading: Icon(getIconForMember(member)),
                   title: Text(member.fullName),
                   subtitle: Text(member.email),
-                  trailing: IconButton(
+                  trailing: widget.group.moderators.contains(member) ? null : IconButton(
                     icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
                       Provider.of<GroupsProvider>(context, listen: false)

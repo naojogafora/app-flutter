@@ -43,4 +43,18 @@ class User {
       : profileImagePlaceholder;
 
   static ImageProvider get profileImagePlaceholder => const AssetImage("assets/profile-placeholder.png");
+
+  @override
+  int get hashCode => super.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    if(other.runtimeType != this.runtimeType){
+      return false;
+    }
+
+    User otherUser = other;
+    return this.id == otherUser.id ||
+        this.email == otherUser.email;
+  }
 }
