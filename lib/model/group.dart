@@ -54,13 +54,11 @@ class Group {
         "private": this.private ? "1" : "0",
       };
 
-  Map<String, String> toSaveConfigurationsJson() {
-    Map<String, String> json = {
+  Map<String, String> toSaveConfigurationsJson() => {
       "name": this.name,
       "description": this.description,
       "private": this.private ? "1" : "0",
       "owner_id": this.owner.id?.toString(),
       "invite_code": this.inviteCode == null || this.inviteCode.isEmpty ? "" : this.inviteCode,
     };
-  }
 }

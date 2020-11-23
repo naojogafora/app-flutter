@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:trocado_flutter/config/style.dart';
 
 class CheckboxFormField extends FormField<bool> {
   CheckboxFormField(

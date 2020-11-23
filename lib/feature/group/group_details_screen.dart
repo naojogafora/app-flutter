@@ -11,8 +11,6 @@ import 'group_member_list_screen.dart';
 
 class GroupDetailsScreen extends StatelessWidget {
   final Group group;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   GroupDetailsScreen(this.group);
 
   @override
