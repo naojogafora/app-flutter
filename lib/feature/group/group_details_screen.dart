@@ -30,7 +30,7 @@ class GroupDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Descrição:",
                         style: TextStyle(color: Style.primaryColor),
                       ),
@@ -42,6 +42,7 @@ class GroupDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
+          group.isModerator ? _GroupConfigurationDetails(group) : Container(),
           Expanded(
             child: _GroupDetailsBody(group),
           ),
@@ -61,6 +62,12 @@ class GroupDetailsScreen extends StatelessWidget {
               : Container(),
         ],
       ),
+      floatingActionButton: group.isModerator ? FloatingActionButton(
+        child: Icon(Icons.edit),
+        backgroundColor: Style.primaryColorDark,
+        foregroundColor: Style.clearWhite,
+        onPressed: () => Navigator.of(context).push(null), //TODO
+      ) : null,
     );
   }
 }
@@ -96,7 +103,7 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                     group.groupJoinRequests.length > 0
                 ? ListTile(
                     trailing: CircleAvatar(
-                      backgroundColor: Style.accentColor,
+                      backgroundColor: Style.primaryColorDark,
                       foregroundColor: Style.clearWhite,
                       child: Center(
                         child: Text(
@@ -111,12 +118,10 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                         .push(MaterialPageRoute(builder: (context) => GroupJoinListScreen(group))),
                   )
                 : Container(),
-            group.isModerator &&
-                    group.members != null &&
-                    group.members.length > 0
+            group.isModerator && group.members != null && group.members.length > 0
                 ? ListTile(
                     trailing: CircleAvatar(
-                      backgroundColor: Style.accentColor,
+                      backgroundColor: Style.primaryColorDark,
                       foregroundColor: Style.clearWhite,
                       child: Center(
                         child: Text(
@@ -127,10 +132,11 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                     ),
                     title: const Text("Ver Membros"),
                     visualDensity: VisualDensity.compact,
-                    onTap: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => GroupMemberListScreen(group))),
+                    onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => GroupMemberListScreen(group))),
                   )
                 : Container(),
+            const Divider(height: 6, color: Colors.transparent),
             const Text(
               "Moderadores",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -145,6 +151,59 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                       )),
             ),
           ],
+        );
+      },
+    );
+  }
+}
+
+class _GroupConfigurationDetails extends StatelessWidget {
+  final Group group;
+  _GroupConfigurationDetails(this.group);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Provider.of<GroupsProvider>(context, listen: false)
+          .readGroupConfiguration(context, group.id),
+      builder: (context, AsyncSnapshot<Group> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return const CircularProgressIndicator();
+
+        if (snapshot.hasError)
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: Text("Não foi possível carregar mais detalhes do grupo"),
+          );
+
+        return Container(
+          color: Style.accentColor,
+          padding: EdgeInsets.all(8),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "Somente os moderadores vêem o código de convite e os membros. Caso queira convidar "
+                  "mais usuários, compartilhe o código e o nome do grupo com eles!",
+              textAlign: TextAlign.center,
+            ),
+            const Divider(height: 6, color: Colors.transparent),
+            const Text("Código de Convite:", style: TextStyle(color: Style.primaryColor)),
+            Text(group.inviteCode ?? "Não definido",
+                style: const TextStyle(color: Style.clearWhite)),
+            const Divider(height: 6, color: Colors.transparent),
+            const Text("Moderadores:", style: TextStyle(color: Style.primaryColor)),
+            Text(
+                group.moderators != null
+                    ? group.moderators.length.toString() + " moderadores definidos"
+                    : "Nenhum definido",
+                style: const TextStyle(color: Style.clearWhite)),
+            const Divider(height: 6, color: Colors.transparent),
+            const Text("Dono do Grupo:", style: TextStyle(color: Style.primaryColor)),
+            Text(
+                group.owner != null
+                    ? group.owner.fullName + " | " + group.owner.email
+                    : "Não definido",
+                style: const TextStyle(color: Style.clearWhite)),
+          ]),
         );
       },
     );
