@@ -149,7 +149,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                               child: MaterialButton(
                                 padding: EdgeInsets.all(12),
                                 child: loading
-                                    ? CircularProgressIndicator()
+                                    ? CircularProgressIndicator(backgroundColor: Style.clearWhite)
                                     : const Text("Eu Quero!",
                                         style: TextStyle(
                                           color: Style.clearWhite,
