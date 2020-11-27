@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trocado_flutter/feature/transactions/transaction_screen.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 
 class TransactionListTile extends StatelessWidget {
@@ -19,7 +20,8 @@ class TransactionListTile extends StatelessWidget {
           Text((isSeller ? "Doado para: " + transaction.buyer.name : "Doador por: " + transaction.seller.name)),
           Text("Data: " + transaction.createdAt.day.toString() + "/" + transaction.createdAt.month.toString() + "/" + transaction.createdAt.year.toString())
         ]
-      )
+      ),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionScreen(transaction))),
     );
   }
 }
