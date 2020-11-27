@@ -17,7 +17,7 @@ class Ad {
   List<Group> groups;
   List<File> photoFiles;
 
-  get firstPhoto => photos != null && photos.length > 0 ? photos[0] : null;
+  Photo get firstPhoto => photos != null && photos.length > 0 ? photos[0] : null;
 
   Ad(){
     photoFiles = [];

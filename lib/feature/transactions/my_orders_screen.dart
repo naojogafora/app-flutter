@@ -20,8 +20,9 @@ class MyOrdersScreen extends StatelessWidget {
                 }
 
                 return ListView.builder(
+                  padding: const EdgeInsets.all(8),
                   itemCount: provider.ordersList != null ? provider.ordersList.data.length : 0,
-                  itemBuilder: (context, i) => TransactionListTile(provider.ordersList.data[i], true),
+                  itemBuilder: (context, i) => TransactionListTile(provider.ordersList.data[i], false),
                 );
               },
             ),
