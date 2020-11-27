@@ -104,7 +104,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                         ),
                         ListTile(
                           leading: Icon(Icons.archive_outlined),
-                          title: const Text("Pedidos"),
+                          title: const Text("Meus Pedidos"),
                           onTap: () => Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MyOrdersScreen())),
                         ),
