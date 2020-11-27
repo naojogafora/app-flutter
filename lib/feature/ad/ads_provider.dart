@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
+import 'package:trocado_flutter/feature/transactions/transactions_provider.dart';
 import 'package:trocado_flutter/model/ad.dart';
+import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
 
 class AdsProvider extends ChangeNotifier {
@@ -11,6 +13,7 @@ class AdsProvider extends ChangeNotifier {
   static const ADS_USER_GROUPS_URL = "ad/list_for_user_groups";
   static const ADS_LIST_BY_GROUP = "ad/list_by_group/{GROUP_ID}";
   static const CREATE_AD_URL = "ad";
+  static const PURCHASE_AD_URL = "ad/{AD_ID}/purchase";
   static const DELETE_URL = "ad/{AD_ID}";
 
   ApiHelper apiHelper = ApiHelper();
@@ -116,5 +119,11 @@ class AdsProvider extends ChangeNotifier {
     userAds.data.remove(ad);
     notifyListeners();
     return true;
+  }
+
+  Future<Transaction> purchaseAd(BuildContext context, Ad ad) async  {
+    var response = await apiHelper.post(context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
+    Provider.of<TransactionsProvider>(context, listen: false).loadOrdersList(context, forceLoad: true);
+    return Transaction.fromJson(response);
   }
 }

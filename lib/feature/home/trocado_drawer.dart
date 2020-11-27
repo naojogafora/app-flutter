@@ -29,7 +29,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
             children: [
               DrawerHeader(
                 child: GestureDetector(
-                  onTap: () => authProvider.isUserLogged ? Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileViewScreen(authProvider.user, true))) : null,
+                  onTap: () => authProvider.isUserLogged ? Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileViewScreen(authProvider.user, isSelf: true))) : null,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,

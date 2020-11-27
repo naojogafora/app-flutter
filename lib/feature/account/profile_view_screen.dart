@@ -9,7 +9,7 @@ import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 class ProfileViewScreen extends StatelessWidget {
   final User user;
   final bool isSelf;
-  ProfileViewScreen(this.user, this.isSelf);
+  ProfileViewScreen(this.user, {this.isSelf = false});
 
   @override
   Widget build(BuildContext context) {
