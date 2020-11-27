@@ -10,7 +10,8 @@ class TransactionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: transaction.advertisement.firstPhoto != null ? Image.network(transaction.advertisement.firstPhoto.url, height: 80, width: 80, fit: BoxFit.cover,) : Icon(Icons.no_photography_sharp, size: 80),
+      isThreeLine: true,
+      leading: transaction.advertisement.firstPhoto != null ? Image.network(transaction.advertisement.firstPhoto.url, height: 60, width: 60, fit: BoxFit.cover,) : Icon(Icons.no_photography_sharp, size: 60),
       title: Text(transaction.advertisement.title),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
