@@ -44,7 +44,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
                 children: [
                   TextFormField(
                     decoration:
-                        InputDecoration(labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
+                    const InputDecoration(labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
                     onSaved: (String val) => widget.group.name = val,
                     initialValue: widget.group.name,
                     validator: (val) =>
@@ -52,7 +52,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: "Descrição", icon: Icon(Icons.description_outlined)),
                     onSaved: (String val) => widget.group.description = val,
                     initialValue: widget.group.description,
@@ -67,7 +67,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
                       children: [
                         const Icon(Icons.lock_outline, color: Colors.black54),
                         const VerticalDivider(),
-                        Text("Grupo Privado?"),
+                        const Text("Grupo Privado?"),
                       ],
                     ),
                     initialValue: widget.group.private,
@@ -76,7 +76,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
                   ),
                   widget.group.private
                       ? TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: "Código de Convite", icon: Icon(Icons.vpn_key)),
                           onSaved: (String val) => widget.group.inviteCode = val,
                           initialValue: widget.group.inviteCode,
@@ -111,7 +111,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
                       : Container(),
                   MaterialButton(
                     child: loading
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : const Text("Salvar", style: TextStyle(color: Style.clearWhite)),
                     onPressed: submit,
                     color: Style.primaryColorDark,
@@ -125,7 +125,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
     );
   }
 
-  Future submit() async {
+  void submit() {
     if (loading) return;
     setState(() => loading = true);
 
@@ -140,7 +140,7 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
         .saveGroupConfiguration(context, widget.group)
         .then((Group group) {
       showSuccessSnack("Configurações Atualizadas");
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         Navigator.of(context).pop();
       });
     }).catchError((e, st) {

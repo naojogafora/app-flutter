@@ -6,6 +6,7 @@ import 'package:trocado_flutter/model/group_join_request.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
 import 'package:trocado_flutter/response/group_join.dart';
 import 'package:trocado_flutter/response/group_list.dart';
+import 'package:pedantic/pedantic.dart';
 
 class GroupsProvider extends ChangeNotifier {
   static const GROUPS_PUBLIC_URL = "group/public_list";
@@ -30,7 +31,7 @@ class GroupsProvider extends ChangeNotifier {
   GroupsProvider() {
     try {
       loadPublicGroups();
-    } catch (e) {}
+    } catch (_) {}
   }
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
@@ -43,7 +44,7 @@ class GroupsProvider extends ChangeNotifier {
       var responseJson = await apiHelper.get(null, GROUPS_PUBLIC_URL);
       _publicGroups = _parseGroups(responseJson);
     } catch (e) {
-      throw e;
+      rethrow;
     } finally {
       notifyListeners();
     }
@@ -93,7 +94,7 @@ class GroupsProvider extends ChangeNotifier {
     }
 
     if (joinResponse.joined) {
-      loadUserGroups(context, forceLoad: true);
+      unawaited(loadUserGroups(context, forceLoad: true));
     }
     return joinResponse;
   }
@@ -116,14 +117,14 @@ class GroupsProvider extends ChangeNotifier {
     }
 
     if (joinResponse.joined) {
-      loadUserGroups(context, forceLoad: true);
+      unawaited(loadUserGroups(context, forceLoad: true));
     }
     return joinResponse;
   }
 
   /// Returns true if the user left the group, or throws an exception otherwise.
   Future<bool> leaveGroup(BuildContext context, Group group) async {
-    if (group.id == null || !group.isMember) throw new Exception("Grupo Inválido");
+    if (group.id == null || !group.isMember) throw Exception("Grupo Inválido");
 
     String _url = LEAVE_URL.replaceAll("{GROUP_ID}", group.id.toString());
     await apiHelper.post(context, _url);

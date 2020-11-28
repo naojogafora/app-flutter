@@ -6,6 +6,7 @@ import 'package:trocado_flutter/feature/transactions/transactions_provider.dart'
 import 'package:trocado_flutter/model/ad.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
+import 'package:pedantic/pedantic.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";
@@ -123,7 +124,7 @@ class AdsProvider extends ChangeNotifier {
 
   Future<Transaction> purchaseAd(BuildContext context, Ad ad) async  {
     var response = await apiHelper.post(context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
-    Provider.of<TransactionsProvider>(context, listen: false).loadOrdersList(context, forceLoad: true);
+    unawaited(Provider.of<TransactionsProvider>(context, listen: false).loadOrdersList(context, forceLoad: true));
     return Transaction.fromJson(response);
   }
 }

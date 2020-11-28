@@ -40,22 +40,22 @@ class _GroupScreenState extends State<GroupScreen> {
             children: [
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Descrição:",
                         style: TextStyle(color: Style.primaryColor),
                       ),
                       Text(widget.group.description,
                           maxLines: 3,
                           overflow: TextOverflow.fade,
-                          style: TextStyle(color: Style.clearWhite)),
+                          style: const TextStyle(color: Style.clearWhite)),
                       GestureDetector(
                         onTap: () => Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => GroupDetailsScreen(widget.group))),
-                        child: Text("Ver mais detalhes",
+                        child: const Text("Ver mais detalhes",
                             style: TextStyle(
                                 color: Style.clearWhite,
                                 decoration: TextDecoration.underline,
@@ -65,7 +65,7 @@ class _GroupScreenState extends State<GroupScreen> {
                           ? Container()
                           : Center(
                               child: RaisedButton(
-                              child: Text(
+                              child: const Text(
                                 "Entrar no Grupo",
                                 style: TextStyle(color: Style.clearWhite),
                               ),
@@ -84,8 +84,8 @@ class _GroupScreenState extends State<GroupScreen> {
             child: Text("Anúncios", style: TextStyle(color: Colors.black54)),
           ),
           widget.group.private && !widget.group.isMember
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
+              ? const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     "Grupo Privado - Solicite a entrada no botão acima, caso tenha sido convidado ou deseje participar.",
                     textAlign: TextAlign.center,
@@ -96,7 +96,7 @@ class _GroupScreenState extends State<GroupScreen> {
       ),
       floatingActionButton: widget.group.isMember
           ? FloatingActionButton(
-              child: Icon(Icons.add, color: Style.clearWhite),
+              child: const Icon(Icons.add, color: Style.clearWhite),
               tooltip: "Novo Anúncio",
               onPressed: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => CreateAdScreen())),
@@ -114,9 +114,9 @@ class _GroupScreenState extends State<GroupScreen> {
             AdsListResponse adsListRequest = response.data;
             this.widget.group.adsRequest = adsListRequest;
 
-            if (adsListRequest.data.length == 0) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
+            if (adsListRequest.data.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Text("Não há anúncios aqui ainda, que tal publicar um?!", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
               );
             }
@@ -130,14 +130,14 @@ class _GroupScreenState extends State<GroupScreen> {
           } else if (response.hasError) {
             return Center(child: Text(response.error.toString()));
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),
     );
   }
 
-  void joinGroup(GroupsProvider provider) async {
+  void joinGroup(GroupsProvider provider) {
     if (widget.group.private) {
       showJoinDialog(context, provider);
     } else {
@@ -169,15 +169,15 @@ class _GroupScreenState extends State<GroupScreen> {
     return await showDialog<String>(
       context: context,
       builder: (ctx) => SimpleDialog(
-        contentPadding: EdgeInsets.symmetric(horizontal: 8),
-        titlePadding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+        titlePadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Solicitar Entrada"),
+            const Text("Solicitar Entrada"),
             IconButton(
-              icon: Icon(Icons.close),
-              padding: EdgeInsets.all(0),
+              icon: const Icon(Icons.close),
+              padding: const EdgeInsets.all(0),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -193,7 +193,7 @@ class _GroupScreenState extends State<GroupScreen> {
             maxLength: 1000,
             controller: inputController,
           ),
-          Divider(
+          const Divider(
             color: Colors.transparent,
             height: 4,
           ),
@@ -209,12 +209,12 @@ class _GroupScreenState extends State<GroupScreen> {
                   .then(joinGroupResult);
               Navigator.of(context).pop();
             },
-            child: Text("Enviar Solicitação"),
+            child: const Text("Enviar Solicitação"),
           ),
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             alignment: Alignment.center,
-            child: Text("OU"),
+            child: const Text("OU"),
           ),
           TextField(
             decoration: const InputDecoration(
@@ -236,7 +236,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   .then(joinGroupResult);
               Navigator.of(context).pop();
             },
-            child: Text("Entrar"),
+            child: const Text("Entrar"),
           ),
         ],
       ),

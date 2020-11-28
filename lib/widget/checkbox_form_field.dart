@@ -16,7 +16,7 @@ class CheckboxFormField extends FormField<bool> {
             builder: (FormFieldState<bool> state) {
               return CheckboxListTile(
                 dense: state.hasError,
-                contentPadding: EdgeInsets.symmetric(vertical: 6),
+                contentPadding: const EdgeInsets.symmetric(vertical: 6),
                 title: title,
                 value: state.value,
                 onChanged: (v){

@@ -59,7 +59,7 @@ class _AdOverlayGalleryState extends State<AdOverlayGallery> {
             children: [
               Align(
                 child: IconButton(
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: widget.closeCallback,
                     iconSize: 42,
                     color: Style.clearWhite,),
@@ -75,13 +75,13 @@ class _AdOverlayGalleryState extends State<AdOverlayGallery> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      icon: Icon(Icons.keyboard_arrow_left),
+                      icon: const Icon(Icons.keyboard_arrow_left),
                       onPressed: previousPhoto,
                       iconSize: 56,
                       color: hasPreviousPhoto() ? Style.clearWhite : Colors.white38),
-                  Text((currentPhoto+1).toString()  + "/" + widget.photos.length.toString(), style: TextStyle(color: Style.clearWhite, fontSize: 16),),
+                  Text((currentPhoto+1).toString()  + "/" + widget.photos.length.toString(), style: const TextStyle(color: Style.clearWhite, fontSize: 16),),
                   IconButton(
-                      icon: Icon(Icons.keyboard_arrow_right),
+                      icon: const Icon(Icons.keyboard_arrow_right),
                       onPressed: nextPhoto,
                       iconSize: 56,
                       color: hasNextPhoto() ? Style.clearWhite : Colors.white38),

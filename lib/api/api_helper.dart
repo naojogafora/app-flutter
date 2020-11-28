@@ -37,7 +37,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection', 0);
+      throw const FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -68,7 +68,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection', 0);
+      throw const FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -107,9 +107,10 @@ class ApiHelper {
     }
 
     try {
-      http.MultipartRequest request = new http.MultipartRequest("POST", postUri);
-      if(body != null)
+      http.MultipartRequest request = http.MultipartRequest("POST", postUri);
+      if(body != null) {
         request.fields.addAll(body);
+      }
       request.files.addAll(multipartFiles);
       request.headers.addAll(headers);
       final streamedResponse = await request.send();
@@ -118,7 +119,7 @@ class ApiHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection', 0);
+      throw const FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -131,19 +132,21 @@ class ApiHelper {
     if (context != null &&
         Provider.of<AuthenticationProvider>(context, listen: false)
                 .authenticationToken !=
-            null)
+            null) {
       headers.addAll({
         'Authorization': "Bearer " +
-            await Provider.of<AuthenticationProvider>(context, listen: false)
+            await Provider
+                .of<AuthenticationProvider>(context, listen: false)
                 .authenticationToken
       });
+    }
 
     try {
       final response = await http.delete(_baseUrl + url, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
-      throw FetchDataException('No Internet connection', 0);
+      throw const FetchDataException('No Internet connection', 0);
     }
 
     return responseJson;
@@ -157,9 +160,10 @@ class ApiHelper {
       responseJson = json.decode(response.body.toString());
       print(responseJson);
 
-      if (responseJson != null && responseJson['message'] != null)
+      if (responseJson != null && responseJson['message'] != null) {
         message = responseJson['message'].toString();
-    } catch (e) {}
+      }
+    } catch (_) {}
 
     switch (response.statusCode) {
       case 200:

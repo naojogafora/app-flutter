@@ -11,11 +11,11 @@ class GroupListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.group_work, color: Style.primaryColorDark),
+      leading: const Icon(Icons.group_work, color: Style.primaryColorDark),
       title: Text(group.name),
       subtitle: group.isModerator
-          ? Text("Você é moderador(a)")
-          : (!group.isMember && group.private ? Text("Grupo Privado") : Text(group.adCount.toString() + " anúncios disponíveis.")),
+          ? const Text("Você é moderador(a)")
+          : (!group.isMember && group.private ? const Text("Grupo Privado") : Text(group.adCount.toString() + " anúncios disponíveis.")),
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => GroupScreen(group))),
     );

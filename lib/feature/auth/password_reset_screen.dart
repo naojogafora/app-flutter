@@ -23,7 +23,7 @@ class _PasswordResetState extends State<PasswordResetScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Style.clearWhite,
-      appBar: AppBar(title: Text("Redefinir Senha")),
+      appBar: AppBar(title: const Text("Redefinir Senha")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -87,7 +87,7 @@ class _PasswordResetState extends State<PasswordResetScreen> {
         .resetPassword(context, email, code, password)
         .then((BasicMessageResponse response) {
       handleSuccess(response.message ?? "Senha Alterada");
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).pop();
       });
     }).catchError(handleError);
@@ -113,8 +113,8 @@ class _PasswordResetState extends State<PasswordResetScreen> {
 
   List<Widget> step1() {
     return [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+      const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12),
         child: Text(
           "Digite seu email abaixo e nós lhe enviaremos um código de segurança que você deverá usar na próxima página.\nCaso já tenha um código, digite seu email e clique no segundo botão.",
           style: TextStyle(fontSize: 18),
@@ -140,12 +140,12 @@ class _PasswordResetState extends State<PasswordResetScreen> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Text(
           emailController.text,
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.only(bottom: 12),
+      const Padding(
+        padding: EdgeInsets.only(bottom: 12),
         child: Text(
           "Se o email estiver cadastrado, você receberá um código de segurança dentro de alguns minutos. Digite-o abaixo e, em seguida, sua senha.",
           style: TextStyle(fontSize: 18),

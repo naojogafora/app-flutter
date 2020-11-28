@@ -19,14 +19,14 @@ class MyAdListTile extends StatelessWidget {
         width: 50,
         height: 50,
         color: Style.primaryColor,
-        child: ad.photos != null && ad.photos.length > 0
+        child: ad.photos != null && ad.photos.isNotEmpty
             ? Hero(
                 tag: "ad-image-" + ad.id.toString(),
                 child: Image.network(
                   ad.photos[0].url,
                   fit: BoxFit.cover,
                 ))
-            : Icon(
+            : const Icon(
                 Icons.no_photography_outlined,
                 color: Style.primaryColorDark,
               ),
@@ -42,16 +42,16 @@ class MyAdListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              icon: Icon(Icons.visibility, color: Colors.blue),
+              icon: const Icon(Icons.visibility, color: Colors.blue),
               onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
             ),
             IconButton(
-                icon: Icon(Icons.edit, color: Colors.green),
+                icon: const Icon(Icons.edit, color: Colors.green),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => null))), //TODO Edit ad
             IconButton(
-                icon: Icon(Icons.delete, color: Colors.red,),
+                icon: const Icon(Icons.delete, color: Colors.red,),
                 onPressed: () async {
                   String message;
                   Color color = Colors.green;

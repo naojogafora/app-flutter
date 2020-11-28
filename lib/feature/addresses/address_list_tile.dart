@@ -21,7 +21,7 @@ class AddressListTile extends StatelessWidget {
       ),
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       expandedAlignment: Alignment.topLeft,
-      childrenPadding: EdgeInsets.symmetric(horizontal: 16),
+      childrenPadding: const EdgeInsets.symmetric(horizontal: 16),
       children: [
         Text(address.city + "/" + address.state),
         Text("CEP: " + address.zipCode),
@@ -32,13 +32,13 @@ class AddressListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
                 tooltip: "Editar",
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => AddressFormScreen(existingAddress: address))),
               ),
               IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 tooltip: "Apagar",
                 onPressed: () {
                   provider.deleteAddress(context, address).catchError((e) {

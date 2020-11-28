@@ -25,11 +25,11 @@ class AddressesScreen extends StatelessWidget {
                 if (snapshot.hasData) {
                   return snapshot.data != null
                       ? buildList(snapshot.data)
-                      : Text("Nada aqui por enquanto :)");
+                      : const Text("Nada aqui por enquanto :)");
                 } else if (snapshot.hasError) {
                   return Center(child: Text(snapshot.error.toString()));
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ),
@@ -37,7 +37,7 @@ class AddressesScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Style.clearWhite),
+        child: const Icon(Icons.add, color: Style.clearWhite),
         onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddressFormScreen())),
       ),
     );

@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: tabCount);
+    _tabController = TabController(vsync: this, length: tabCount);
     _tabController.addListener(() {
       setState(() {
         currentIndex = _tabController.index;
@@ -98,15 +98,15 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       floatingActionButton: Material(
         elevation: 5,
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: const BorderRadius.all(Radius.circular(100)),
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(100)),
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
             color: currentIndex == 0 ? Style.accentColor : Style.primaryColorDark,
           ),
           child: FloatingActionButton(
-            child: Icon(Icons.search, color: Style.clearWhite),
+            child: const Icon(Icons.search, color: Style.clearWhite),
             backgroundColor: Colors.transparent,
             elevation: 0,
             onPressed: () {

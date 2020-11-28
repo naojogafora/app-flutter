@@ -39,7 +39,7 @@ class _GroupJoinListScreenState extends State<GroupJoinListScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.check, color: Colors.green),
+                        icon: const Icon(Icons.check, color: Colors.green),
                         onPressed: () {
                           Provider.of<GroupsProvider>(context, listen: false)
                               .updateJoinRequest(context, request, accept: true)
@@ -48,7 +48,7 @@ class _GroupJoinListScreenState extends State<GroupJoinListScreen> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.close, color: Colors.red),
+                        icon: const Icon(Icons.close, color: Colors.red),
                         onPressed: () {
                           Provider.of<GroupsProvider>(context, listen: false)
                               .updateJoinRequest(context, request, accept: false)

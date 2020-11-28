@@ -26,14 +26,12 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
 
     isEditing = widget.existingAddress != null;
-    this.address =
-        widget.existingAddress == null ? Address() : widget.existingAddress;
+    this.address = widget.existingAddress == null ? Address() : widget.existingAddress;
   }
 
   @override
   Widget build(BuildContext context) {
-    AddressProvider provider =
-        Provider.of<AddressProvider>(context, listen: false);
+    AddressProvider provider = Provider.of<AddressProvider>(context, listen: false);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -46,7 +44,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
               key: formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: ListView(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 children: [
                   TextFormField(
                     maxLines: 1,
@@ -55,34 +53,31 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     validator: (val) => val.isEmpty || val.length < 2
                         ? "O Título deve ter no mínimo 3 caracteres"
                         : null,
-                    decoration: InputDecoration(labelText: "Apelido"),
+                    decoration: const InputDecoration(labelText: "Apelido"),
                   ),
                   TextFormField(
                     maxLines: 1,
                     initialValue: address.street,
                     onSaved: (val) => address.street = val,
-                    validator: (val) => val.isEmpty || val.length < 7
-                        ? "Mínimo 8 caracteres"
-                        : null,
-                    decoration: InputDecoration(labelText: "Rua e Número"),
+                    validator: (val) =>
+                        val.isEmpty || val.length < 7 ? "Mínimo 8 caracteres" : null,
+                    decoration: const InputDecoration(labelText: "Rua e Número"),
                   ),
                   TextFormField(
                     maxLines: 1,
                     initialValue: address.city,
                     onSaved: (val) => address.city = val,
-                    validator: (val) => val.isEmpty || val.length < 2
-                        ? "Mínimo 3 caracteres"
-                        : null,
-                    decoration: InputDecoration(labelText: "Cidade"),
+                    validator: (val) =>
+                        val.isEmpty || val.length < 2 ? "Mínimo 3 caracteres" : null,
+                    decoration: const InputDecoration(labelText: "Cidade"),
                   ),
                   TextFormField(
                     maxLines: 1,
                     initialValue: address.state,
                     onSaved: (val) => address.state = val,
-                    validator: (val) => val.isEmpty || val.length < 1
-                        ? "Mínimo 2 caracteres"
-                        : null,
-                    decoration: InputDecoration(labelText: "Estado"),
+                    validator: (val) =>
+                        val.isEmpty || val.length != 2 ? "Deve ter 2 caracteres" : null,
+                    decoration: const InputDecoration(labelText: "Estado (Sigla)"),
                   ),
                   TextFormField(
                     maxLines: 1,
@@ -90,37 +85,38 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                     onSaved: (val) => address.zipCode = val,
                     validator: (String val) {
                       var intVal = int.tryParse(val);
-                      if (val.isEmpty || val.length != 8 || intVal == null)
+                      if (val.isEmpty || val.length != 8 || intVal == null) {
                         return "CEP deve conter 8 dígitos numéricos";
-                      else
+                      } else {
                         return null;
+                      }
                     },
-                    decoration: InputDecoration(labelText: "CEP"),
+                    decoration: const InputDecoration(labelText: "CEP"),
                   ),
-                  loading ? Center(child: CircularProgressIndicator()) : ElevatedButton(
-                      child: Text("Salvar"),
-                      onPressed: () {
-                        if (formKey.currentState.validate()) {
-                          if (loading) return;
+                  loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          child: const Text("Salvar"),
+                          onPressed: () {
+                            if (formKey.currentState.validate()) {
+                              if (loading) return;
 
-                          loading = true;
-                          formKey.currentState.save();
+                              loading = true;
+                              formKey.currentState.save();
 
-                          if (isEditing) {
-                            provider
-                                .updateAddress(context, address)
-                                .then((bool success) =>
-                                successRoutine(success, context))
-                                .catchError(errorRoutine);
-                          } else {
-                            provider
-                                .saveNewAddress(context, address)
-                                .then((bool success) =>
-                                successRoutine(success, context))
-                                .catchError(errorRoutine);
-                          }
-                        }
-                      })
+                              if (isEditing) {
+                                provider
+                                    .updateAddress(context, address)
+                                    .then((bool success) => successRoutine(success, context))
+                                    .catchError(errorRoutine);
+                              } else {
+                                provider
+                                    .saveNewAddress(context, address)
+                                    .then((bool success) => successRoutine(success, context))
+                                    .catchError(errorRoutine);
+                              }
+                            }
+                          })
                 ],
               ),
             ),
@@ -130,16 +126,17 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
     );
   }
 
-  void successRoutine(bool success, BuildContext context){
-      loading = false;
-      setState(() {});
-      Navigator.of(context).pop();
+  void successRoutine(bool success, BuildContext context) {
+    loading = false;
+    setState(() {});
+    Navigator.of(context).pop();
   }
 
-  void errorRoutine(err){
+  void errorRoutine(err) {
     print(err);
     loading = false;
     setState(() {});
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(err.toString()), backgroundColor: Colors.red));
+    _scaffoldKey.currentState
+        .showSnackBar(SnackBar(content: Text(err.toString()), backgroundColor: Colors.red));
   }
 }

@@ -37,7 +37,7 @@ class ProfileViewScreen extends StatelessWidget {
                   children: [
                     Text(
                       user.fullName,
-                      style: TextStyle(fontSize: 20),
+                      style: const TextStyle(fontSize: 20),
                     ),
                     const Divider(height: 4),
                     Text(user.email),

@@ -21,7 +21,7 @@ class MyOrdersScreen extends StatelessWidget {
               future: provider.loadOrdersList(context),
               builder: (context, AsyncSnapshot<TransactionListResponse> snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting){
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if(snapshot.hasError){
@@ -30,8 +30,8 @@ class MyOrdersScreen extends StatelessWidget {
 
                 TransactionListResponse response = snapshot.data;
 
-                if(response.data != null && response.data.length == 0) {
-                  return Center(child: Text("Não há pedidos ainda :)"));
+                if(response.data != null && response.data.isEmpty) {
+                  return const Center(child: Text("Não há pedidos ainda :)"));
                 }
 
                 return Expanded(

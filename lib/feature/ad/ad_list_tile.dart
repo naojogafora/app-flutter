@@ -16,9 +16,9 @@ class AdListTile extends StatelessWidget {
         width: 50,
         height: 50,
         color: Style.primaryColor,
-        child: ad.photos != null && ad.photos.length > 0 ?
+        child: ad.photos != null && ad.photos.isNotEmpty ?
           Hero(tag: "ad-image-" + ad.id.toString(), child: Image.network(ad.photos[0].url, fit: BoxFit.cover,))
-         : Icon(Icons.no_photography_outlined, color: Style.darkText),
+         : const Icon(Icons.no_photography_outlined, color: Style.darkText),
       ),
       title: Text(ad.title),
       subtitle: Text(ad.description, maxLines: 3, overflow: TextOverflow.ellipsis,),

@@ -27,9 +27,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cadastro")),
+      appBar: AppBar(title: const Text("Cadastro")),
       body: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -40,14 +40,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 children: [
                   Image.asset("assets/recycling.png", height: 160, fit: BoxFit.fitHeight),
                   TextField(
-                    decoration: InputDecoration(hintText: "Nome"),
+                    decoration: const InputDecoration(hintText: "Nome"),
                     textInputAction: TextInputAction.next,
                     controller: nameController,
                     onSubmitted: (v) =>
                         FocusScope.of(context).requestFocus(focusLastName),
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "Sobrenome"),
+                    decoration: const InputDecoration(hintText: "Sobrenome"),
                     textInputAction: TextInputAction.next,
                     controller: lastNameController,
                     focusNode: focusLastName,
@@ -55,7 +55,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         FocusScope.of(context).requestFocus(focusEmail),
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "Email"),
+                    decoration: const InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
                     controller: emailController,
                     focusNode: focusEmail,
@@ -63,7 +63,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: "Senha", fillColor: Style.primaryColorDark),
                     textInputAction: TextInputAction.send,
                     obscureText: true,
@@ -71,17 +71,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     focusNode: focusPassword,
                     onSubmitted: (v) => register(),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  loading ? Center(child: CircularProgressIndicator()) : StandardButton(
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                  loading ? const Center(child: CircularProgressIndicator()) : StandardButton(
                     "Criar Conta",
                     register,
                     Style.primaryColorDark,
                     Style.clearWhite,
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                   Center(
                     child: GestureDetector(
-                        child: Text("Já tem conta? Faça Login!",
+                        child: const Text("Já tem conta? Faça Login!",
                             style: TextStyle(
                                 decoration: TextDecoration.underline)),
                         onTap: () => Navigator.of(context).pushReplacementNamed("/login")),

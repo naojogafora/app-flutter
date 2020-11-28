@@ -17,7 +17,7 @@ class DefaultDialog {
             GestureDetector(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-                child: Text("Cancelar"),
+                child: const Text("Cancelar"),
               ),
               onTap: () => Navigator.of(context).pop(),
             ),

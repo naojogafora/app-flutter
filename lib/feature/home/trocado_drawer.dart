@@ -55,7 +55,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                                   : "Visitante",
                               style: const TextStyle(fontSize: 18),
                             )),
-                            Padding(padding: EdgeInsets.all(2)),
+                            const Padding(padding: EdgeInsets.all(2)),
                             Flexible(
                                 child: Text(
                                     authProvider.isUserLogged
@@ -68,7 +68,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                     ],
                   ),
                 ),
-                decoration: BoxDecoration(color: Style.primaryColor),
+                decoration: const BoxDecoration(color: Style.primaryColor),
               ),
               authProvider.isUserLogged
                   ? Container()
@@ -103,7 +103,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                                   builder: (context) => MyDonationsScreen())),
                         ),
                         ListTile(
-                          leading: Icon(Icons.archive_outlined),
+                          leading: const Icon(Icons.archive_outlined),
                           title: const Text("Meus Pedidos"),
                           onTap: () => Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MyOrdersScreen())),

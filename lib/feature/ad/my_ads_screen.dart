@@ -16,7 +16,7 @@ class MyAdsScreen extends StatelessWidget {
         appBar: trocadoAppBar("Meus Anúncios"),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateAdScreen())),
-          child: Icon(Icons.add, color: Style.clearWhite),
+          child: const Icon(Icons.add, color: Style.clearWhite),
         ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -31,13 +31,13 @@ class MyAdsScreen extends StatelessWidget {
                       if (snapshot.hasError) {
                         return Center(child: Text(snapshot.error.toString()));
                       } else if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       AdsListResponse response = snapshot.data;
 
-                      if(response.data.length == 0) {
-                        return Center(child: Text("Voce ainda não tem anúncios!"));
+                      if(response.data.isEmpty) {
+                        return const Center(child: Text("Voce ainda não tem anúncios!"));
                       }
 
                       return ListView.builder(

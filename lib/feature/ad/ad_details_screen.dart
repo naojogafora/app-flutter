@@ -63,8 +63,8 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-                                decoration: ShapeDecoration(
+                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                                decoration: const ShapeDecoration(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(Radius.circular(14))),
                                     color: Colors.white54),
@@ -115,23 +115,23 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                             thickness: 2,
                             indent: 6,
                             endIndent: 6),
-                        Text(
+                        const Text(
                           "Descrição:",
-                          style: const TextStyle(color: Colors.black54),
+                          style: TextStyle(color: Colors.black54),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(widget.ad.description, style: const TextStyle(fontSize: 18)),
                         ),
                         const Divider(height: 12, color: Colors.transparent),
-                        Text(
+                        const Text(
                           "Doaçao por: ",
-                          style: const TextStyle(color: Colors.black54),
+                          style: TextStyle(color: Colors.black54),
                         ),
                         ListTile(
                           title: Text(
                             widget.ad.user.fullName,
-                            style: TextStyle(color: Style.primaryColorDark, fontSize: 18),
+                            style: const TextStyle(color: Style.primaryColorDark, fontSize: 18),
                           ),
                           subtitle: Text("Usuário desde " + widget.ad.user.creationDate),
                           leading: Hero(
@@ -147,9 +147,9 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                           children: [
                             Expanded(
                               child: MaterialButton(
-                                padding: EdgeInsets.all(12),
+                                padding: const EdgeInsets.all(12),
                                 child: loading
-                                    ? CircularProgressIndicator(backgroundColor: Style.clearWhite)
+                                    ? const CircularProgressIndicator(backgroundColor: Style.clearWhite)
                                     : const Text("Eu Quero!",
                                         style: TextStyle(
                                           color: Style.clearWhite,

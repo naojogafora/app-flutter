@@ -34,15 +34,17 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                   leading: Icon(getIconForMember(member)),
                   title: Text(member.fullName),
                   subtitle: Text(member.email),
-                  trailing: widget.group.moderators.contains(member) ? null : IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      Provider.of<GroupsProvider>(context, listen: false)
-                          .banGroupMember(context, widget.group.id, member.id)
-                          .then((response) => handleSuccess(context, response, member))
-                          .catchError((e) => handleError(context, e));
-                    },
-                  ),
+                  trailing: widget.group.moderators.contains(member)
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            Provider.of<GroupsProvider>(context, listen: false)
+                                .banGroupMember(context, widget.group.id, member.id)
+                                .then((response) => handleSuccess(context, response, member))
+                                .catchError((e) => handleError(context, e));
+                          },
+                        ),
                 );
               },
             ),
@@ -53,7 +55,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
   }
 
   void handleSuccess(BuildContext context, BasicMessageResponse response, User member) {
-    if(response.success){
+    if (response.success) {
       widget.group.members.remove(member);
       setState(() {});
     } else {
@@ -68,11 +70,12 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
     ));
   }
 
-  IconData getIconForMember(User member){
-    if(member.id == widget.group.owner?.id)
+  IconData getIconForMember(User member) {
+    if (member.id == widget.group.owner?.id) {
       return Icons.star;
-    else if (member.isModerator)
+    } else if (member.isModerator) {
       return Icons.supervisor_account;
+    }
 
     return Icons.person;
   }

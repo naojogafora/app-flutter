@@ -49,7 +49,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   List<Widget> imageList() {
     List<Widget> imageList = [];
 
-    if (ad != null && ad.photos != null)
+    if (ad != null && ad.photos != null) {
       for (Photo photo in ad.photos) {
         imageList.add(GestureDetector(
           child: Image.network(
@@ -64,8 +64,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           }),
         ));
       }
+    }
 
-    if (newImages != null)
+    if (newImages != null) {
       for (File file in newImages) {
         imageList.add(GestureDetector(
           child: Image.file(
@@ -80,6 +81,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           }),
         ));
       }
+    }
 
     return imageList;
   }
@@ -211,7 +213,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         validator: (value) => value.isEmpty || value.length < 3 || value.length > 150
             ? "Deve ter de 3 a 150 caracteres"
             : null,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             hintText: "Ex: Mesa de Madeira...", labelText: "Título", icon: Icon(Icons.short_text)),
         initialValue: ad.title,
         onSaved: (val) => ad.title = val,
@@ -220,7 +222,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         validator: (value) => value.isEmpty || value.length < 20 || value.length > 500
             ? "Deve ter de 20 a 500 caracteres"
             : null,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             hintText: "Fale sobre seu item...",
             labelText: "Descrição",
             icon: Icon(Icons.description)),
@@ -228,8 +230,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         onSaved: (val) => ad.description = val,
         maxLines: 3,
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: 12, bottom: 6),
+      const Padding(
+        padding: EdgeInsets.only(top: 12, bottom: 6),
         child: Text("Fotos (Até 5 imagens)"),
       ),
       totalImageCount() < 5
@@ -242,16 +244,16 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                     child: GestureDetector(
                       onTap: () => getImage(ImageSource.gallery),
                       child: Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         color: Colors.grey[300],
                         alignment: Alignment.center,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.add),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            const Icon(Icons.add),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text("Galeria"),
                             )
                           ],
@@ -259,7 +261,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                       ),
                     ),
                   ),
-                  VerticalDivider(
+                  const VerticalDivider(
                     width: 6,
                   ),
                   Expanded(
@@ -267,16 +269,16 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                     child: GestureDetector(
                       onTap: () => getImage(ImageSource.camera),
                       child: Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         color: Colors.grey[300],
                         alignment: Alignment.center,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.add_a_photo),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            const Icon(Icons.add_a_photo),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text("Câmera"),
                             ),
                           ],
@@ -293,9 +295,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         children: imageList(),
       ),
       RaisedButton(
-        child: Text("Continuar"),
+        child: const Text("Continuar"),
         onPressed: () => nextPage(context),
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.all(14),
         color: Style.accentColor,
         textColor: Style.clearWhite,
       ),
@@ -308,7 +310,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     GroupsProvider groupsProvider = Provider.of<GroupsProvider>(context, listen: false);
 
     return [
-      Text("Endereços de Retirada do Item (visível apenas para o Receptor)"),
+      const Text("Endereços de Retirada do Item (visível apenas para o Receptor)"),
       Container(
         height: 180,
         child: ListView.builder(
@@ -331,7 +333,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           },
         ),
       ),
-      Text("Grupos Disponíveis"),
+      const Text("Grupos Disponíveis"),
       Container(
         height: 180,
         child: ListView.builder(
@@ -353,16 +355,16 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           },
         ),
       ),
-      Divider(),
+      const Divider(),
       RaisedButton(
-        child: loading ? CircularProgressIndicator() : const Text("Publicar Anúncio"),
+        child: loading ? const CircularProgressIndicator() : const Text("Publicar Anúncio"),
         onPressed: () => _publish(context),
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.all(14),
         color: Colors.green,
         textColor: Style.clearWhite,
       ),
       RaisedButton(
-        child: Text("Voltar"),
+        child: const Text("Voltar"),
         onPressed: () => previousPage(context),
         color: Colors.orange[100],
       ),
@@ -370,16 +372,16 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   }
 
   // Loading and Success message
-  Future _publish(BuildContext context) async {
+  void _publish(BuildContext context) {
     if (loading) return;
     setState(() {
       loading = true;
     });
 
-    if(ad.addresses.length == 0){
+    if (ad.addresses.isEmpty) {
       showErrorSnack("Selecione pelo menos um endereço");
       return;
-    } else if(ad.groups.length == 0){
+    } else if (ad.groups.isEmpty) {
       showErrorSnack("Selecione pelo menos um grupo");
       return;
     }
@@ -387,7 +389,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     ad.photoFiles = newImages;
     Provider.of<AdsProvider>(context, listen: false).createAd(context, ad).then((bool result) {
       showSuccessSnack("Anúncio publicado!");
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         // 5s over, navigate to a new page
         Navigator.of(context).pop();
       });

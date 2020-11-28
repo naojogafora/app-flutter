@@ -49,17 +49,19 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
                 padding: const EdgeInsets.all(8),
                 children: [
                   TextFormField(
-                    decoration:
-                        InputDecoration(labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
+                    decoration: const InputDecoration(
+                        labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
                     onSaved: (String val) => group.name = val,
-                    validator: (val) => val.isEmpty || val.length < 5 ? "Deve ter no mínimo 5 caracteres" : null,
+                    validator: (val) =>
+                        val.isEmpty || val.length < 5 ? "Deve ter no mínimo 5 caracteres" : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: "Descrição", icon: Icon(Icons.description_outlined)),
                     onSaved: (String val) => group.description = val,
-                    validator: (val) => val.isEmpty || val.length < 20 ? "Deve ter no mínimo 20 caracteres" : null,
+                    validator: (val) =>
+                        val.isEmpty || val.length < 20 ? "Deve ter no mínimo 20 caracteres" : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     minLines: 3,
                     maxLines: 6,
@@ -69,7 +71,7 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
                       children: [
                         const Icon(Icons.lock_outline, color: Colors.black54),
                         const VerticalDivider(),
-                        Text("Grupo Privado?"),
+                        const Text("Grupo Privado?"),
                       ],
                     ),
                     initialValue: false,
@@ -77,7 +79,7 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
                   ),
                   MaterialButton(
                     child: loading
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : const Text("Criar Grupo", style: TextStyle(color: Style.clearWhite)),
                     onPressed: submit,
                     color: Style.primaryColorDark,
@@ -91,7 +93,7 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
     );
   }
 
-  Future submit() async {
+  void submit() {
     if (loading) return;
     setState(() => loading = true);
 
@@ -106,9 +108,9 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
     if (editing) {
       //TODO Salvar edição do grupo
     } else {
-      provider.createGroup(context, group).then((Group group){
+      provider.createGroup(context, group).then((Group group) {
         showSuccessSnack("Grupo criado");
-        Future.delayed(Duration(seconds: 2), (){
+        Future.delayed(const Duration(seconds: 2), () {
           Navigator.of(context).pop();
         });
       }).catchError((e) => showErrorSnack(e.toString()));

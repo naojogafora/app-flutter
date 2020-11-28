@@ -34,17 +34,27 @@ class Group {
     this.memberCount = json['member_count'];
     this.isMember = json['is_member'];
 
-    if (json['moderators'] != null)
-      for (dynamic obj in json['moderators']) moderators.add(User.fromJson(obj));
+    if (json['moderators'] != null) {
+      for (dynamic obj in json['moderators']) {
+        moderators.add(User.fromJson(obj));
+      }
+    }
 
-    if (json['members'] != null)
-      for (dynamic obj in json['members']) members.add(User.fromJson(obj));
+    if (json['members'] != null) {
+      for (dynamic obj in json['members']) {
+        members.add(User.fromJson(obj));
+      }
+    }
 
-    if (json['group_join_requests'] != null)
-      for (dynamic obj in json['group_join_requests'])
+    if (json['group_join_requests'] != null) {
+      for (dynamic obj in json['group_join_requests']) {
         groupJoinRequests.add(GroupJoinRequest.fromJson(obj));
+      }
+    }
 
-    if (json['owner'] != null) this.owner = User.fromJson(json['owner']);
+    if (json['owner'] != null) {
+      this.owner = User.fromJson(json['owner']);
+    }
   }
 
   /// JSON with fields required on the Create POST Route of the API
@@ -55,10 +65,10 @@ class Group {
       };
 
   Map<String, String> toSaveConfigurationsJson() => {
-      "name": this.name,
-      "description": this.description,
-      "private": this.private ? "1" : "0",
-      "owner_id": this.owner.id?.toString(),
-      "invite_code": this.inviteCode == null || this.inviteCode.isEmpty ? "" : this.inviteCode,
-    };
+        "name": this.name,
+        "description": this.description,
+        "private": this.private ? "1" : "0",
+        "owner_id": this.owner.id?.toString(),
+        "invite_code": this.inviteCode == null || this.inviteCode.isEmpty ? "" : this.inviteCode,
+      };
 }

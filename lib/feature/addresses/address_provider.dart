@@ -11,15 +11,16 @@ class AddressProvider extends ChangeNotifier {
   List<Address> userAddresses;
 
   Future<List<Address>> loadUserAddresses(BuildContext context, { forceLoad = false }) async {
-    if(userAddresses != null && !forceLoad)
+    if(userAddresses != null && !forceLoad) {
       return userAddresses;
+    }
 
     var jsonList = await apiHelper.get(context, MY_ADDRESSES_URL);
     userAddresses = [];
     for(dynamic jsonObj in jsonList){
       try{
         userAddresses.add(Address.fromJson(jsonObj));
-      } catch(e){}
+      } catch(_){}
     }
 
     return userAddresses;

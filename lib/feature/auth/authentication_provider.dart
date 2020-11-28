@@ -73,22 +73,19 @@ class AuthenticationProvider extends ChangeNotifier {
     } else {
       dynamic authJson = jsonDecode(authPref);
       parseAndSetUser(authJson);
-      refreshToken();
+      await refreshToken();
     }
 
     notifyListeners();
   }
 
   Future<void> refreshToken() async {
-    print("Refreshing token");
-    authTokenLock.synchronized(() async {
-      print("Refreshing inside sync");
+    await authTokenLock.synchronized(() async {
       try {
         var responseJson =
             await apiHelper.post(null, REFRESH_TOKEN_URL, token: _authenticationToken);
         parseAndSetUser(responseJson);
         saveAuthToStorage(responseJson);
-        print("Token refreshed");
       } on FetchDataException catch (e) {
         if (e.httpCode == 500) {
           saveAuthToStorage(null);
@@ -100,13 +97,13 @@ class AuthenticationProvider extends ChangeNotifier {
 
   void logout(BuildContext context) async {
     saveAuthToStorage(null);
-    await invalidateCurrentToken();
+    invalidateCurrentToken();
     user = null;
     authenticationToken = null;
     notifyListeners();
   }
 
-  Future<void> invalidateCurrentToken() async {
+  void invalidateCurrentToken() {
     apiHelper.post(null, LOGOUT_URL, token: _authenticationToken);
   }
 

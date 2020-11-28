@@ -34,10 +34,10 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                       TransactionListResponse donationsList = snapshot.data;
 
                       if (donationsList != null &&
-                          donationsList.data.length == 0) {
+                          donationsList.data.isEmpty) {
                         return ListView(
                           children: [
-                            Center(child: Text("Não há doações ainda :)")),
+                            const Center(child: Text("Não há doações ainda :)")),
                           ],
                         );
                       }
@@ -52,7 +52,7 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                     } else if (snapshot.hasError) {
                       return Text(snapshot.error.toString());
                     } else {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                   },
                 ),

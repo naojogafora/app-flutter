@@ -17,7 +17,7 @@ class Ad {
   List<Group> groups;
   List<File> photoFiles;
 
-  Photo get firstPhoto => photos != null && photos.length > 0 ? photos[0] : null;
+  Photo get firstPhoto => photos != null && photos.isNotEmpty ? photos[0] : null;
 
   Ad(){
     photoFiles = [];
@@ -37,26 +37,30 @@ class Ad {
     this.createdAt = DateTime.parse(json['created_at']);
     this.updatedAt = DateTime.parse(json['updated_at']);
 
-    if(json['user'] != null)
+    if(json['user'] != null) {
       this.user = User.fromJson(json['user']);
+    }
 
     this.groups = [];
-    if(json['groups'] != null)
-      for(dynamic groupItem in json['groups']){
+    if(json['groups'] != null) {
+      for (dynamic groupItem in json['groups']) {
         groups.add(Group.fromJson(groupItem));
       }
+    }
 
     this.addresses = [];
-    if(json['addresses'] != null)
-      for(dynamic addressItem in json['addresses']){
+    if(json['addresses'] != null) {
+      for (dynamic addressItem in json['addresses']) {
         addresses.add(Address.fromJson(addressItem));
       }
+    }
 
     this.photos = [];
-    if(json['photos'] != null)
-      for(dynamic photoArray in json['photos']){
+    if(json['photos'] != null) {
+      for (dynamic photoArray in json['photos']) {
         photos.add(Photo.fromJson(photoArray));
       }
+    }
   }
 
   // Every field must be String: String due to limitations of the POST body type.
@@ -80,13 +84,15 @@ class Ad {
   }
 
   void addAddress(Address address){
-    if(!containsAddress(address))
+    if(!containsAddress(address)) {
       addresses.add(address);
+    }
   }
 
   void removeAddress(Address address){
-    if(containsAddress(address))
+    if(containsAddress(address)) {
       addresses.removeWhere((element) => element.id == address.id);
+    }
   }
 
   bool containsAddress(Address address){
@@ -94,12 +100,14 @@ class Ad {
   }
 
   void addGroup(Group group){
-    if(!containsGroup(group))
+    if(!containsGroup(group)) {
       groups.add(group);
+    }
   }
   void removeGroup(Group group){
-    if(containsGroup(group))
+    if(containsGroup(group)) {
       groups.removeWhere((element) => element.id == group.id);
+    }
   }
 
   bool containsGroup(Group group){

@@ -20,9 +20,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Style.clearWhite,
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,13 +33,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 children: [
                   Image.asset("assets/recycling.png", height: 160, fit: BoxFit.fitHeight),
                   TextField(
-                    decoration: InputDecoration(hintText: "Email"),
+                    decoration: const InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
                     controller: emailController,
                     onSubmitted: (v) => FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
-                    decoration: InputDecoration(hintText: "Senha"),
+                    decoration: const InputDecoration(hintText: "Senha"),
                     textInputAction: TextInputAction.send,
                     obscureText: true,
                     controller: passwordController,
@@ -50,7 +50,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     height: 6
                   ),
                   GestureDetector(
-                    child: Align(
+                    child: const Align(
                       child: Text(
                         "Esqueci a senha",
                         style: TextStyle(
@@ -65,7 +65,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   const Divider(height: 6),
                   Center(
                     child: GestureDetector(
-                        child: Text("Nao tem conta? Crie uma agora!",
+                        child: const Text("Nao tem conta? Crie uma agora!",
                             style: TextStyle(decoration: TextDecoration.underline)),
                         onTap: () {
                           Navigator.of(context).pushReplacementNamed("/registration");

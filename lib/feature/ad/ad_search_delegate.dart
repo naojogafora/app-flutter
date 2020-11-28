@@ -11,7 +11,7 @@ class AdSearchDelegate extends SearchDelegate {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -22,7 +22,7 @@ class AdSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -35,7 +35,7 @@ class AdSearchDelegate extends SearchDelegate {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Center(
+          const Center(
             child: Text(
               "Digite pelo menos três caracteres",
             ),
@@ -57,8 +57,8 @@ class AdSearchDelegate extends SearchDelegate {
               );
             }
 
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
+            return const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Center(child: CircularProgressIndicator()),
             );
           },

@@ -8,6 +8,7 @@ import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
+import 'package:pedantic/pedantic.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   final User user;
@@ -56,11 +57,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       GestureDetector(
                         child: Center(
                             child: CircleAvatar(
-                                radius: 65,
-                                backgroundImage: widget.user.avatarImage,
-                                child: loadingImage
-                                    ? CircularProgressIndicator() : Container(),
-        )),
+                          radius: 65,
+                          backgroundImage: widget.user.avatarImage,
+                          child: loadingImage ? const CircularProgressIndicator() : Container(),
+                        )),
                         onTap: () => pickProfileImage(),
                       ),
                       TextFormField(
@@ -92,15 +92,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           labelText: "Sobrenome",
                         ),
                       ),
-                      Divider(),
+                      const Divider(),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
                             child: MaterialButton(
                               onPressed: () => submitProfile(context),
-                              child:
-                                  Text("Salvar Perfil", style: TextStyle(color: Style.clearWhite)),
+                              child: const Text("Salvar Perfil",
+                                  style: TextStyle(color: Style.clearWhite)),
                               color: Style.primaryColorDark,
                             ),
                           ),
@@ -142,8 +142,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           Expanded(
                             child: MaterialButton(
                               onPressed: () => submitPassword(context),
-                              child:
-                                  Text("Salvar Senha", style: TextStyle(color: Style.clearWhite)),
+                              child: const Text("Salvar Senha",
+                                  style: TextStyle(color: Style.clearWhite)),
                               color: Style.primaryColorDark,
                             ),
                           ),
@@ -158,7 +158,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         ));
   }
 
-  Future pickProfileImage() async {
+  void pickProfileImage() async {
     if (loadingImage) return;
 
     final pickedFile = await picker.getImage(
@@ -170,7 +170,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         loadingImage = true;
       });
 
-      Provider.of<AuthenticationProvider>(context, listen: false)
+      unawaited(Provider.of<AuthenticationProvider>(context, listen: false)
           .uploadProfileImage(context, file)
           .then((String newUrl) {
         setState(() {
@@ -184,11 +184,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           loadingImage = false;
         });
         handleError(e);
-      });
+      }));
     }
   }
 
-  void submitProfile(BuildContext context) async {
+  void submitProfile(BuildContext context) {
     if (nameController.text == null ||
         nameController.text.length < 3 ||
         lastNameController.text == null ||

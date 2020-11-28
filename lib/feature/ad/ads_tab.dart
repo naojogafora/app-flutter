@@ -26,7 +26,7 @@ class AdsTab extends StatelessWidget {
             ),
           ),
         )
-            : Padding(
+            : const Padding(
           padding: EdgeInsets.all(16),
           child: Center(child: CircularProgressIndicator()),
         ),

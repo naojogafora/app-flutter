@@ -26,7 +26,7 @@ class GroupDetailsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -34,7 +34,7 @@ class GroupDetailsScreen extends StatelessWidget {
                         "Descrição:",
                         style: TextStyle(color: Style.primaryColor),
                       ),
-                      Text(group.description, style: TextStyle(color: Style.clearWhite)),
+                      Text(group.description, style: const TextStyle(color: Style.clearWhite)),
                     ],
                   ),
                   color: Style.primaryColorDark,
@@ -48,10 +48,10 @@ class GroupDetailsScreen extends StatelessWidget {
           ),
           group.isMember
               ? RaisedButton(
-                  child: Text("Sair do Grupo"),
+                  child: const Text("Sair do Grupo"),
                   color: Colors.red,
                   textColor: Style.clearWhite,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 26),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 26),
                   onPressed: () {
                     provider.leaveGroup(context, group).then((bool success) {
                       Navigator.of(context).pop();
@@ -90,11 +90,11 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
 
         Group group = snapshot.data;
         return ListView(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           children: [
             group.isModerator &&
                     group.groupJoinRequests != null &&
-                    group.groupJoinRequests.length > 0
+                    group.groupJoinRequests.isNotEmpty
                 ? ListTile(
                     trailing: CircleAvatar(
                       backgroundColor: Style.primaryColorDark,
@@ -112,7 +112,7 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                         .push(MaterialPageRoute(builder: (context) => GroupJoinListScreen(group))),
                   )
                 : Container(),
-            group.isModerator && group.members != null && group.members.length > 0
+            group.isModerator && group.members != null && group.members.isNotEmpty
                 ? ListTile(
                     trailing: CircleAvatar(
                       backgroundColor: Style.primaryColorDark,
@@ -139,7 +139,7 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
               children: List.generate(
                   group.moderators?.length,
                   (index) => ListTile(
-                        leading: Icon(Icons.person),
+                        leading: const Icon(Icons.person),
                         title: Text(group.moderators[index].fullName),
                         visualDensity: VisualDensity.compact,
                       )),
@@ -161,22 +161,24 @@ class _GroupConfigurationDetails extends StatelessWidget {
       future: Provider.of<GroupsProvider>(context, listen: false)
           .readGroupConfiguration(context, groupId),
       builder: (context, AsyncSnapshot<Group> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
+        }
 
-        if (snapshot.hasError)
-          return Padding(
+        if (snapshot.hasError) {
+          return const Padding(
             padding: EdgeInsets.symmetric(vertical: 4),
             child: Text("Não foi possível carregar mais detalhes do grupo"),
           );
+        }
 
         Group group = snapshot.data;
 
         return Container(
           color: Style.accentColor,
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
+            const Text(
               "Somente os moderadores vêem o código de convite e os membros. Caso queira convidar "
                   "mais usuários, compartilhe o código e o nome do grupo com eles!",
               textAlign: TextAlign.center,
@@ -202,13 +204,13 @@ class _GroupConfigurationDetails extends StatelessWidget {
             const Divider(height: 6, color: Colors.transparent),
             Center(
               child: MaterialButton(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(Icons.edit, color: Style.clearWhite),
                     const VerticalDivider(color: Colors.transparent),
-                    Text("Editar Grupo", style: const TextStyle(color: Style.clearWhite)),
+                    const Text("Editar Grupo", style: TextStyle(color: Style.clearWhite)),
                   ],
                 ),
                 color: Style.primaryColorDark,
