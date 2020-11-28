@@ -69,6 +69,16 @@ class _AdOverlayGalleryState extends State<AdOverlayGallery> {
                 child: GestureDetector(
                   child: Container(child: loadedImages[currentPhoto], color: Style.primaryColor),
                   onTap: () {},
+                  onHorizontalDragEnd: (DragEndDetails details){
+                    const sensitivity = 50;
+                    if (details.primaryVelocity > sensitivity) {
+                      // User swiped Left
+                      previousPhoto();
+                    } else if (details.primaryVelocity < -sensitivity) {
+                      nextPhoto();
+                      // User swiped Right
+                    }
+                  },
                 ),
               ),
               Row(
