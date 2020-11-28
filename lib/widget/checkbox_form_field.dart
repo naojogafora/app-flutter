@@ -5,7 +5,7 @@ class CheckboxFormField extends FormField<bool> {
       {Widget title,
       FormFieldSetter<bool> onSaved,
       FormFieldValidator<bool> validator,
-        Function(bool val) onChanged,
+      Function(bool val) onChanged,
       bool initialValue = false,
       AutovalidateMode autovalidate = AutovalidateMode.onUserInteraction})
       : super(
@@ -19,8 +19,8 @@ class CheckboxFormField extends FormField<bool> {
                 contentPadding: const EdgeInsets.symmetric(vertical: 6),
                 title: title,
                 value: state.value,
-                onChanged: (v){
-                  if(onChanged != null){
+                onChanged: (v) {
+                  if (onChanged != null) {
                     onChanged(v);
                   }
                   state.didChange(v);

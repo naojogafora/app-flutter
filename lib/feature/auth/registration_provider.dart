@@ -5,8 +5,9 @@ class RegistrationProvider {
   ApiHelper apiHelper = ApiHelper();
   static const REGISTER_URL = "signup";
 
-  Future<dynamic> register(BuildContext context, String name, String lastName, String email, String password) async{
-    if(name.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty){
+  Future<dynamic> register(
+      BuildContext context, String name, String lastName, String email, String password) async {
+    if (name.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
       return false;
     }
 

@@ -46,19 +46,20 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     focusNode: focusPassword,
                     onSubmitted: (v) => login(),
                   ),
-                  const Divider(
-                    height: 6
-                  ),
+                  const Divider(height: 6),
                   GestureDetector(
                     child: const Align(
                       child: Text(
                         "Esqueci a senha",
                         style: TextStyle(
-                            color: Style.primaryColorDark, decoration: TextDecoration.underline,),
+                          color: Style.primaryColorDark,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                       alignment: Alignment.centerRight,
                     ),
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordResetScreen())),
+                    onTap: () => Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => PasswordResetScreen())),
                   ),
                   const Divider(height: 6),
                   StandardButton("Entrar", login, Style.primaryColorDark, Style.clearWhite),

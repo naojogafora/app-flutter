@@ -33,7 +33,10 @@ class MyAdListTile extends StatelessWidget {
       ),
       title: Text(ad.title),
       subtitle: Text(
-        "Anunciado em " + ad.groups.length.toString() + " grupo" + (ad.groups.length != 1 ? "s" : ""),
+        "Anunciado em " +
+            ad.groups.length.toString() +
+            " grupo" +
+            (ad.groups.length != 1 ? "s" : ""),
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
       ),
@@ -43,21 +46,23 @@ class MyAdListTile extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.visibility, color: Colors.blue),
-              onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
             ),
             IconButton(
                 icon: const Icon(Icons.edit, color: Colors.green),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => null))), //TODO Edit ad
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => null))), //TODO Edit ad
             IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red,),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
                 onPressed: () async {
                   String message;
                   Color color = Colors.green;
                   try {
-                    await Provider.of<AdsProvider>(context, listen: false)
-                        .deleteAd(context, ad);
+                    await Provider.of<AdsProvider>(context, listen: false).deleteAd(context, ad);
                     message = "Anúncio apagado";
                   } catch (e) {
                     color = Colors.red;

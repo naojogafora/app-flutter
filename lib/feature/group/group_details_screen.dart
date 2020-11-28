@@ -180,7 +180,7 @@ class _GroupConfigurationDetails extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
               "Somente os moderadores vêem o código de convite e os membros. Caso queira convidar "
-                  "mais usuários, compartilhe o código e o nome do grupo com eles!",
+              "mais usuários, compartilhe o código e o nome do grupo com eles!",
               textAlign: TextAlign.center,
             ),
             const Divider(height: 6, color: Colors.transparent),
@@ -214,7 +214,8 @@ class _GroupConfigurationDetails extends StatelessWidget {
                   ],
                 ),
                 color: Style.primaryColorDark,
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupConfigurationFormScreen(group))),
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => GroupConfigurationFormScreen(group))),
               ),
             )
           ]),

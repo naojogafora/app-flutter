@@ -10,8 +10,7 @@ class AddressListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AddressProvider provider =
-        Provider.of<AddressProvider>(context, listen: false);
+    AddressProvider provider = Provider.of<AddressProvider>(context, listen: false);
 
     return ExpansionTile(
       title: Text(address.title),

@@ -3,7 +3,7 @@ class PaginatedList {
   int currentPage, lastPage, perPage, from, to, total;
   String nextPageURL, prevPageURL, lastPageURL, firstPageURL;
 
-  PaginatedList.fromJson(Map<String, dynamic> json){
+  PaginatedList.fromJson(Map<String, dynamic> json) {
     this.currentPage = json["current_page"];
     this.lastPage = json["last_page"];
     this.perPage = json["per_page"];

@@ -18,8 +18,7 @@ class TrocadoDrawer extends StatefulWidget {
 class _TrocadoDrawerState extends State<TrocadoDrawer> {
   @override
   Widget build(BuildContext context) {
-    AuthenticationProvider authProvider =
-        context.watch<AuthenticationProvider>();
+    AuthenticationProvider authProvider = context.watch<AuthenticationProvider>();
 
     return Drawer(
       child: Column(mainAxisSize: MainAxisSize.max, children: [
@@ -29,7 +28,10 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
             children: [
               DrawerHeader(
                 child: GestureDetector(
-                  onTap: () => authProvider.isUserLogged ? Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileViewScreen(authProvider.user, isSelf: true))) : null,
+                  onTap: () => authProvider.isUserLogged
+                      ? Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfileViewScreen(authProvider.user, isSelf: true)))
+                      : null,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +39,8 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                       Hero(
                         tag: "user_" + authProvider.user?.id.toString(),
                         child: CircleAvatar(
-                          backgroundImage: authProvider.user?.avatarImage ?? User.profileImagePlaceholder,
+                          backgroundImage:
+                              authProvider.user?.avatarImage ?? User.profileImagePlaceholder,
                           minRadius: 48,
                         ),
                       ),
@@ -58,9 +61,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                             const Padding(padding: EdgeInsets.all(2)),
                             Flexible(
                                 child: Text(
-                                    authProvider.isUserLogged
-                                        ? authProvider.user.email
-                                        : "",
+                                    authProvider.isUserLogged ? authProvider.user.email : "",
                                     style: const TextStyle(color: Colors.black54))),
                           ],
                         ),
@@ -85,46 +86,39 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const ListTile(
-                            title: Text("Transações"),
-                            visualDensity: VisualDensity.compact
-                        ),
+                            title: Text("Transações"), visualDensity: VisualDensity.compact),
                         ListTile(
                           leading: const Icon(Icons.list_alt_outlined),
                           title: const Text("Meus Anúncios"),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => MyAdsScreen())),
+                          onTap: () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => MyAdsScreen())),
                         ),
                         ListTile(
                           leading: const Icon(Icons.unarchive_outlined),
                           title: const Text("Minhas Doações"),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => MyDonationsScreen())),
+                          onTap: () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => MyDonationsScreen())),
                         ),
                         ListTile(
                           leading: const Icon(Icons.archive_outlined),
                           title: const Text("Meus Pedidos"),
-                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MyOrdersScreen())),
+                          onTap: () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => MyOrdersScreen())),
                         ),
-                        const ListTile(
-                          title: Text("Conta"),
-                          visualDensity: VisualDensity.compact
-                        ),
+                        const ListTile(title: Text("Conta"), visualDensity: VisualDensity.compact),
                         ListTile(
                           leading: const Icon(Icons.directions),
                           title: const Text("Endereços"),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => AddressesScreen())),
+                          onTap: () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => AddressesScreen())),
                         ),
                         ListTile(
                           leading: const Icon(Icons.account_box),
                           title: const Text("Editar Perfil"),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => ProfileEditScreen(Provider.of<AuthenticationProvider>(context, listen: false).user))),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfileEditScreen(
+                                  Provider.of<AuthenticationProvider>(context, listen: false)
+                                      .user))),
                         ),
                       ],
                     )

@@ -24,13 +24,13 @@ class AdsProvider extends ChangeNotifier {
   List<Ad> get availableAds => groupsAds?.data ?? publicAds?.data;
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
-  Future<AdsListResponse> loadPublicAds({bool forceLoad=false, String query}) async {
-    if(publicAds != null && !forceLoad && (query == null || query.isEmpty)) {
+  Future<AdsListResponse> loadPublicAds({bool forceLoad = false, String query}) async {
+    if (publicAds != null && !forceLoad && (query == null || query.isEmpty)) {
       return publicAds;
     }
 
     String url = ADS_PUBLIC_URL;
-    if(query != null && query.isNotEmpty){
+    if (query != null && query.isNotEmpty) {
       url = url + "?query=" + query;
     }
 
@@ -40,7 +40,7 @@ class AdsProvider extends ChangeNotifier {
       var responseJson = await apiHelper.get(null, url);
       result = _parseAdsResponse(responseJson);
 
-      if(query == null || query.isEmpty){
+      if (query == null || query.isEmpty) {
         publicAds = result;
       }
     } finally {
@@ -50,17 +50,19 @@ class AdsProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<AdsListResponse> loadAvailableAds(BuildContext context, {bool forceLoad = false, String query}) async {
-    if(context == null || !Provider.of<AuthenticationProvider>(context, listen: false).isUserLogged){
+  Future<AdsListResponse> loadAvailableAds(BuildContext context,
+      {bool forceLoad = false, String query}) async {
+    if (context == null ||
+        !Provider.of<AuthenticationProvider>(context, listen: false).isUserLogged) {
       return await loadPublicAds(forceLoad: forceLoad, query: query);
     }
 
-    if(groupsAds != null && !forceLoad && (query == null || query.isEmpty)) {
+    if (groupsAds != null && !forceLoad && (query == null || query.isEmpty)) {
       return groupsAds;
     }
 
     String _url = ADS_USER_GROUPS_URL;
-    if(query != null && query.isNotEmpty){
+    if (query != null && query.isNotEmpty) {
       _url = _url + "?query=" + query;
     }
 
@@ -69,7 +71,7 @@ class AdsProvider extends ChangeNotifier {
       var responseJson = await apiHelper.get(context, _url);
       result = AdsListResponse.fromJson(responseJson);
 
-      if(query == null || query.isEmpty){
+      if (query == null || query.isEmpty) {
         groupsAds = result;
       }
     } finally {
@@ -80,7 +82,7 @@ class AdsProvider extends ChangeNotifier {
   }
 
   Future<AdsListResponse> loadUserAds(BuildContext context, {bool forceLoad = false}) async {
-    if(userAds != null && !forceLoad){
+    if (userAds != null && !forceLoad) {
       return userAds;
     }
 
@@ -101,7 +103,8 @@ class AdsProvider extends ChangeNotifier {
   }
 
   Future<bool> createAd(BuildContext context, Ad ad) async {
-    var responseJson = await apiHelper.multipartRequest(context, CREATE_AD_URL, body: ad.toJson(), files: ad.photoFiles);
+    var responseJson = await apiHelper.multipartRequest(context, CREATE_AD_URL,
+        body: ad.toJson(), files: ad.photoFiles);
     print("createAd Response:");
     print(responseJson);
     print("Converted anuncioL");
@@ -111,7 +114,7 @@ class AdsProvider extends ChangeNotifier {
     return true;
   }
 
-  AdsListResponse _parseAdsResponse(dynamic jsonData){
+  AdsListResponse _parseAdsResponse(dynamic jsonData) {
     return AdsListResponse.fromJson(jsonData);
   }
 
@@ -122,9 +125,11 @@ class AdsProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<Transaction> purchaseAd(BuildContext context, Ad ad) async  {
-    var response = await apiHelper.post(context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
-    unawaited(Provider.of<TransactionsProvider>(context, listen: false).loadOrdersList(context, forceLoad: true));
+  Future<Transaction> purchaseAd(BuildContext context, Ad ad) async {
+    var response =
+        await apiHelper.post(context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
+    unawaited(Provider.of<TransactionsProvider>(context, listen: false)
+        .loadOrdersList(context, forceLoad: true));
     return Transaction.fromJson(response);
   }
 }

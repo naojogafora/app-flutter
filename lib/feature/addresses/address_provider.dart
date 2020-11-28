@@ -10,17 +10,17 @@ class AddressProvider extends ChangeNotifier {
   ApiHelper apiHelper = ApiHelper();
   List<Address> userAddresses;
 
-  Future<List<Address>> loadUserAddresses(BuildContext context, { forceLoad = false }) async {
-    if(userAddresses != null && !forceLoad) {
+  Future<List<Address>> loadUserAddresses(BuildContext context, {forceLoad = false}) async {
+    if (userAddresses != null && !forceLoad) {
       return userAddresses;
     }
 
     var jsonList = await apiHelper.get(context, MY_ADDRESSES_URL);
     userAddresses = [];
-    for(dynamic jsonObj in jsonList){
-      try{
+    for (dynamic jsonObj in jsonList) {
+      try {
         userAddresses.add(Address.fromJson(jsonObj));
-      } catch(_){}
+      } catch (_) {}
     }
 
     return userAddresses;
@@ -29,7 +29,7 @@ class AddressProvider extends ChangeNotifier {
   /// Returns true if the address was saved, Exception otherwise.
   Future<bool> saveNewAddress(BuildContext context, Address address) async {
     await apiHelper.post(context, NEW_ADDRESS_URL, body: address.toJson());
-    if(userAddresses == null) userAddresses = [];
+    if (userAddresses == null) userAddresses = [];
     userAddresses.add(address);
     notifyListeners();
     return true; // If theres no exception, it means all went well.
@@ -44,7 +44,8 @@ class AddressProvider extends ChangeNotifier {
   }
 
   Future<bool> updateAddress(BuildContext context, Address address) async {
-    String updateUrl = DELETE_ADDRESS_URL.replaceAll("{ADDRESS_ID}", address.id.toString()) + "?_method=PUT";
+    String updateUrl =
+        DELETE_ADDRESS_URL.replaceAll("{ADDRESS_ID}", address.id.toString()) + "?_method=PUT";
     await apiHelper.post(context, updateUrl, body: address.toJson());
     userAddresses.removeWhere((Address element) => element.id == address.id);
     userAddresses.add(address);

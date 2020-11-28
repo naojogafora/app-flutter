@@ -65,7 +65,7 @@ class _PasswordResetState extends State<PasswordResetScreen> {
   }
 
   void resetPassword() {
-    if(busy) return;
+    if (busy) return;
 
     String email = emailController.text;
     String code = codeController.text;
@@ -108,7 +108,9 @@ class _PasswordResetState extends State<PasswordResetScreen> {
   void handleError(e) {
     _scaffoldKey.currentState
         .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text(e.toString())));
-    setState(() {busy = false;});
+    setState(() {
+      busy = false;
+    });
   }
 
   List<Widget> step1() {

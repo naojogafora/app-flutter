@@ -47,9 +47,10 @@ class AdSearchDelegate extends SearchDelegate {
     return Column(
       children: [
         FutureBuilder(
-          future: Provider.of<AdsProvider>(context, listen: false).loadAvailableAds(context, forceLoad: true, query: query),
+          future: Provider.of<AdsProvider>(context, listen: false)
+              .loadAvailableAds(context, forceLoad: true, query: query),
           builder: (context, snapshot) {
-            if(snapshot.hasError) {
+            if (snapshot.hasError) {
               return Text(snapshot.error.toString());
             } else if (snapshot.hasData) {
               return Expanded(

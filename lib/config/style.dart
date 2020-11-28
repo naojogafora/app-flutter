@@ -3,20 +3,18 @@ import 'package:flutter/material.dart';
 /// Tema padrão do app, aplicado no MaterialApp no arquivo main.dart e
 /// ao longo do app quando são necessárias cores para botões, textos etc.
 class Style {
-
   // ===== TEMA PADRÃO ===== //
   static ThemeData main = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: primaryColor,
-    accentColor: accentColor,
-    primarySwatch: Colors.green,
-    primaryColorDark: primaryColorDark,
-    accentColorBrightness: Brightness.light,
-    hintColor: primaryColorDark,
-    hoverColor: primaryColorDark,
-    focusColor: primaryColorDark,
-    backgroundColor: clearWhite
-  );
+      brightness: Brightness.light,
+      primaryColor: primaryColor,
+      accentColor: accentColor,
+      primarySwatch: Colors.green,
+      primaryColorDark: primaryColorDark,
+      accentColorBrightness: Brightness.light,
+      hintColor: primaryColorDark,
+      hoverColor: primaryColorDark,
+      focusColor: primaryColorDark,
+      backgroundColor: clearWhite);
 
   static const Color primaryColor = Color.fromARGB(255, 182, 235, 122);
   static const Color primaryColorDark = Color.fromARGB(255, 23, 112, 110);

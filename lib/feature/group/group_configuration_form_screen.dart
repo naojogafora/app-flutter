@@ -43,8 +43,8 @@ class _GroupConfigurationFormScreenState extends State<GroupConfigurationFormScr
                 padding: const EdgeInsets.all(8),
                 children: [
                   TextFormField(
-                    decoration:
-                    const InputDecoration(labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
+                    decoration: const InputDecoration(
+                        labelText: "Nome do Grupo", icon: Icon(Icons.short_text)),
                     onSaved: (String val) => widget.group.name = val,
                     initialValue: widget.group.name,
                     validator: (val) =>

@@ -22,13 +22,10 @@ class ApiHelper {
     print('Api Get, url $fullUrl');
 
     if (context != null &&
-        Provider.of<AuthenticationProvider>(context, listen: false)
-                .authenticationToken !=
-            null) {
+        Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
       headers.addAll({
         'Authorization': "Bearer " +
-            await Provider.of<AuthenticationProvider>(context, listen: false)
-                .authenticationToken
+            await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken
       });
     }
 
@@ -44,7 +41,9 @@ class ApiHelper {
   }
 
   Future<dynamic> post(BuildContext context, String url,
-      {Map<String, dynamic> body = const {}, String token, Map<String, String> extraHeaders}) async {
+      {Map<String, dynamic> body = const {},
+      String token,
+      Map<String, String> extraHeaders}) async {
     String fullUrl = _baseUrl + url;
     var responseJson;
     var headers = {'Accept': 'application/json'};
@@ -54,16 +53,14 @@ class ApiHelper {
       headers.addAll({'Authorization': "Bearer " + token});
     } else if (context != null) {
       String savedToken =
-          await Provider.of<AuthenticationProvider>(context, listen: false)
-              .authenticationToken;
+          await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken;
       if (savedToken != null) {
         headers.addAll({'Authorization': "Bearer " + savedToken});
       }
     }
 
     try {
-      final response =
-          await http.post(fullUrl, body: body, headers: headers);
+      final response = await http.post(fullUrl, body: body, headers: headers);
 
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -75,7 +72,11 @@ class ApiHelper {
   }
 
   Future<dynamic> multipartRequest(BuildContext context, String url,
-      {Map<String, dynamic> body, List<File> files, String token, Map<String, String> extraHeaders, List<http.MultipartFile> multipartFiles}) async {
+      {Map<String, dynamic> body,
+      List<File> files,
+      String token,
+      Map<String, String> extraHeaders,
+      List<http.MultipartFile> multipartFiles}) async {
     assert(files == null || multipartFiles == null);
 
     String fullUrl = _baseUrl + url;
@@ -83,12 +84,12 @@ class ApiHelper {
     var headers = {'Accept': 'Application/json'};
     print('Api multipartRequest, url $fullUrl');
 
-    if(multipartFiles == null) {
+    if (multipartFiles == null) {
       multipartFiles = [];
       for (int i = 0; i < files.length; i++) {
         http.MultipartFile mFile = http.MultipartFile.fromBytes(
-            "photos[$i]", files[i].readAsBytesSync(), filename: getFileName(files[i].path),
-            contentType: getMediaTypeFromFile(files[i].path));
+            "photos[$i]", files[i].readAsBytesSync(),
+            filename: getFileName(files[i].path), contentType: getMediaTypeFromFile(files[i].path));
         multipartFiles.add(mFile);
       }
     }
@@ -99,8 +100,7 @@ class ApiHelper {
       headers.addAll({'Authorization': "Bearer " + token});
     } else if (context != null) {
       String savedToken =
-          await Provider.of<AuthenticationProvider>(context, listen: false)
-              .authenticationToken;
+          await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken;
       if (savedToken != null) {
         headers.addAll({'Authorization': "Bearer " + savedToken});
       }
@@ -108,7 +108,7 @@ class ApiHelper {
 
     try {
       http.MultipartRequest request = http.MultipartRequest("POST", postUri);
-      if(body != null) {
+      if (body != null) {
         request.fields.addAll(body);
       }
       request.files.addAll(multipartFiles);
@@ -130,14 +130,10 @@ class ApiHelper {
     var headers = {'Accept': 'Application/json'};
 
     if (context != null &&
-        Provider.of<AuthenticationProvider>(context, listen: false)
-                .authenticationToken !=
-            null) {
+        Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
       headers.addAll({
         'Authorization': "Bearer " +
-            await Provider
-                .of<AuthenticationProvider>(context, listen: false)
-                .authenticationToken
+            await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken
       });
     }
 
@@ -176,16 +172,16 @@ class ApiHelper {
       case 500:
       default:
         throw FetchDataException(
-            'Request Error (code ${response.statusCode}). ' +
-                message?.toString(), response.statusCode);
+            'Request Error (code ${response.statusCode}). ' + message?.toString(),
+            response.statusCode);
     }
   }
 
-  MediaType getMediaTypeFromFile(String _path){
+  MediaType getMediaTypeFromFile(String _path) {
     return MediaType.parse(lookupMimeType(_path));
   }
 
-  String getFileName(String _path){
+  String getFileName(String _path) {
     List<String> parts = _path.split("/");
     return parts.last;
   }

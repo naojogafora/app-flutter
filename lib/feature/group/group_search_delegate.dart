@@ -50,7 +50,7 @@ class GroupSearchDelegate extends SearchDelegate {
         FutureBuilder(
           future: Provider.of<GroupsProvider>(context, listen: false).searchGroups(context, query),
           builder: (context, snapshot) {
-            if(snapshot.hasError) {
+            if (snapshot.hasError) {
               return Text(snapshot.error.toString());
             } else if (snapshot.hasData) {
               return Expanded(

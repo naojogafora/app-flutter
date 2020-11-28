@@ -117,10 +117,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<BasicMessageResponse> changePassword(
       BuildContext context, String oldPassword, String newPassword) async {
-    var response = await apiHelper.post(context, CHANGE_PASSWORD, body: {
-      'old_password': oldPassword,
-      'new_password': newPassword
-    });
+    var response = await apiHelper.post(context, CHANGE_PASSWORD,
+        body: {'old_password': oldPassword, 'new_password': newPassword});
     return BasicMessageResponse.fromJson(response);
   }
 
@@ -129,7 +127,8 @@ class AuthenticationProvider extends ChangeNotifier {
     return BasicMessageResponse.fromJson(response);
   }
 
-  Future<BasicMessageResponse> resetPassword(BuildContext context, String email, String code, String newPassword) async {
+  Future<BasicMessageResponse> resetPassword(
+      BuildContext context, String email, String code, String newPassword) async {
     var response = await apiHelper.post(context, RESET_PASSWORD, body: {
       'email': email,
       'code': code,
@@ -140,8 +139,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<String> uploadProfileImage(BuildContext context, File image) async {
     List<http.MultipartFile> files = [];
-    files.add(http.MultipartFile.fromBytes(
-        "photo", image.readAsBytesSync(), filename: apiHelper.getFileName(image.path),
+    files.add(http.MultipartFile.fromBytes("photo", image.readAsBytesSync(),
+        filename: apiHelper.getFileName(image.path),
         contentType: apiHelper.getMediaTypeFromFile(image.path)));
     var response = await apiHelper.multipartRequest(context, PHOTO_UPLOAD, multipartFiles: files);
     user.profilePhotoUrl = response["profile_photo_url"];

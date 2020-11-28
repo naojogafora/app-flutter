@@ -165,7 +165,7 @@ class GroupsProvider extends ChangeNotifier {
     var response = await apiHelper.post(context, CREATE_URL, body: group.toCreateJson());
     Group createdGroup = Group.fromJson(response);
 
-    if(_userGroups?.data != null) {
+    if (_userGroups?.data != null) {
       _userGroups.data.insert(0, createdGroup);
       notifyListeners();
     }

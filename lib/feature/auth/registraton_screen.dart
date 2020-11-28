@@ -43,28 +43,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     decoration: const InputDecoration(hintText: "Nome"),
                     textInputAction: TextInputAction.next,
                     controller: nameController,
-                    onSubmitted: (v) =>
-                        FocusScope.of(context).requestFocus(focusLastName),
+                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusLastName),
                   ),
                   TextField(
                     decoration: const InputDecoration(hintText: "Sobrenome"),
                     textInputAction: TextInputAction.next,
                     controller: lastNameController,
                     focusNode: focusLastName,
-                    onSubmitted: (v) =>
-                        FocusScope.of(context).requestFocus(focusEmail),
+                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusEmail),
                   ),
                   TextField(
                     decoration: const InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
                     controller: emailController,
                     focusNode: focusEmail,
-                    onSubmitted: (v) =>
-                        FocusScope.of(context).requestFocus(focusPassword),
+                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
-                    decoration: const InputDecoration(
-                        hintText: "Senha", fillColor: Style.primaryColorDark),
+                    decoration:
+                        const InputDecoration(hintText: "Senha", fillColor: Style.primaryColorDark),
                     textInputAction: TextInputAction.send,
                     obscureText: true,
                     controller: passwordController,
@@ -72,18 +69,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onSubmitted: (v) => register(),
                   ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  loading ? const Center(child: CircularProgressIndicator()) : StandardButton(
-                    "Criar Conta",
-                    register,
-                    Style.primaryColorDark,
-                    Style.clearWhite,
-                  ),
+                  loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : StandardButton(
+                          "Criar Conta",
+                          register,
+                          Style.primaryColorDark,
+                          Style.clearWhite,
+                        ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                   Center(
                     child: GestureDetector(
                         child: const Text("Já tem conta? Faça Login!",
-                            style: TextStyle(
-                                decoration: TextDecoration.underline)),
+                            style: TextStyle(decoration: TextDecoration.underline)),
                         onTap: () => Navigator.of(context).pushReplacementNamed("/login")),
                   ),
                 ],
@@ -106,7 +104,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     registerService.register(context, name, lastName, email, password).then((value) {
       loading = false;
       setState(() {});
-      DefaultDialog.show(context, title: "Sucesso!", message: value.toString(), okCallback: () => Navigator.of(context).pop());
+      DefaultDialog.show(context,
+          title: "Sucesso!",
+          message: value.toString(),
+          okCallback: () => Navigator.of(context).pop());
     }).catchError((error) {
       loading = false;
       setState(() {});

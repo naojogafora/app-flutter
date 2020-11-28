@@ -12,16 +12,28 @@ class TransactionListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       isThreeLine: true,
-      leading: transaction.advertisement.firstPhoto != null ? Image.network(transaction.advertisement.firstPhoto.url, height: 60, width: 60, fit: BoxFit.cover,) : const Icon(Icons.no_photography_sharp, size: 60),
+      leading: transaction.advertisement.firstPhoto != null
+          ? Image.network(
+              transaction.advertisement.firstPhoto.url,
+              height: 60,
+              width: 60,
+              fit: BoxFit.cover,
+            )
+          : const Icon(Icons.no_photography_sharp, size: 60),
       title: Text(transaction.advertisement.title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text((isSeller ? "Doado para: " + transaction.buyer.name : "Doador por: " + transaction.seller.name)),
-          Text("Data: " + transaction.createdAt.day.toString() + "/" + transaction.createdAt.month.toString() + "/" + transaction.createdAt.year.toString())
-        ]
-      ),
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionScreen(transaction))),
+      subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text((isSeller
+            ? "Doado para: " + transaction.buyer.name
+            : "Doador por: " + transaction.seller.name)),
+        Text("Data: " +
+            transaction.createdAt.day.toString() +
+            "/" +
+            transaction.createdAt.month.toString() +
+            "/" +
+            transaction.createdAt.year.toString())
+      ]),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => TransactionScreen(transaction))),
     );
   }
 }

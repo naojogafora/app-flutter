@@ -67,8 +67,9 @@ class _GroupJoinListScreenState extends State<GroupJoinListScreen> {
     );
   }
 
-  void handleSuccess(BuildContext context, BasicMessageResponse response, GroupJoinRequest request) {
-    if(response.success){
+  void handleSuccess(
+      BuildContext context, BasicMessageResponse response, GroupJoinRequest request) {
+    if (response.success) {
       widget.group.groupJoinRequests.remove(request);
       setState(() {});
     } else {

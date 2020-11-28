@@ -17,8 +17,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final int tabCount = 2;
   List<Widget> tabViews;
   TabController _tabController;
@@ -32,25 +31,20 @@ class _HomeScreenState extends State<HomeScreen>
         provider.loadAvailableAds(context);
 
         return AdsTab(
-          provider.availableAds,
-          () => provider.loadAvailableAds(context, forceLoad: true)
-        );
+            provider.availableAds, () => provider.loadAvailableAds(context, forceLoad: true));
       },
     ));
 
     if (!isLogged) {
       tabViews.add(Consumer<GroupsProvider>(
         builder: (BuildContext context, GroupsProvider provider, _) =>
-            GroupsTab(provider.publicGroups,
-                () => provider.loadPublicGroups(forceLoad: true)),
+            GroupsTab(provider.publicGroups, () => provider.loadPublicGroups(forceLoad: true)),
       ));
     } else {
-      Provider.of<GroupsProvider>(context, listen: false)
-          .loadUserGroups(context);
+      Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context);
       tabViews.add(Consumer<GroupsProvider>(
         builder: (BuildContext context, GroupsProvider provider, _) =>
-            GroupsTab(provider.userGroups,
-                () => provider.loadUserGroups(context, forceLoad: true)),
+            GroupsTab(provider.userGroups, () => provider.loadUserGroups(context, forceLoad: true)),
       ));
     }
   }
@@ -112,9 +106,7 @@ class _HomeScreenState extends State<HomeScreen>
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: _tabController.index == 0
-                    ? AdSearchDelegate()
-                    : GroupSearchDelegate(),
+                delegate: _tabController.index == 0 ? AdSearchDelegate() : GroupSearchDelegate(),
               );
             },
           ),

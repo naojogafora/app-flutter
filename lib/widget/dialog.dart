@@ -6,7 +6,7 @@ class DefaultDialog {
   String okButtonText;
   BuildContext context;
 
-  DefaultDialog.show(context, {message, title, okCallback, okButtonText}){
+  DefaultDialog.show(context, {message, title, okCallback, okButtonText}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -34,7 +34,7 @@ class DefaultDialog {
     );
   }
 
-  void defaultCallback(context){
+  void defaultCallback(context) {
     Navigator.of(context).pop();
   }
 }

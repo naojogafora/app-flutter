@@ -16,20 +16,20 @@ class AdsTab extends StatelessWidget {
       children: [
         ads != null
             ? Expanded(
-          child: RefreshIndicator(
-            onRefresh: pullToRefresh ?? emptyFuture,
-            child: ListView.builder(
-              itemCount: ads.length,
-              itemBuilder: (context, i) {
-                return AdListTile(ads[i]);
-              },
-            ),
-          ),
-        )
+                child: RefreshIndicator(
+                  onRefresh: pullToRefresh ?? emptyFuture,
+                  child: ListView.builder(
+                    itemCount: ads.length,
+                    itemBuilder: (context, i) {
+                      return AdListTile(ads[i]);
+                    },
+                  ),
+                ),
+              )
             : const Padding(
-          padding: EdgeInsets.all(16),
-          child: Center(child: CircularProgressIndicator()),
-        ),
+                padding: EdgeInsets.all(16),
+                child: Center(child: CircularProgressIndicator()),
+              ),
       ],
     );
   }

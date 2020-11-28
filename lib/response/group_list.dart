@@ -5,13 +5,12 @@ class GroupListResponse {
   PaginatedList paginatedList;
   List<Group> data;
 
-  GroupListResponse.fromJson(Map<String, dynamic> json){
+  GroupListResponse.fromJson(Map<String, dynamic> json) {
     this.paginatedList = PaginatedList.fromJson(json);
 
     this.data = [];
-    for(dynamic objFields in json["data"]){
+    for (dynamic objFields in json["data"]) {
       this.data.add(Group.fromJson(objFields));
     }
   }
-
 }

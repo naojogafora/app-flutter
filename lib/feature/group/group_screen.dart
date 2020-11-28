@@ -117,7 +117,11 @@ class _GroupScreenState extends State<GroupScreen> {
             if (adsListRequest.data.isEmpty) {
               return const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Text("Não há anúncios aqui ainda, que tal publicar um?!", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                child: Text(
+                  "Não há anúncios aqui ainda, que tal publicar um?!",
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
               );
             }
 

@@ -10,7 +10,7 @@ class Transaction {
 
   User get seller => advertisement.user;
 
-  Transaction.fromJson(Map<String, dynamic> json){
+  Transaction.fromJson(Map<String, dynamic> json) {
     this.id = json["id"];
     this.buyerId = json["buyer_id"];
     this.advertisementId = json["advertisement_id"];

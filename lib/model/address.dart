@@ -3,11 +3,11 @@ class Address {
   String title;
   String street, city, state, zipCode, country;
 
-  Address(){
+  Address() {
     this.country = "Brasil";
   }
 
-  Address.fromJson(Map<String, dynamic> json){
+  Address.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
     this.title = json['title'];
     this.street = json['street'];
@@ -20,11 +20,11 @@ class Address {
   }
 
   Map<String, dynamic> toJson() => {
-    'title': this.title,
-    'street': this.street,
-    'city': this.city,
-    'state': this.state,
-    'zip_code': this.zipCode,
-    'country': this.country,
-  };
+        'title': this.title,
+        'street': this.street,
+        'city': this.city,
+        'state': this.state,
+        'zip_code': this.zipCode,
+        'country': this.country,
+      };
 }

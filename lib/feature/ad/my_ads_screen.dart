@@ -15,39 +15,39 @@ class MyAdsScreen extends StatelessWidget {
     return Scaffold(
         appBar: trocadoAppBar("Meus Anúncios"),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateAdScreen())),
+          onPressed: () =>
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateAdScreen())),
           child: const Icon(Icons.add, color: Style.clearWhite),
         ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: RefreshIndicator(
-                onRefresh: () => provider.loadUserAds(context, forceLoad: true),
-                child: FutureBuilder<AdsListResponse>(
-                    initialData: provider.userAds,
-                    future: provider.loadUserAds(context),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text(snapshot.error.toString()));
-                      } else if (!snapshot.hasData) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
+                child: RefreshIndicator(
+              onRefresh: () => provider.loadUserAds(context, forceLoad: true),
+              child: FutureBuilder<AdsListResponse>(
+                initialData: provider.userAds,
+                future: provider.loadUserAds(context),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
+                  } else if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                      AdsListResponse response = snapshot.data;
+                  AdsListResponse response = snapshot.data;
 
-                      if(response.data.isEmpty) {
-                        return const Center(child: Text("Voce ainda não tem anúncios!"));
-                      }
+                  if (response.data.isEmpty) {
+                    return const Center(child: Text("Voce ainda não tem anúncios!"));
+                  }
 
-                      return ListView.builder(
-                        itemCount: response.data.length,
-                        itemBuilder: (context, i) => MyAdListTile(response.data[i]),
-                      );
-                    },
-                  ),
-              )
-            ),
+                  return ListView.builder(
+                    itemCount: response.data.length,
+                    itemBuilder: (context, i) => MyAdListTile(response.data[i]),
+                  );
+                },
+              ),
+            )),
           ],
         ));
   }

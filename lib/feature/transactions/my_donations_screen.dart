@@ -13,8 +13,7 @@ class MyDonationsScreen extends StatefulWidget {
 class _MyDonationsScreenState extends State<MyDonationsScreen> {
   @override
   Widget build(BuildContext context) {
-    TransactionsProvider provider =
-        Provider.of<TransactionsProvider>(context, listen: false);
+    TransactionsProvider provider = Provider.of<TransactionsProvider>(context, listen: false);
 
     return Scaffold(
       appBar: trocadoAppBar("Minhas Doações"),
@@ -33,8 +32,7 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                     if (snapshot.hasData) {
                       TransactionListResponse donationsList = snapshot.data;
 
-                      if (donationsList != null &&
-                          donationsList.data.isEmpty) {
+                      if (donationsList != null && donationsList.data.isEmpty) {
                         return ListView(
                           children: [
                             const Center(child: Text("Não há doações ainda :)")),
@@ -43,11 +41,10 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                       }
 
                       return ListView.builder(
-                        itemCount: provider.donationsList != null
-                            ? provider.donationsList.data.length
-                            : 0,
-                        itemBuilder: (context, i) => TransactionListTile(
-                            provider.donationsList.data[i], true),
+                        itemCount:
+                            provider.donationsList != null ? provider.donationsList.data.length : 0,
+                        itemBuilder: (context, i) =>
+                            TransactionListTile(provider.donationsList.data[i], true),
                       );
                     } else if (snapshot.hasError) {
                       return Text(snapshot.error.toString());

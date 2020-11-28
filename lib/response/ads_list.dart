@@ -5,11 +5,11 @@ class AdsListResponse {
   PaginatedList paginatedList;
   List<Ad> data;
 
-  AdsListResponse.fromJson(Map<String, dynamic> json){
+  AdsListResponse.fromJson(Map<String, dynamic> json) {
     this.paginatedList = PaginatedList.fromJson(json);
 
     this.data = [];
-    for(dynamic adArray in json["data"]){
+    for (dynamic adArray in json["data"]) {
       this.data.add(Ad.fromJson(adArray));
     }
   }

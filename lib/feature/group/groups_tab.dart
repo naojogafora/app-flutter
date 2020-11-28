@@ -23,21 +23,26 @@ class GroupsTab extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: groups.length + 1,
                     itemBuilder: (context, i) {
-                      if(i >= groups.length) {
+                      if (i >= groups.length) {
                         return Column(
                           children: [
                             const Divider(
-                              color: Colors.black54, indent: 12, endIndent: 12, height: 24,),
+                              color: Colors.black54,
+                              indent: 12,
+                              endIndent: 12,
+                              height: 24,
+                            ),
                             ListTile(
-                              leading: const Icon(
-                                  Icons.add, color: Style.primaryColorDark, size: 28),
-                              title: const Text("Criar Novo Grupo", style: TextStyle(
-                                  color: Style.primaryColorDark),),
+                              leading:
+                                  const Icon(Icons.add, color: Style.primaryColorDark, size: 28),
+                              title: const Text(
+                                "Criar Novo Grupo",
+                                style: TextStyle(color: Style.primaryColorDark),
+                              ),
                               subtitle: const Text(
                                   "Não encontrou o que queria? Crie o seu grupo! Vocẽ pode convidar amigos, colegas de trabalho ou conhecidos do bairro!"),
-                              onTap: () =>
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => GroupFormScreen())),
+                              onTap: () => Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) => GroupFormScreen())),
                             ),
                           ],
                         );

@@ -38,7 +38,8 @@ class AddressesScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add, color: Style.clearWhite),
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddressFormScreen())),
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AddressFormScreen())),
       ),
     );
   }

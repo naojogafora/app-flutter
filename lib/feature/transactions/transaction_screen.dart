@@ -21,8 +21,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-    otherUser = authProvider.user.id == widget.transaction.buyer.id ? widget.transaction.seller : widget.transaction.buyer;
+    AuthenticationProvider authProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
+    otherUser = authProvider.user.id == widget.transaction.buyer.id
+        ? widget.transaction.seller
+        : widget.transaction.buyer;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -38,10 +41,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   Widget showUserTile(User user) {
     return ListTile(
-      title: Text(user.fullName, style: const TextStyle(fontSize: 18, color: Style.primaryColorDark)),
+      title:
+          Text(user.fullName, style: const TextStyle(fontSize: 18, color: Style.primaryColorDark)),
       subtitle: Text("Usuário desde " + user.creationDate),
       leading: CircleAvatar(backgroundImage: user.avatarImage),
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileViewScreen(user))),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ProfileViewScreen(user))),
     );
   }
 }

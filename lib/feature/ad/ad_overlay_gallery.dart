@@ -42,7 +42,6 @@ class _AdOverlayGalleryState extends State<AdOverlayGallery> {
   bool hasNextPhoto() => currentPhoto < widget.photos.length - 1;
   bool hasPreviousPhoto() => currentPhoto > 0;
 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -59,10 +58,11 @@ class _AdOverlayGalleryState extends State<AdOverlayGallery> {
             children: [
               Align(
                 child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: widget.closeCallback,
-                    iconSize: 42,
-                    color: Style.clearWhite,),
+                  icon: const Icon(Icons.close),
+                  onPressed: widget.closeCallback,
+                  iconSize: 42,
+                  color: Style.clearWhite,
+                ),
                 alignment: Alignment.centerRight,
               ),
               Expanded(
@@ -79,7 +79,10 @@ class _AdOverlayGalleryState extends State<AdOverlayGallery> {
                       onPressed: previousPhoto,
                       iconSize: 56,
                       color: hasPreviousPhoto() ? Style.clearWhite : Colors.white38),
-                  Text((currentPhoto+1).toString()  + "/" + widget.photos.length.toString(), style: const TextStyle(color: Style.clearWhite, fontSize: 16),),
+                  Text(
+                    (currentPhoto + 1).toString() + "/" + widget.photos.length.toString(),
+                    style: const TextStyle(color: Style.clearWhite, fontSize: 16),
+                  ),
                   IconButton(
                       icon: const Icon(Icons.keyboard_arrow_right),
                       onPressed: nextPhoto,
