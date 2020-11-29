@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
-import 'package:trocado_flutter/feature/account/profile_view_screen.dart';
 import 'package:trocado_flutter/feature/ad/ad_overlay_gallery.dart';
 import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
 import 'package:trocado_flutter/model/ad.dart';
 import 'package:trocado_flutter/model/transaction.dart';
+import 'package:trocado_flutter/widget/user_tile.dart';
 
 class AdDetailsScreen extends StatefulWidget {
   final Ad ad;
@@ -128,19 +128,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                           "Doaçao por: ",
                           style: TextStyle(color: Colors.black54),
                         ),
-                        ListTile(
-                          title: Text(
-                            widget.ad.user.fullName,
-                            style: const TextStyle(color: Style.primaryColorDark, fontSize: 18),
-                          ),
-                          subtitle: Text("Usuário desde " + widget.ad.user.creationDate),
-                          leading: Hero(
-                            child: CircleAvatar(backgroundImage: widget.ad.user.avatarImage),
-                            tag: "user_" + widget.ad.user.id.toString(),
-                          ),
-                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ProfileViewScreen(widget.ad.user))),
-                        ),
+                        UserTile(context: context, user: widget.ad.user),
                         //TODO Questions & Answers
                         const Divider(height: 12, color: Colors.transparent),
                         Row(
