@@ -131,7 +131,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                         UserTile(context: context, user: widget.ad.user),
                         //TODO Questions & Answers
                         const Divider(height: 12, color: Colors.transparent),
-                        Row(
+                        widget.ad.active ? Row(
                           children: [
                             Expanded(
                               child: MaterialButton(
@@ -149,7 +149,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                               ),
                             ),
                           ],
-                        ),
+                        ) : Container(),
                       ],
                     ),
                   ),

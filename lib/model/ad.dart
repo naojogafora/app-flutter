@@ -18,6 +18,7 @@ class Ad {
   List<File> photoFiles;
 
   Photo get firstPhoto => photos != null && photos.isNotEmpty ? photos[0] : null;
+  bool get active => !finished && !suspended;
 
   Ad() {
     photoFiles = [];
