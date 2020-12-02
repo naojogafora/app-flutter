@@ -1,4 +1,5 @@
 import 'package:trocado_flutter/model/ad.dart';
+import 'package:trocado_flutter/model/transaction_message.dart';
 import 'package:trocado_flutter/model/user.dart';
 
 class Transaction {
@@ -7,6 +8,7 @@ class Transaction {
   DateTime createdAt, updatedAt;
   Ad advertisement;
   User buyer;
+  List<TransactionMessage> messages = [];
 
   User get seller => advertisement.user;
   String get creationDate =>
@@ -20,5 +22,10 @@ class Transaction {
     this.updatedAt = DateTime.parse(json["updated_at"]);
     this.advertisement = Ad.fromJson(json["advertisement"]);
     this.buyer = User.fromJson(json["buyer"]);
+    if(json["messages"] != null){
+      for(dynamic obj in json["messages"]){
+        messages.add(TransactionMessage.fromJson(obj));
+      }
+    }
   }
 }
