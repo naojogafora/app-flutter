@@ -9,6 +9,8 @@ class Transaction {
   User buyer;
 
   User get seller => advertisement.user;
+  String get creationDate =>
+      createdAt.day.toString() + "/" + createdAt.month.toString() + "/" + createdAt.year.toString();
 
   Transaction.fromJson(Map<String, dynamic> json) {
     this.id = json["id"];
