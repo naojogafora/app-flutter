@@ -53,7 +53,7 @@ class TransactionScreen extends StatelessWidget {
             title: const Text("Ver Mensagens", style: TextStyle(color: Style.clearWhite)),
             trailing: const Icon(Icons.arrow_forward_ios, color: Style.clearWhite),
             tileColor: Style.accentColor,
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionChatScreen())),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionChatScreen(transaction))),
           )
         ],
       ),
