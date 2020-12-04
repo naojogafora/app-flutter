@@ -6,7 +6,6 @@ import 'package:trocado_flutter/feature/helpers.dart';
 import 'package:trocado_flutter/feature/transactions/transactions_provider.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/model/transaction_message.dart';
-import 'package:trocado_flutter/model/user.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
 class TransactionChatScreen extends StatefulWidget {
@@ -20,6 +19,7 @@ class TransactionChatScreen extends StatefulWidget {
 class _TransactionChatScreenState extends State<TransactionChatScreen> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController messageController = TextEditingController();
+  ScrollController scrollController = ScrollController(keepScrollOffset: true);
   bool loading = false;
   int selfId;
 
@@ -38,6 +38,9 @@ class _TransactionChatScreenState extends State<TransactionChatScreen> {
           Expanded(
             child: ListView.builder(
               itemCount: widget.transaction.messages.length,
+              controller: scrollController,
+              shrinkWrap: true,
+              reverse: true,
               itemBuilder: (context, i) {
                 TransactionMessage message = widget.transaction.messages[i];
                 return ListTile(
@@ -112,6 +115,7 @@ class _TransactionChatScreenState extends State<TransactionChatScreen> {
         messageController.text = "";
         loading = false;
       });
+      scrollController.animateTo(0, curve: Curves.linear, duration: const Duration(milliseconds: 400));
     }).catchError(handleError);
   }
 

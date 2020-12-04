@@ -53,7 +53,7 @@ class TransactionsProvider extends ChangeNotifier {
         Transaction t = ordersList.data[i];
         if (t.id == message.transactionId) {
           ordersList.data.remove(t);
-          t.messages.add(message);
+          t.messages.insert(0, message);
           ordersList.data.insert(i, t);
           return;
         }
@@ -65,7 +65,7 @@ class TransactionsProvider extends ChangeNotifier {
         Transaction t = donationsList.data[i];
         if (t.id == message.transactionId) {
           donationsList.data.remove(t);
-          t.messages.add(message);
+          t.messages.insert(0, message);
           donationsList.data.insert(i, t);
           return;
         }
