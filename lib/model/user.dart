@@ -42,8 +42,7 @@ class User {
         )
       : profileImagePlaceholder;
 
-  static ImageProvider get profileImagePlaceholder =>
-      const AssetImage("assets/profile-placeholder.png");
+  static const ImageProvider profileImagePlaceholder = AssetImage("assets/profile-placeholder.png");
 
   @override
   int get hashCode => super.hashCode;
