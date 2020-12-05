@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:trocado_flutter/model/photo.dart';
+import 'package:trocado_flutter/model/question.dart';
 import 'package:trocado_flutter/model/user.dart';
 
 import 'address.dart';
@@ -16,6 +17,7 @@ class Ad {
   List<Address> addresses;
   List<Group> groups;
   List<File> photoFiles;
+  List<Question> questions;
 
   Photo get firstPhoto => photos != null && photos.isNotEmpty ? photos[0] : null;
   bool get active => !finished && !suspended;
@@ -60,6 +62,13 @@ class Ad {
     if (json['photos'] != null) {
       for (dynamic photoArray in json['photos']) {
         photos.add(Photo.fromJson(photoArray));
+      }
+    }
+
+    this.questions = [];
+    if (json['questions'] != null){
+      for(dynamic obj in json['questions']){
+        questions.add(Question.fromJson(obj));
       }
     }
   }
