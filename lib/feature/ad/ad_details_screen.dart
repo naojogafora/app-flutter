@@ -129,7 +129,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                         UserTile(context: context, user: widget.ad.user),
                         QuestionsList(widget.ad),
                         const Divider(color: Colors.black26, indent: 8, endIndent: 8),
-                        widget.ad.active
+                        widget.ad.active && Provider.of<AuthenticationProvider>(context, listen: false).user != null && widget.ad.user.id != Provider.of<AuthenticationProvider>(context, listen: false).user.id
                             ? Row(
                                 children: [
                                   Expanded(
