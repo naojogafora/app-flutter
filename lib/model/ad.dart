@@ -21,6 +21,7 @@ class Ad {
 
   Photo get firstPhoto => photos != null && photos.isNotEmpty ? photos[0] : null;
   bool get active => !finished && !suspended;
+  List<Question> get unansweredQuestions => questions == null ? [] : questions.where((e) => e.answer == null || e.answer.isEmpty).toList();
 
   Ad() {
     photoFiles = [];

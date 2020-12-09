@@ -32,7 +32,9 @@ class MyAdListTile extends StatelessWidget {
               ),
       ),
       title: Text(ad.title),
-      subtitle: Text(
+      subtitle: ad.unansweredQuestions.isNotEmpty ?
+        Text(ad.unansweredQuestions.length.toString() + " perguntas aguardam resposta") :
+      Text(
         "Anunciado em " +
             ad.groups.length.toString() +
             " grupo" +
