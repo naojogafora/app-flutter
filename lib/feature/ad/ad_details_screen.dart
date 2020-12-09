@@ -129,7 +129,13 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                         UserTile(context: context, user: widget.ad.user),
                         QuestionsList(widget.ad),
                         const Divider(color: Colors.black26, indent: 8, endIndent: 8),
-                        widget.ad.active && Provider.of<AuthenticationProvider>(context, listen: false).user != null && widget.ad.user.id != Provider.of<AuthenticationProvider>(context, listen: false).user.id
+                        widget.ad.active &&
+                                Provider.of<AuthenticationProvider>(context, listen: false).user !=
+                                    null &&
+                                widget.ad.user.id !=
+                                    Provider.of<AuthenticationProvider>(context, listen: false)
+                                        .user
+                                        .id
                             ? Row(
                                 children: [
                                   Expanded(
@@ -144,7 +150,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                                                 fontSize: 18,
                                               )),
                                       color: Style.accentColor,
-                                      onPressed: purchase,
+                                      onPressed: purchaseDialog,
                                     ),
                                   ),
                                 ],
@@ -161,6 +167,62 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
         ],
       ),
     );
+  }
+
+  void purchaseDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          bool checked = false;
+
+          return SimpleDialog(
+            title: const Text("Confirmação"),
+            children: [
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: Text("1. Apenas solicite um produto se tiver interesse e certeza de que irá buscá-lo o quanto antes."
+                          " O aplicativo é colaborativo, e incentiva a colaboração e o senso de comunidade. Confiamos"
+                          " em você e nos demais usuários nessa missão.\n"
+                          "2. Vocẽ tem um limite de solicitações por mês. Se tiver dúvidas, use o campo Perguntas. Lembre-se de doar a"
+                          " outras pessoas da mesma forma que colaboram com você. :)\n"
+                          "3. A desistência da solicitação de produtos pode acarretar em limitações ou, em casos recorrentes,"
+                          " exclusão da conta. Escolha bem seus produtos e colabore com os demais membros."),
+                    ),
+                    CheckboxListTile(
+                      onChanged: (val) => setState(() => checked = val),
+                      value: checked,
+                      title: const Text("Concordo com as informações acima", style: TextStyle(fontSize: 14),),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: MaterialButton(
+                            child: const Text("Cancelar"),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ),
+                        MaterialButton(
+                          child: const Text("Confirmar"),
+                          textColor: checked ? Colors.black87 : Colors.black38,
+                          enableFeedback: checked,
+                          onPressed: (){
+                            if(!checked) return;
+                            purchase();
+                          },
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+        );
+        });
   }
 
   void purchase() {
@@ -227,36 +289,40 @@ class _QuestionsListState extends State<QuestionsList> {
             );
           },
         ))
-        ..add(Provider.of<AuthenticationProvider>(context, listen: false).user == null || widget.ad.user.id == Provider.of<AuthenticationProvider>(context, listen: false).user.id ? Container() : (showQuestionField
-            ? Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      maxLines: 1,
-                      maxLength: 255,
-                      controller: controller,
-                      decoration: const InputDecoration(
-                          labelText: "Digite uma pergunta", contentPadding: EdgeInsets.all(0)),
+        ..add(Provider.of<AuthenticationProvider>(context, listen: false).user == null ||
+                widget.ad.user.id ==
+                    Provider.of<AuthenticationProvider>(context, listen: false).user.id
+            ? Container()
+            : (showQuestionField
+                ? Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          maxLines: 1,
+                          maxLength: 255,
+                          controller: controller,
+                          decoration: const InputDecoration(
+                              labelText: "Digite uma pergunta", contentPadding: EdgeInsets.all(0)),
+                        ),
+                      ),
+                      IconButton(
+                          icon: loadingQuestion
+                              ? const CircularProgressIndicator()
+                              : const Icon(Icons.send),
+                          onPressed: submit),
+                    ],
+                  )
+                : GestureDetector(
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text("Escrever pergunta...",
+                              style: TextStyle(color: Style.primaryColorDark))),
                     ),
-                  ),
-                  IconButton(
-                      icon: loadingQuestion
-                          ? const CircularProgressIndicator()
-                          : const Icon(Icons.send),
-                      onPressed: submit),
-                ],
-              )
-            : GestureDetector(
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(
-                      child: Text("Escrever pergunta...",
-                          style: TextStyle(color: Style.primaryColorDark))),
-                ),
-                onTap: () => setState(() {
-                      showQuestionField = true;
-                    })))),
+                    onTap: () => setState(() {
+                          showQuestionField = true;
+                        })))),
     );
   }
 
@@ -267,11 +333,13 @@ class _QuestionsListState extends State<QuestionsList> {
     });
 
     String question = controller.text;
-    if(question.length < 5){
+    if (question.length < 5) {
       return;
     }
 
-    Provider.of<AdsProvider>(context, listen: false).submitQuestion(context, widget.ad.id, question).then((value){
+    Provider.of<AdsProvider>(context, listen: false)
+        .submitQuestion(context, widget.ad.id, question)
+        .then((value) {
       setState(() {
         loadingQuestion = false;
         controller.text = "";
