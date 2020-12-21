@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trocado_flutter/feature/addresses/address_form_screen.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
 import 'package:trocado_flutter/model/address.dart';
 
@@ -30,12 +29,12 @@ class AddressListTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                tooltip: "Editar",
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AddressFormScreen(existingAddress: address))),
-              ),
+              // IconButton(
+              //   icon: const Icon(Icons.edit),
+              //   tooltip: "Editar",
+              //   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => AddressFormScreen(existingAddress: address))),
+              // ),
               IconButton(
                 icon: const Icon(Icons.delete),
                 tooltip: "Apagar",
