@@ -26,6 +26,10 @@ class AdListTile extends StatelessWidget {
             : const Icon(Icons.no_photography_outlined, color: Style.darkText),
       ),
       title: Text(ad.title),
+      trailing: Text(
+        ad.distance.toStringAsFixed(1) + "m",
+        style: const TextStyle(color: Colors.black45, fontSize: 12),
+      ),
       subtitle: Text(
         ad.description,
         maxLines: 3,
@@ -33,8 +37,8 @@ class AdListTile extends StatelessWidget {
       ),
       isThreeLine: true,
       visualDensity: VisualDensity.compact,
-      onTap: () =>
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
     );
   }
 }
