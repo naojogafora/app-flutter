@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
+import 'package:trocado_flutter/exception/UnauthorizedException.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
@@ -88,14 +89,17 @@ class AuthenticationProvider extends ChangeNotifier {
         saveAuthToStorage(responseJson);
       } on FetchDataException catch (e) {
         if (e.httpCode == 500) {
-          saveAuthToStorage(null);
+          logout();
         }
+      } on UnauthorizedException catch (e) {
+        print(e.msg);
+        logout();
       }
     });
     notifyListeners();
   }
 
-  void logout(BuildContext context) async {
+  void logout() async {
     saveAuthToStorage(null);
     invalidateCurrentToken();
     user = null;
@@ -104,7 +108,11 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   void invalidateCurrentToken() {
-    apiHelper.post(null, LOGOUT_URL, token: _authenticationToken);
+    try {
+      apiHelper.post(null, LOGOUT_URL, token: _authenticationToken);
+    } catch (e) {
+      //
+    }
   }
 
   Future<BasicMessageResponse> updateProfile(BuildContext context, User user) async {

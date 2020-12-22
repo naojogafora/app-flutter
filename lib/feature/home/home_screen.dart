@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     tabViews.add(Consumer<AdsProvider>(
       builder: (BuildContext context, provider, _) {
         provider.loadAvailableAds(context);
-
         return AdsTab(
             provider.availableAds, () => provider.loadAvailableAds(context, forceLoad: true));
       },

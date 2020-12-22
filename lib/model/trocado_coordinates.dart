@@ -4,7 +4,7 @@ class TrocadoCoordinates {
   TrocadoCoordinates({this.lat, this.lng});
 
   TrocadoCoordinates.fromJson(Map<String, dynamic> json) {
-    this.lat = json['lat'];
-    this.lng = json['lng'];
+    this.lat = (json['lat'] as num).toDouble();
+    this.lng = (json['lng'] as num).toDouble();
   }
 }

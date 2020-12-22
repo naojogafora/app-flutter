@@ -132,7 +132,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 title: const Text("Sair da Conta"),
                 onTap: () {
                   Navigator.of(context).pop();
-                  authProvider.logout(context);
+                  authProvider.logout();
                 },
               )
             : Container(),
