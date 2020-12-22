@@ -5,7 +5,7 @@ import 'package:trocado_flutter/model/address.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
 class AddressFormScreen extends StatefulWidget {
-  final Address existingAddress;
+  final UserAddress existingAddress;
 
   AddressFormScreen({this.existingAddress});
 
@@ -14,7 +14,7 @@ class AddressFormScreen extends StatefulWidget {
 }
 
 class _AddressFormScreenState extends State<AddressFormScreen> {
-  Address address;
+  UserAddress address;
   bool isEditing, loading = false;
   GlobalKey<FormState> formKey;
   GlobalKey<ScaffoldState> _scaffoldKey;
@@ -26,7 +26,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
 
     isEditing = widget.existingAddress != null;
-    this.address = widget.existingAddress == null ? Address() : widget.existingAddress;
+    this.address = widget.existingAddress == null ? UserAddress() : widget.existingAddress;
   }
 
   @override

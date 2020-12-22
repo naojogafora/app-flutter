@@ -1,13 +1,16 @@
-class Address {
+import 'package:trocado_flutter/model/trocado_coordinates.dart';
+
+class UserAddress {
   int id;
   String title;
   String street, city, state, zipCode, country;
+  TrocadoCoordinates coordinates;
 
-  Address() {
+  UserAddress() {
     this.country = "Brasil";
   }
 
-  Address.fromJson(Map<String, dynamic> json) {
+  UserAddress.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
     this.title = json['title'];
     this.street = json['street'];
@@ -15,8 +18,10 @@ class Address {
     this.state = json['state'];
     this.zipCode = json['zip_code'];
     this.country = json['country'];
-    //TODO
-    //this.coordinates = TrocadoCoordinates.fromJson(json['coordinates']);
+
+    if (json['coordinates'] != null) {
+      this.coordinates = TrocadoCoordinates.fromJson(json['coordinates']);
+    }
   }
 
   Map<String, dynamic> toJson() => {
@@ -26,5 +31,7 @@ class Address {
         'state': this.state,
         'zip_code': this.zipCode,
         'country': this.country,
+        'lat': this.coordinates.lat,
+        'lng': this.coordinates.lng,
       };
 }

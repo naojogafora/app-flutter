@@ -316,7 +316,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         child: ListView.builder(
           itemCount: addressProvider.userAddresses.length,
           itemBuilder: (context, i) {
-            Address address = addressProvider.userAddresses[i];
+            UserAddress address = addressProvider.userAddresses[i];
             return CheckboxListTile(
               value: ad.addresses.contains(address),
               onChanged: (bool checked) {

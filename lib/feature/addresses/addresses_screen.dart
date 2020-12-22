@@ -44,7 +44,7 @@ class AddressesScreen extends StatelessWidget {
     );
   }
 
-  Widget buildList(List<Address> addresses) {
+  Widget buildList(List<UserAddress> addresses) {
     return Expanded(
       child: ListView.builder(
         itemCount: addresses.length,

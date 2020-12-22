@@ -14,7 +14,7 @@ class Ad {
   String title, description;
   List<Photo> photos;
   DateTime createdAt, updatedAt;
-  List<Address> addresses;
+  List<UserAddress> addresses;
   List<Group> groups;
   List<File> photoFiles;
   List<Question> questions;
@@ -55,7 +55,7 @@ class Ad {
     this.addresses = [];
     if (json['addresses'] != null) {
       for (dynamic addressItem in json['addresses']) {
-        addresses.add(Address.fromJson(addressItem));
+        addresses.add(UserAddress.fromJson(addressItem));
       }
     }
 
@@ -94,19 +94,19 @@ class Ad {
     return json;
   }
 
-  void addAddress(Address address) {
+  void addAddress(UserAddress address) {
     if (!containsAddress(address)) {
       addresses.add(address);
     }
   }
 
-  void removeAddress(Address address) {
+  void removeAddress(UserAddress address) {
     if (containsAddress(address)) {
       addresses.removeWhere((element) => element.id == address.id);
     }
   }
 
-  bool containsAddress(Address address) {
+  bool containsAddress(UserAddress address) {
     return addresses.any((element) => element.id == address.id);
   }
 

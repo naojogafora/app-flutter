@@ -4,7 +4,7 @@ import 'package:trocado_flutter/feature/addresses/address_provider.dart';
 import 'package:trocado_flutter/model/address.dart';
 
 class AddressListTile extends StatelessWidget {
-  final Address address;
+  final UserAddress address;
   AddressListTile(this.address);
 
   @override
