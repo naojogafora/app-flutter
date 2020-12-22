@@ -44,12 +44,14 @@ class AddressProvider extends ChangeNotifier {
   }
 
   Future<bool> updateAddress(BuildContext context, Address address) async {
-    String updateUrl =
-        DELETE_ADDRESS_URL.replaceAll("{ADDRESS_ID}", address.id.toString()) + "?_method=PUT";
-    await apiHelper.post(context, updateUrl, body: address.toJson());
-    userAddresses.removeWhere((Address element) => element.id == address.id);
-    userAddresses.add(address);
-    notifyListeners();
-    return true;
+    // String updateUrl =
+    //     DELETE_ADDRESS_URL.replaceAll("{ADDRESS_ID}", address.id.toString()) + "?_method=PUT";
+    // await apiHelper.post(context, updateUrl, body: address.toJson());
+    // userAddresses.removeWhere((Address element) => element.id == address.id);
+    // userAddresses.add(address);
+    // notifyListeners();
+    // return true;
+    // NOT IMPLEMENTEND ON THE SERVER
+    return false;
   }
 }
