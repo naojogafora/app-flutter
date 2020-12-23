@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          title: 'Trocado',
+          title: 'Não Joga Fora!',
           theme: Style.main,
           home: HomeScreen(),
           routes: {

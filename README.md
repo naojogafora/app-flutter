@@ -1,6 +1,4 @@
-# trocado_flutter
-
-Trocado App
+# Não Joga Fora!
 
 ## Getting Started
 

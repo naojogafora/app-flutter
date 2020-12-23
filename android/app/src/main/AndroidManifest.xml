@@ -10,7 +10,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="trocado_flutter"
+        android:label="Não Joga Fora!"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true" >
         <activity
