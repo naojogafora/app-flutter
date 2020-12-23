@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     setTabsLists(Provider.of<AuthenticationProvider>(context).isUserLogged);
 
     return Scaffold(
-      appBar: trocadoAppBar("Trocado"),
+      appBar: trocadoAppBar("Não Joga Fora!"),
       drawer: TrocadoDrawer(),
       body: Column(
         children: [
