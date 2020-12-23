@@ -31,7 +31,7 @@ class ApiHelper {
 
     try {
       final response = await http.get(fullUrl, headers: headers);
-      responseJson = _returnResponse(response);
+      responseJson = returnResponse(response);
     } on SocketException {
       print('No net');
       throw const FetchDataException('No Internet connection', 0);
@@ -62,7 +62,7 @@ class ApiHelper {
     try {
       final response = await http.post(fullUrl, body: body, headers: headers);
 
-      responseJson = _returnResponse(response);
+      responseJson = returnResponse(response);
     } on SocketException {
       print('No net');
       throw const FetchDataException('No Internet connection', 0);
@@ -116,7 +116,7 @@ class ApiHelper {
       final streamedResponse = await request.send();
 
       var response = await http.Response.fromStream(streamedResponse);
-      responseJson = _returnResponse(response);
+      responseJson = returnResponse(response);
     } on SocketException {
       print('No net');
       throw const FetchDataException('No Internet connection', 0);
@@ -139,7 +139,7 @@ class ApiHelper {
 
     try {
       final response = await http.delete(_baseUrl + url, headers: headers);
-      responseJson = _returnResponse(response);
+      responseJson = returnResponse(response);
     } on SocketException {
       print('No net');
       throw const FetchDataException('No Internet connection', 0);
@@ -148,7 +148,7 @@ class ApiHelper {
     return responseJson;
   }
 
-  dynamic _returnResponse(http.Response response) {
+  dynamic returnResponse(http.Response response) {
     dynamic responseJson;
     String message;
 

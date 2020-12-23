@@ -6,6 +6,7 @@ import 'package:trocado_flutter/feature/ad/my_ads_screen.dart';
 import 'package:trocado_flutter/feature/addresses/addresses_screen.dart';
 import 'package:trocado_flutter/feature/account/profile_edit_screen.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
+import 'package:trocado_flutter/feature/blog/blog_list_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_donations_screen.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
 import 'package:trocado_flutter/model/user.dart';
@@ -119,6 +120,14 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                               builder: (context) => ProfileEditScreen(
                                   Provider.of<AuthenticationProvider>(context, listen: false)
                                       .user))),
+                        ),
+                        const ListTile(
+                            title: Text("Utilidades"), visualDensity: VisualDensity.compact),
+                        ListTile(
+                          leading: const Icon(Icons.article_outlined),
+                          title: const Text("Blog Não Joga Fora!"),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => BlogListScreen())),
                         ),
                       ],
                     )
