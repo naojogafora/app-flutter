@@ -46,8 +46,9 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
               SliverAppBar(
                 floating: true,
                 pinned: true,
-                title:
-                    widget.ad.firstPhoto != null ? null : const Icon(Icons.no_photography_outlined),
+                title: widget.ad.firstPhoto != null
+                    ? null
+                    : const Icon(Icons.no_photography_outlined),
                 expandedHeight: widget.ad.firstPhoto != null ? 240 : 60,
                 flexibleSpace: widget.ad.firstPhoto != null
                     ? Stack(
@@ -57,8 +58,10 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                             children: [
                               Expanded(
                                   child: Hero(
-                                      tag: "ad-image-" + widget.ad.id.toString(),
-                                      child: Image.network(widget.ad.firstPhoto.url,
+                                      tag:
+                                          "ad-image-" + widget.ad.id.toString(),
+                                      child: Image.network(
+                                          widget.ad.firstPhoto.url,
                                           fit: BoxFit.cover))),
                             ],
                           ),
@@ -66,10 +69,12 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 6),
                                 decoration: const ShapeDecoration(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(14))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14))),
                                     color: Colors.white54),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,7 +113,8 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                         Center(
                           child: Text(
                             widget.ad.title,
-                            style: const TextStyle(fontSize: 24, color: Style.accentColor),
+                            style: const TextStyle(
+                                fontSize: 24, color: Style.accentColor),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -119,21 +125,36 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(widget.ad.description, style: const TextStyle(fontSize: 18)),
+                          child: Text(widget.ad.description,
+                              style: const TextStyle(fontSize: 18)),
                         ),
                         const Divider(height: 12, color: Colors.transparent),
                         const Text(
                           "Doaçao por: ",
                           style: TextStyle(color: Colors.black54),
                         ),
-                        UserTile(context: context, user: widget.ad.user),
+                        UserTile(
+                          context: context,
+                          user: widget.ad.user,
+                          trailing: widget.ad.distance != null
+                              ? Text(
+                                  widget.ad.distanceStr,
+                                  style: const TextStyle(
+                                      color: Colors.black45, fontSize: 12),
+                                )
+                              : null,
+                        ),
                         QuestionsList(widget.ad),
-                        const Divider(color: Colors.black26, indent: 8, endIndent: 8),
+                        const Divider(
+                            color: Colors.black26, indent: 8, endIndent: 8),
                         widget.ad.active &&
-                                Provider.of<AuthenticationProvider>(context, listen: false).user !=
+                                Provider.of<AuthenticationProvider>(context,
+                                            listen: false)
+                                        .user !=
                                     null &&
                                 widget.ad.user.id !=
-                                    Provider.of<AuthenticationProvider>(context, listen: false)
+                                    Provider.of<AuthenticationProvider>(context,
+                                            listen: false)
                                         .user
                                         .id
                             ? Row(
@@ -163,7 +184,9 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
               ),
             ],
           ),
-          showingGallery ? AdOverlayGallery(widget.ad.photos, closeGalleryCallback) : Container(),
+          showingGallery
+              ? AdOverlayGallery(widget.ad.photos, closeGalleryCallback)
+              : Container(),
         ],
       ),
     );
@@ -184,7 +207,8 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: Text("1. Apenas solicite um produto se tiver interesse e certeza de que irá buscá-lo o quanto antes."
+                      child: Text(
+                          "1. Apenas solicite um produto se tiver interesse e certeza de que irá buscá-lo o quanto antes."
                           " O aplicativo é colaborativo, e incentiva a colaboração e o senso de comunidade. Confiamos"
                           " em você e nos demais usuários nessa missão.\n"
                           "2. Vocẽ tem um limite de solicitações por mês. Se tiver dúvidas, use o campo Perguntas. Lembre-se de doar a"
@@ -195,7 +219,10 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                     CheckboxListTile(
                       onChanged: (val) => setState(() => checked = val),
                       value: checked,
-                      title: const Text("Concordo com as informações acima", style: TextStyle(fontSize: 14),),
+                      title: const Text(
+                        "Concordo com as informações acima",
+                        style: TextStyle(fontSize: 14),
+                      ),
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.max,
@@ -210,8 +237,8 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                           child: const Text("Confirmar"),
                           textColor: checked ? Colors.black87 : Colors.black38,
                           enableFeedback: checked,
-                          onPressed: (){
-                            if(!checked) return;
+                          onPressed: () {
+                            if (!checked) return;
                             purchase();
                           },
                         )
@@ -221,7 +248,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                 ),
               )
             ],
-        );
+          );
         });
   }
 
@@ -234,8 +261,8 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
     Provider.of<AdsProvider>(context, listen: false)
         .purchaseAd(context, widget.ad)
         .then((Transaction transaction) {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => MyOrdersScreen()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => MyOrdersScreen()));
     }).catchError(handleError);
   }
 
@@ -270,7 +297,8 @@ class _QuestionsListState extends State<QuestionsList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Divider(color: Colors.black26, indent: 8, endIndent: 8),
-        const Text("Perguntas", style: TextStyle(color: Style.accentColor, fontSize: 16)),
+        const Text("Perguntas",
+            style: TextStyle(color: Style.accentColor, fontSize: 16)),
         widget.ad.questions != null && widget.ad.questions.isEmpty
             ? const Padding(
                 padding: EdgeInsets.all(12.0),
@@ -284,14 +312,19 @@ class _QuestionsListState extends State<QuestionsList> {
             return ListTile(
               title: Text(widget.ad.questions[i].question),
               subtitle: widget.ad.questions[i].answer == null
-                  ? Text(widget.ad.questions[i].askDate + " - Aguardando Resposta")
+                  ? Text(
+                      widget.ad.questions[i].askDate + " - Aguardando Resposta")
                   : Text(widget.ad.questions[i].answer),
             );
           },
         ))
-        ..add(Provider.of<AuthenticationProvider>(context, listen: false).user == null ||
+        ..add(Provider.of<AuthenticationProvider>(context, listen: false)
+                        .user ==
+                    null ||
                 widget.ad.user.id ==
-                    Provider.of<AuthenticationProvider>(context, listen: false).user.id
+                    Provider.of<AuthenticationProvider>(context, listen: false)
+                        .user
+                        .id
             ? Container()
             : (showQuestionField
                 ? Row(
@@ -303,7 +336,8 @@ class _QuestionsListState extends State<QuestionsList> {
                           maxLength: 255,
                           controller: controller,
                           decoration: const InputDecoration(
-                              labelText: "Digite uma pergunta", contentPadding: EdgeInsets.all(0)),
+                              labelText: "Digite uma pergunta",
+                              contentPadding: EdgeInsets.all(0)),
                         ),
                       ),
                       IconButton(

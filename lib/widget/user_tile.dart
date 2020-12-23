@@ -8,10 +8,12 @@ class UserTile extends StatelessWidget {
     Key key,
     @required this.context,
     @required this.user,
+    this.trailing,
   }) : super(key: key);
 
   final BuildContext context;
   final User user;
+  final Widget trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class UserTile extends StatelessWidget {
       leading: Hero(
           child: CircleAvatar(backgroundImage: user.avatarImage),
           tag: "user_" + user.id.toString()),
+      trailing: trailing,
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ProfileViewScreen(user))),
     );

@@ -28,7 +28,7 @@ class AdListTile extends StatelessWidget {
       title: Text(ad.title),
       trailing: ad.distance != null
           ? Text(
-              ad.distance.toStringAsFixed(0) + "m",
+              ad.distanceStr,
               style: const TextStyle(color: Colors.black45, fontSize: 12),
             )
           : null,
