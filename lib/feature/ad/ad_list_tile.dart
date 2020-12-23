@@ -26,10 +26,12 @@ class AdListTile extends StatelessWidget {
             : const Icon(Icons.no_photography_outlined, color: Style.darkText),
       ),
       title: Text(ad.title),
-      trailing: Text(
-        ad.distance.toStringAsFixed(0) + "m",
-        style: const TextStyle(color: Colors.black45, fontSize: 12),
-      ),
+      trailing: ad.distance != null
+          ? Text(
+              ad.distance.toStringAsFixed(0) + "m",
+              style: const TextStyle(color: Colors.black45, fontSize: 12),
+            )
+          : null,
       subtitle: Text(
         ad.description,
         maxLines: 3,

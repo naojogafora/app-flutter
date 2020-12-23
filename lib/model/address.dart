@@ -31,7 +31,7 @@ class UserAddress {
         'state': this.state,
         'zip_code': this.zipCode,
         'country': this.country,
-        'lat': this.coordinates.lat,
-        'lng': this.coordinates.lng,
+        'lat': this.coordinates.lat.toString(),
+        'lng': this.coordinates.lng.toString(),
       };
 }

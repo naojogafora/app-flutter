@@ -12,6 +12,7 @@ class Ad {
   bool finished, suspended;
   User user;
   String title, description;
+  /// is null if the user has no addresses, is logged out, or is the Ad owner.
   double distance;
   List<Photo> photos;
   DateTime createdAt, updatedAt;
@@ -39,7 +40,7 @@ class Ad {
     this.suspended = json['suspended'] == 1;
     this.title = json['title'];
     this.description = json['description'];
-    this.distance = (json['distance'] as num).toDouble();
+    this.distance = (json['distance'] as num)?.toDouble();
     this.createdAt = DateTime.parse(json['created_at']);
     this.updatedAt = DateTime.parse(json['updated_at']);
 
