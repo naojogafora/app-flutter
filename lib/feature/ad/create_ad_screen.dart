@@ -296,7 +296,13 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       ),
       RaisedButton(
         child: const Text("Continuar"),
-        onPressed: () => nextPage(context),
+        onPressed: (){
+          if(imageList().isEmpty) {
+            return showErrorSnack("Adicione pelo menos uma foto");
+          }
+
+          nextPage(context);
+        },
         padding: const EdgeInsets.all(14),
         color: Style.accentColor,
         textColor: Style.clearWhite,
