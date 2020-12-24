@@ -21,6 +21,8 @@ class GroupsProvider extends ChangeNotifier {
   static const UPDATE_JOIN_REQUEST = "group/{GROUP_ID}/update_join_request";
   static const BAN_URL = "group/{GROUP_ID}/ban";
   static const CONFIGURATION_URL = "group/{GROUP_ID}/configuration";
+  static const ADD_MODERATOR_URL = "group/{GROUP_ID}/moderators";
+  static const REMOVE_MODERATOR_URL = "group/{GROUP_ID}/moderators/{USER_ID}";
 
   ApiHelper apiHelper = ApiHelper();
   GroupListResponse _publicGroups;
@@ -185,5 +187,20 @@ class GroupsProvider extends ChangeNotifier {
     _body.addAll({"_method": "PUT"});
     var response = await apiHelper.post(context, _url, body: _body);
     return Group.fromJson(response);
+  }
+
+  Future<BasicMessageResponse> addModerator(BuildContext context, Group group, int userId) async {
+    String _url = ADD_MODERATOR_URL.replaceAll("{GROUP_ID}", group.id.toString());
+    var response = await apiHelper.post(context, _url, body: {'user_id': userId.toString()});
+    unawaited(loadUserGroups(context, forceLoad: true));
+    return BasicMessageResponse.fromJson(response);
+  }
+
+  Future<BasicMessageResponse> removeModerator(BuildContext context, Group group, int userId) async {
+    String _url = REMOVE_MODERATOR_URL.replaceAll("{GROUP_ID}", group.id.toString());
+    _url = _url.replaceAll("{USER_ID}", userId.toString());
+    var response = await apiHelper.delete(context, _url);
+    unawaited(loadUserGroups(context, forceLoad: true));
+    return BasicMessageResponse.fromJson(response);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/feature/helpers.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
@@ -16,9 +17,12 @@ class GroupMemberListScreen extends StatefulWidget {
 }
 
 class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: trocadoAppBar("Membros"),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -45,6 +49,9 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                 .catchError((e) => handleError(context, e));
                           },
                         ),
+                  onLongPress: () {
+                    showModeratorDialog(member, member.isModerator);
+                  },
                 );
               },
             ),
@@ -78,5 +85,25 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
     }
 
     return Icons.person;
+  }
+
+  /// If isModerator, dialog will confirm the removal.
+  /// If !isModerator, dialog will confirm the adition of the user as moderator.
+  void showModeratorDialog(User user, bool isModerator) {
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text(isModerator ? "Remover Moderador" : "Adicionar Moderador"),
+      actions: [
+        MaterialButton(child: const Text("Cancelar"), onPressed: () => Navigator.of(context).pop(),),
+        MaterialButton(child: const Text("Sim"), onPressed: (){
+          GroupsProvider provider = Provider.of<GroupsProvider>(context, listen: false);
+          if(isModerator){
+            provider.removeModerator(context, widget.group, user.id).then((value) => showSuccessSnack(_scaffoldKey, value.message)).catchError((e) => showErrorSnack(_scaffoldKey, e.toString()));
+          } else {
+            provider.addModerator(context, widget.group, user.id).then((value) => showSuccessSnack(_scaffoldKey, value.message)).catchError((e) => showErrorSnack(_scaffoldKey, e.toString()));
+          }
+          Navigator.of(context).pop();
+        },),
+      ],
+    ));
   }
 }

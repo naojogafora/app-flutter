@@ -22,7 +22,7 @@ class User {
     this.email = json['email'] ?? "";
     this.profilePhotoUrl = json['profile_photo_url'];
     this.accountStatusId = json['account_status_id'] ?? 1;
-    this.isModerator = json['is_moderator'] ?? false;
+    this.isModerator = json['is_moderator'] != null ? json['is_moderator'] : (json['pivot'] != null && json['pivot']['is_moderator'] != null ? json['pivot']['is_moderator'] == 1 : false);
     this.createdAt = DateTime.tryParse(json['created_at']) ?? DateTime.now();
   }
 
