@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/helpers.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/model/user.dart';
@@ -21,6 +22,8 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: trocadoAppBar("Membros"),
@@ -49,9 +52,9 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                 .catchError((e) => handleError(context, e));
                           },
                         ),
-                  onLongPress: () {
+                  onLongPress: widget.group.owner.id == authProvider.user.id ? () {
                     showModeratorDialog(member, member.isModerator);
-                  },
+                  } : null,
                 );
               },
             ),
