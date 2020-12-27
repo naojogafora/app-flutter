@@ -8,6 +8,7 @@ import 'package:trocado_flutter/model/question.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:trocado_flutter/response/basic_message_response.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";
@@ -19,6 +20,7 @@ class AdsProvider extends ChangeNotifier {
   static const DELETE_URL = "ad/{AD_ID}";
   // QUESTIONS //
   static const CREATE_QUESTION_URL = "ad/{AD_ID}/question";
+  static const ANSWER_QUESTION_URL = "ad/{AD_ID}/question/{QUESTION_ID}";
 
   ApiHelper apiHelper = ApiHelper();
   AdsListResponse publicAds;
@@ -140,6 +142,19 @@ class AdsProvider extends ChangeNotifier {
     return Transaction.fromJson(response);
   }
 
+  /// The
+  Future<BasicMessageResponse> answerQuestion(BuildContext context, int adId, Question question, String answer) async {
+    String _url = ANSWER_QUESTION_URL.replaceAll("{AD_ID}", adId.toString());
+    _url = _url.replaceAll("{QUESTION_ID}", question.id.toString());
+    var response = await apiHelper.post(context, _url, body: {'answer': answer});
+    BasicMessageResponse bmResponse = BasicMessageResponse.fromJson(response);
+    if(bmResponse.success){
+      question.answer = answer;
+      replaceQuestionOnAd(adId, question);
+    }
+    return bmResponse;
+  }
+
   Future<Question> submitQuestion(BuildContext context, int adId, String question) async {
     var response = await apiHelper.post(
       context,
@@ -173,6 +188,23 @@ class AdsProvider extends ChangeNotifier {
           ad.questions.add(question);
           publicAds.data.insert(i, ad);
           return;
+        }
+      }
+    }
+  }
+
+  void replaceQuestionOnAd(int adId, Question question){
+    for(int i = 0; i < userAds.data.length; i++){
+      if(userAds.data[i].id == adId){
+        Ad ad = userAds.data[i];
+        for(int j = 0; j < ad.questions.length; j++){
+          if(ad.questions[j].id == question.id){
+            ad.questions.removeAt(j);
+            ad.questions.insert(j, question);
+            userAds.data.removeAt(i);
+            userAds.data.insert(i, ad);
+            return;
+          }
         }
       }
     }

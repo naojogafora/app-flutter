@@ -7,6 +7,7 @@ import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/helpers.dart';
 import 'package:trocado_flutter/feature/transactions/my_orders_screen.dart';
 import 'package:trocado_flutter/model/ad.dart';
+import 'package:trocado_flutter/model/question.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/widget/user_tile.dart';
 
@@ -52,16 +53,16 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                 expandedHeight: widget.ad.firstPhoto != null ? 240 : 60,
                 flexibleSpace: widget.ad.firstPhoto != null
                     ? GestureDetector(
-                      onTap: _onTapImageCount,
-                      child: Stack(
+                        onTap: _onTapImageCount,
+                        child: Stack(
                           children: [
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Expanded(
                                     child: Hero(
-                                        tag:
-                                            "ad-image-" + widget.ad.id.toString(),
+                                        tag: "ad-image-" +
+                                            widget.ad.id.toString(),
                                         child: Image.network(
                                             widget.ad.firstPhoto.url,
                                             fit: BoxFit.cover))),
@@ -100,7 +101,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                           ],
                           alignment: Alignment.bottomRight,
                         ),
-                    )
+                      )
                     : Container(),
               ),
               SliverList(
@@ -293,6 +294,9 @@ class _QuestionsListState extends State<QuestionsList> {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationProvider authProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,9 +317,14 @@ class _QuestionsListState extends State<QuestionsList> {
             return ListTile(
               title: Text(widget.ad.questions[i].question),
               subtitle: widget.ad.questions[i].answer == null
-                  ? Text(
-                      widget.ad.questions[i].askDate + " - Aguardando Resposta")
+                  ? Text(widget.ad.questions[i].askDate +
+                      (authProvider.user.id != widget.ad.user.id
+                          ? " - Aguardando Resposta"
+                          : " - Clique para Responder"))
                   : Text(widget.ad.questions[i].answer),
+              onTap: authProvider.user.id != widget.ad.user.id
+                  ? null
+                  : () => showAnswerDialog(widget.ad.questions[i]),
             );
           },
         ))
@@ -386,5 +395,57 @@ class _QuestionsListState extends State<QuestionsList> {
         loadingQuestion = false;
       });
     });
+  }
+
+  void showAnswerDialog(Question question) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          TextEditingController controller = TextEditingController();
+          bool loading = false;
+          return AlertDialog(
+            title: const Text("Responder Pergunta"),
+            content: StatefulBuilder(
+              builder: (context, StateSetter stateSetter) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("Pergunta:",
+                      style: TextStyle(color: Colors.black54)),
+                  Text(question.question),
+                  TextFormField(
+                    controller: controller,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (val) => val.length < 3 || val.length > 255
+                        ? "Digite de 3 a 255 caracteres"
+                        : null,
+                    decoration: const InputDecoration(labelText: "Resposta"),
+                  ),
+                  Row(
+                    children: [
+                      MaterialButton(
+                        child: const Text("Cancelar"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      MaterialButton(
+                          child: loading ? const CircularProgressIndicator() : const Text("Enviar"),
+                          onPressed: (){
+                            if(loading) return;
+                            stateSetter((){ loading = true; });
+                            Provider.of<AdsProvider>(context, listen: false).answerQuestion(context, widget.ad.id, question, controller.text)
+                            .then((value) {
+                              Navigator.of(context).pop();
+                              showSuccessSnack(_scaffoldKey, "Mensagem respondida");
+                            }).catchError((e) {
+                              stateSetter((){ loading = false; });
+                              showErrorSnack(_scaffoldKey, e.toString());
+                            });
+                          }),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
