@@ -18,11 +18,18 @@ class AdsTab extends StatelessWidget {
             ? Expanded(
                 child: RefreshIndicator(
                   onRefresh: pullToRefresh ?? emptyFuture,
-                  child: ListView.builder(
+                  child: ads.isNotEmpty ? ListView.builder(
                     itemCount: ads.length,
                     itemBuilder: (context, i) {
                       return AdListTile(ads[i]);
                     },
+                  ) : ListView(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(child: Text("Não há anuncios por aqui agora!")),
+                      ),
+                    ],
                   ),
                 ),
               )

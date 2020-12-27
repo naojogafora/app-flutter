@@ -77,6 +77,9 @@ class AdsProvider extends ChangeNotifier {
       if (query == null || query.isEmpty) {
         groupsAds = result;
       }
+    } catch (e) {
+      result = AdsListResponse();
+      groupsAds = result;
     } finally {
       notifyListeners();
     }

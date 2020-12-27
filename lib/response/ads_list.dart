@@ -5,6 +5,10 @@ class AdsListResponse {
   PaginatedList paginatedList;
   List<Ad> data;
 
+  AdsListResponse(){
+    this.data = [];
+  }
+
   AdsListResponse.fromJson(Map<String, dynamic> json) {
     this.paginatedList = PaginatedList.fromJson(json);
 
