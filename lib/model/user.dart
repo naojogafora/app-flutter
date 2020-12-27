@@ -11,6 +11,8 @@ class User {
   bool isModerator;
   DateTime createdAt;
 
+  int donationCount, purchaseCount, groupCount;
+
   String get fullName => name + " " + lastName;
   String get creationDate =>
       createdAt.day.toString() + "/" + createdAt.month.toString() + "/" + createdAt.year.toString();
@@ -24,6 +26,9 @@ class User {
     this.accountStatusId = json['account_status_id'] ?? 1;
     this.isModerator = json['is_moderator'] != null ? json['is_moderator'] : (json['pivot'] != null && json['pivot']['is_moderator'] != null ? json['pivot']['is_moderator'] == 1 : false);
     this.createdAt = DateTime.tryParse(json['created_at']) ?? DateTime.now();
+    this.donationCount = json['donation_count'];
+    this.purchaseCount = json['purchase_count'];
+    this.groupCount = json['group_count'];
   }
 
   /// Returns a JSON only with fields for the account update

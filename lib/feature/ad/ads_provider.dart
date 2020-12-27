@@ -8,7 +8,6 @@ import 'package:trocado_flutter/model/question.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:trocado_flutter/response/basic_message_response.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";

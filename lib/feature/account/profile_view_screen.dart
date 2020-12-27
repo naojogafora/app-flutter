@@ -53,6 +53,24 @@ class ProfileViewScreen extends StatelessWidget {
               endIndent: 30,
               height: 36,
             ),
+            ListTile(
+              leading: const Icon(Icons.unarchive_outlined,
+                  color: Style.primaryColorDark),
+              subtitle: Text(user.donationCount.toString() + " itens"),
+              title: const Text("Itens doados"),
+            ),
+            ListTile(
+              leading: const Icon(Icons.archive_outlined,
+                  color: Style.primaryColorDark),
+              subtitle: Text(user.purchaseCount.toString() + " itens"),
+              title: const Text("itens recebidos"),
+            ),
+            ListTile(
+              leading:
+                  const Icon(Icons.group_work, color: Style.primaryColorDark),
+              subtitle: Text(user.groupCount.toString() + " grupos"),
+              title: const Text("Participa de Grupos"),
+            ),
           ],
         ),
       ),
@@ -63,7 +81,9 @@ class ProfileViewScreen extends StatelessWidget {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (context) => ProfileEditScreen(
-                        Provider.of<AuthenticationProvider>(context, listen: false).user)),
+                        Provider.of<AuthenticationProvider>(context,
+                                listen: false)
+                            .user)),
               ),
             ),
     );
