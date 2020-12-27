@@ -51,23 +51,24 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                     : const Icon(Icons.no_photography_outlined),
                 expandedHeight: widget.ad.firstPhoto != null ? 240 : 60,
                 flexibleSpace: widget.ad.firstPhoto != null
-                    ? Stack(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                  child: Hero(
-                                      tag:
-                                          "ad-image-" + widget.ad.id.toString(),
-                                      child: Image.network(
-                                          widget.ad.firstPhoto.url,
-                                          fit: BoxFit.cover))),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
+                    ? GestureDetector(
+                      onTap: _onTapImageCount,
+                      child: Stack(
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                    child: Hero(
+                                        tag:
+                                            "ad-image-" + widget.ad.id.toString(),
+                                        child: Image.network(
+                                            widget.ad.firstPhoto.url,
+                                            fit: BoxFit.cover))),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 4, horizontal: 6),
@@ -95,12 +96,11 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                                   ],
                                 ),
                               ),
-                              onTap: _onTapImageCount,
-                            ),
-                          )
-                        ],
-                        alignment: Alignment.bottomRight,
-                      )
+                            )
+                          ],
+                          alignment: Alignment.bottomRight,
+                        ),
+                    )
                     : Container(),
               ),
               SliverList(
@@ -240,6 +240,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                           onPressed: () {
                             if (!checked) return;
                             purchase();
+                            Navigator.of(context).pop();
                           },
                         )
                       ],

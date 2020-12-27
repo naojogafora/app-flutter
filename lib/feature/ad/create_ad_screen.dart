@@ -339,6 +339,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           },
         ),
       ),
+      const Divider(height: 4),
       const Text("Grupos Disponíveis"),
       Container(
         height: 180,

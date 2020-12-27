@@ -136,6 +136,7 @@ class AdsProvider extends ChangeNotifier {
         await apiHelper.post(context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
     unawaited(Provider.of<TransactionsProvider>(context, listen: false)
         .loadOrdersList(context, forceLoad: true));
+    unawaited(loadAvailableAds(context, forceLoad: true));
     return Transaction.fromJson(response);
   }
 
