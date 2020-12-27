@@ -29,7 +29,8 @@ class AdsProvider extends ChangeNotifier {
   List<Ad> get availableAds => groupsAds?.data ?? publicAds?.data;
 
   /// Returns true if successfully loaded groups, otherwise throws an exception.
-  Future<AdsListResponse> loadPublicAds({bool forceLoad = false, String query}) async {
+  Future<AdsListResponse> loadPublicAds(
+      {bool forceLoad = false, String query}) async {
     if (publicAds != null && !forceLoad && (query == null || query.isEmpty)) {
       return publicAds;
     }
@@ -58,7 +59,8 @@ class AdsProvider extends ChangeNotifier {
   Future<AdsListResponse> loadAvailableAds(BuildContext context,
       {bool forceLoad = false, String query}) async {
     if (context == null ||
-        !Provider.of<AuthenticationProvider>(context, listen: false).isUserLogged) {
+        !Provider.of<AuthenticationProvider>(context, listen: false)
+            .isUserLogged) {
       return await loadPublicAds(forceLoad: forceLoad, query: query);
     }
 
@@ -89,7 +91,8 @@ class AdsProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<AdsListResponse> loadUserAds(BuildContext context, {bool forceLoad = false}) async {
+  Future<AdsListResponse> loadUserAds(BuildContext context,
+      {bool forceLoad = false}) async {
     if (userAds != null && !forceLoad) {
       return userAds;
     }
@@ -105,7 +108,8 @@ class AdsProvider extends ChangeNotifier {
   }
 
   Future<AdsListResponse> loadAdsForGroup(context, int id) async {
-    String listByGroupURL = ADS_LIST_BY_GROUP.replaceAll("{GROUP_ID}", id.toString());
+    String listByGroupURL =
+        ADS_LIST_BY_GROUP.replaceAll("{GROUP_ID}", id.toString());
     var responseJson = await apiHelper.get(context, listByGroupURL);
     return AdsListResponse.fromJson(responseJson);
   }
@@ -127,15 +131,16 @@ class AdsProvider extends ChangeNotifier {
   }
 
   Future<bool> deleteAd(BuildContext context, Ad ad) async {
-    await apiHelper.delete(context, DELETE_URL.replaceAll("{AD_ID}", ad.id.toString()));
+    await apiHelper.delete(
+        context, DELETE_URL.replaceAll("{AD_ID}", ad.id.toString()));
     userAds.data.remove(ad);
     notifyListeners();
     return true;
   }
 
   Future<Transaction> purchaseAd(BuildContext context, Ad ad) async {
-    var response =
-        await apiHelper.post(context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
+    var response = await apiHelper.post(
+        context, PURCHASE_AD_URL.replaceAll("{AD_ID}", ad.id.toString()));
     unawaited(Provider.of<TransactionsProvider>(context, listen: false)
         .loadOrdersList(context, forceLoad: true));
     unawaited(loadAvailableAds(context, forceLoad: true));
@@ -143,19 +148,19 @@ class AdsProvider extends ChangeNotifier {
   }
 
   /// The
-  Future<BasicMessageResponse> answerQuestion(BuildContext context, int adId, Question question, String answer) async {
+  Future<Question> answerQuestion(
+      BuildContext context, int adId, Question question, String answer) async {
     String _url = ANSWER_QUESTION_URL.replaceAll("{AD_ID}", adId.toString());
     _url = _url.replaceAll("{QUESTION_ID}", question.id.toString());
-    var response = await apiHelper.post(context, _url, body: {'answer': answer});
-    BasicMessageResponse bmResponse = BasicMessageResponse.fromJson(response);
-    if(bmResponse.success){
-      question.answer = answer;
-      replaceQuestionOnAd(adId, question);
-    }
-    return bmResponse;
+    var response =
+        await apiHelper.post(context, _url, body: {'answer': answer});
+    Question nQuestion = Question.fromJson(response);
+    replaceQuestionOnAd(adId, nQuestion);
+    return nQuestion;
   }
 
-  Future<Question> submitQuestion(BuildContext context, int adId, String question) async {
+  Future<Question> submitQuestion(
+      BuildContext context, int adId, String question) async {
     var response = await apiHelper.post(
       context,
       CREATE_QUESTION_URL.replaceAll("{AD_ID", adId.toString()),
@@ -167,11 +172,11 @@ class AdsProvider extends ChangeNotifier {
     return questionCreated;
   }
 
-  void _addQuestionToAd(Question question){
-    if(groupsAds != null && groupsAds.data.isNotEmpty){
-      for(int i = 0; i < groupsAds.data.length; i++){
+  void _addQuestionToAd(Question question) {
+    if (groupsAds != null && groupsAds.data.isNotEmpty) {
+      for (int i = 0; i < groupsAds.data.length; i++) {
         Ad ad = groupsAds.data[i];
-        if(ad.id == question.advertisementId){
+        if (ad.id == question.advertisementId) {
           groupsAds.data.removeAt(i);
           ad.questions.add(question);
           groupsAds.data.insert(i, ad);
@@ -180,10 +185,10 @@ class AdsProvider extends ChangeNotifier {
       }
     }
 
-    if(publicAds != null && publicAds.data.isNotEmpty){
-      for(int i = 0; i < publicAds.data.length; i++){
+    if (publicAds != null && publicAds.data.isNotEmpty) {
+      for (int i = 0; i < publicAds.data.length; i++) {
         Ad ad = publicAds.data[i];
-        if(ad.id == question.advertisementId){
+        if (ad.id == question.advertisementId) {
           publicAds.data.removeAt(i);
           ad.questions.add(question);
           publicAds.data.insert(i, ad);
@@ -193,12 +198,12 @@ class AdsProvider extends ChangeNotifier {
     }
   }
 
-  void replaceQuestionOnAd(int adId, Question question){
-    for(int i = 0; i < userAds.data.length; i++){
-      if(userAds.data[i].id == adId){
+  void replaceQuestionOnAd(int adId, Question question) {
+    for (int i = 0; i < userAds.data.length; i++) {
+      if (userAds.data[i].id == adId) {
         Ad ad = userAds.data[i];
-        for(int j = 0; j < ad.questions.length; j++){
-          if(ad.questions[j].id == question.id){
+        for (int j = 0; j < ad.questions.length; j++) {
+          if (ad.questions[j].id == question.id) {
             ad.questions.removeAt(j);
             ad.questions.insert(j, question);
             userAds.data.removeAt(i);

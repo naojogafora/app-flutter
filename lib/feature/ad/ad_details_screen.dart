@@ -435,6 +435,7 @@ class _QuestionsListState extends State<QuestionsList> {
                             .then((value) {
                               Navigator.of(context).pop();
                               showSuccessSnack(_scaffoldKey, "Mensagem respondida");
+                              setState(() {});
                             }).catchError((e) {
                               stateSetter((){ loading = false; });
                               showErrorSnack(_scaffoldKey, e.toString());
