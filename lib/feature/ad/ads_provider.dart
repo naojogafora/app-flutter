@@ -44,6 +44,7 @@ class AdsProvider extends ChangeNotifier {
     try {
       var responseJson = await apiHelper.get(null, url);
       result = _parseAdsResponse(responseJson);
+      result.data = sortByDistance(result.data);
 
       if (query == null || query.isEmpty) {
         publicAds = result;
@@ -76,7 +77,7 @@ class AdsProvider extends ChangeNotifier {
     try {
       var responseJson = await apiHelper.get(context, _url);
       result = AdsListResponse.fromJson(responseJson);
-
+      result.data = sortByDistance(result.data);
       if (query == null || query.isEmpty) {
         groupsAds = result;
       }
@@ -110,7 +111,9 @@ class AdsProvider extends ChangeNotifier {
     String listByGroupURL =
         ADS_LIST_BY_GROUP.replaceAll("{GROUP_ID}", id.toString());
     var responseJson = await apiHelper.get(context, listByGroupURL);
-    return AdsListResponse.fromJson(responseJson);
+    AdsListResponse result = AdsListResponse.fromJson(responseJson);
+    result.data = sortByDistance(result.data);
+    return result;
   }
 
   Future<bool> createAd(BuildContext context, Ad ad) async {
@@ -212,5 +215,15 @@ class AdsProvider extends ChangeNotifier {
         }
       }
     }
+  }
+
+  List<Ad> sortByDistance(List<Ad> ads){
+    ads.sort((a1, a2) => a1.distance > a2.distance ? 1 : -1);
+    return ads;
+  }
+
+  List<Ad> sortByDate(List<Ad> ads){
+    ads.sort((a1, a2) => a1.updatedAt.isAfter(a2.updatedAt) ? 1 : -1);
+    return ads;
   }
 }
