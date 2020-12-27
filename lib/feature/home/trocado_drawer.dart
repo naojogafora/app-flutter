@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
+import 'package:trocado_flutter/feature/about.dart';
 import 'package:trocado_flutter/feature/account/profile_view_screen.dart';
 import 'package:trocado_flutter/feature/ad/my_ads_screen.dart';
 import 'package:trocado_flutter/feature/addresses/addresses_screen.dart';
@@ -125,9 +126,15 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                             title: Text("Utilidades"), visualDensity: VisualDensity.compact),
                         ListTile(
                           leading: const Icon(Icons.article_outlined),
-                          title: const Text("Blog Não Joga Fora!"),
+                          title: const Text("Blog"),
                           onTap: () => Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => BlogListScreen())),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.help_center_outlined),
+                          title: const Text("Sobre"),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AboutScreen())),
                         ),
                       ],
                     )
@@ -135,10 +142,11 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
             ],
           ),
         ),
+        const Divider(height: 0),
         authProvider.isUserLogged
             ? ListTile(
                 leading: const Icon(Icons.logout),
-                title: const Text("Sair da Conta"),
+                title: const Text("Sair"),
                 onTap: () {
                   Navigator.of(context).pop();
                   authProvider.logout();
