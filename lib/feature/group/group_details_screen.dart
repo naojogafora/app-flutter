@@ -4,6 +4,7 @@ import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/group/groups_provider.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
+import 'package:share/share.dart';
 
 import 'group_configuration_form_screen.dart';
 import 'group_join_list_screen.dart';
@@ -15,10 +16,16 @@ class GroupDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GroupsProvider provider = Provider.of<GroupsProvider>(context, listen: false);
+    GroupsProvider provider =
+        Provider.of<GroupsProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: trocadoAppBar("Detalhes sobre " + group.name),
+      appBar: trocadoAppBar("Detalhes sobre " + group.name, actions: [
+        IconButton(
+          icon: const Icon(Icons.share),
+          onPressed: () => shareGroup(context),
+        )
+      ]),
       body: Column(
         children: [
           Row(
@@ -26,7 +33,8 @@ class GroupDetailsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -34,7 +42,8 @@ class GroupDetailsScreen extends StatelessWidget {
                         "Descrição:",
                         style: TextStyle(color: Style.primaryColor),
                       ),
-                      Text(group.description, style: const TextStyle(color: Style.clearWhite)),
+                      Text(group.description,
+                          style: const TextStyle(color: Style.clearWhite)),
                     ],
                   ),
                   color: Style.primaryColorDark,
@@ -42,7 +51,9 @@ class GroupDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
-          group.isModerator ? _GroupConfigurationDetails(group.id) : Container(),
+          group.isModerator
+              ? _GroupConfigurationDetails(group.id)
+              : Container(),
           Expanded(
             child: _GroupDetailsBody(group),
           ),
@@ -51,7 +62,8 @@ class GroupDetailsScreen extends StatelessWidget {
                   child: const Text("Sair do Grupo"),
                   color: Colors.red,
                   textColor: Style.clearWhite,
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 26),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 26),
                   onPressed: () {
                     provider.leaveGroup(context, group).then((bool success) {
                       Navigator.of(context).pop();
@@ -63,6 +75,17 @@ class GroupDetailsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void shareGroup(BuildContext context) {
+    String message = "Entre no meu grupo do \"Não Joga Fora\" para receber e repassar itens usados!\n";
+    message += "Digite na busca esse número do grupo: " + group.id.toString() + ". Ou encontre pelo nome: " + group.name + ".";
+    if(group.isModerator && group.private){
+      message += "\nDepois, use o código de convite: " + group.inviteCode;
+    }
+    message += "\n\nNão tem o app? Baixe agora em https://play.google.com/store";
+
+    Share.share(message);
   }
 }
 
@@ -78,7 +101,8 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Provider.of<GroupsProvider>(context).readGroupDetails(context, widget.group.id),
+      future: Provider.of<GroupsProvider>(context)
+          .readGroupDetails(context, widget.group.id),
       builder: (context, AsyncSnapshot<Group> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -108,11 +132,13 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                     ),
                     title: const Text("Solicitações de entrada:"),
                     visualDensity: VisualDensity.compact,
-                    onTap: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => GroupJoinListScreen(group))),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => GroupJoinListScreen(group))),
                   )
                 : Container(),
-            group.isModerator && group.members != null && group.members.isNotEmpty
+            group.isModerator &&
+                    group.members != null &&
+                    group.members.isNotEmpty
                 ? ListTile(
                     trailing: CircleAvatar(
                       backgroundColor: Style.primaryColorDark,
@@ -126,8 +152,8 @@ class _GroupDetailsBodyState extends State<_GroupDetailsBody> {
                     ),
                     title: const Text("Ver Membros"),
                     visualDensity: VisualDensity.compact,
-                    onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => GroupMemberListScreen(group))),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => GroupMemberListScreen(group))),
                   )
                 : Container(),
             const Divider(height: 6, color: Colors.transparent),
@@ -177,25 +203,30 @@ class _GroupConfigurationDetails extends StatelessWidget {
         return Container(
           color: Style.accentColor,
           padding: const EdgeInsets.all(8),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
               "Somente os moderadores vêem o código de convite e os membros. Caso queira convidar "
               "mais usuários, compartilhe o código e o nome do grupo com eles!",
               textAlign: TextAlign.center,
             ),
             const Divider(height: 6, color: Colors.transparent),
-            const Text("Código de Convite:", style: TextStyle(color: Style.primaryColor)),
+            const Text("Código de Convite:",
+                style: TextStyle(color: Style.primaryColor)),
             Text(group.inviteCode ?? "Não definido",
                 style: const TextStyle(color: Style.clearWhite)),
             const Divider(height: 6, color: Colors.transparent),
-            const Text("Moderadores:", style: TextStyle(color: Style.primaryColor)),
+            const Text("Moderadores:",
+                style: TextStyle(color: Style.primaryColor)),
             Text(
                 group.moderators != null
-                    ? group.moderators.length.toString() + " moderadores definidos"
+                    ? group.moderators.length.toString() +
+                        " moderadores definidos"
                     : "Nenhum definido",
                 style: const TextStyle(color: Style.clearWhite)),
             const Divider(height: 6, color: Colors.transparent),
-            const Text("Dono do Grupo:", style: TextStyle(color: Style.primaryColor)),
+            const Text("Dono do Grupo:",
+                style: TextStyle(color: Style.primaryColor)),
             Text(
                 group.owner != null
                     ? group.owner.fullName + " | " + group.owner.email
@@ -210,12 +241,13 @@ class _GroupConfigurationDetails extends StatelessWidget {
                   children: [
                     const Icon(Icons.edit, color: Style.clearWhite),
                     const VerticalDivider(color: Colors.transparent),
-                    const Text("Editar Grupo", style: TextStyle(color: Style.clearWhite)),
+                    const Text("Editar Grupo",
+                        style: TextStyle(color: Style.clearWhite)),
                   ],
                 ),
                 color: Style.primaryColorDark,
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => GroupConfigurationFormScreen(group))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => GroupConfigurationFormScreen(group))),
               ),
             )
           ]),
