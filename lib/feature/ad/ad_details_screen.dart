@@ -40,12 +40,6 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(actions: [
-        IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: () {},
-        ),
-      ]),
       body: Stack(
         children: [
           CustomScrollView(
@@ -321,6 +315,7 @@ class _QuestionsListState extends State<QuestionsList> {
           widget.ad.questions?.length ?? 0,
           (i) {
             return ListTile(
+              visualDensity: VisualDensity.compact,
               title: Text(widget.ad.questions[i].question),
               subtitle: widget.ad.questions[i].answer == null
                   ? Text(widget.ad.questions[i].askDate +
