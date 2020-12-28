@@ -40,6 +40,12 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(actions: [
+        IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {},
+        ),
+      ]),
       body: Stack(
         children: [
           CustomScrollView(
@@ -322,9 +328,8 @@ class _QuestionsListState extends State<QuestionsList> {
                           ? " - Aguardando Resposta"
                           : " - Clique para Responder"))
                   : Text(widget.ad.questions[i].answer),
-              onTap: authProvider.user.id != widget.ad.user.id
-                  ? null
-                  : () => showAnswerDialog(widget.ad.questions[i]),
+              onTap: authProvider.user != null && authProvider.user.id == widget.ad.user.id && widget.ad.questions[i].answer == null
+                  ? () => showAnswerDialog(widget.ad.questions[i]) : null,
             );
           },
         ))
@@ -427,17 +432,26 @@ class _QuestionsListState extends State<QuestionsList> {
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       MaterialButton(
-                          child: loading ? const CircularProgressIndicator() : const Text("Enviar"),
-                          onPressed: (){
-                            if(loading) return;
-                            stateSetter((){ loading = true; });
-                            Provider.of<AdsProvider>(context, listen: false).answerQuestion(context, widget.ad.id, question, controller.text)
-                            .then((value) {
+                          child: loading
+                              ? const CircularProgressIndicator()
+                              : const Text("Enviar"),
+                          onPressed: () {
+                            if (loading) return;
+                            stateSetter(() {
+                              loading = true;
+                            });
+                            Provider.of<AdsProvider>(context, listen: false)
+                                .answerQuestion(context, widget.ad.id, question,
+                                    controller.text)
+                                .then((value) {
                               Navigator.of(context).pop();
-                              showSuccessSnack(_scaffoldKey, "Mensagem respondida");
+                              showSuccessSnack(
+                                  _scaffoldKey, "Mensagem respondida");
                               setState(() {});
                             }).catchError((e) {
-                              stateSetter((){ loading = false; });
+                              stateSetter(() {
+                                loading = false;
+                              });
                               showErrorSnack(_scaffoldKey, e.toString());
                             });
                           }),
