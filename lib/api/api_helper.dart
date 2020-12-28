@@ -21,20 +21,24 @@ class ApiHelper {
     var headers = {'Accept': 'Application/json'};
     print('Api Get, url $fullUrl');
 
-    if (context != null &&
-        Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
-      headers.addAll({
-        'Authorization': "Bearer " +
-            await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken
-      });
+    if (context != null) {
+      String token =
+          await Provider.of<AuthenticationProvider>(context, listen: false)
+              .authenticationToken;
+      if(token != null){
+        headers.addAll({'Authorization': "Bearer " + token});
+      }
     }
 
     try {
+      print("Run get");
       final response = await http.get(fullUrl, headers: headers);
       responseJson = returnResponse(response);
     } on SocketException {
       print('No net');
       throw const FetchDataException('No Internet connection', 0);
+    } catch (e, st) {
+      debugPrintStack(stackTrace: st);
     }
 
     return responseJson;
@@ -53,7 +57,8 @@ class ApiHelper {
       headers.addAll({'Authorization': "Bearer " + token});
     } else if (context != null) {
       String savedToken =
-          await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken;
+          await Provider.of<AuthenticationProvider>(context, listen: false)
+              .authenticationToken;
       if (savedToken != null) {
         headers.addAll({'Authorization': "Bearer " + savedToken});
       }
@@ -89,7 +94,8 @@ class ApiHelper {
       for (int i = 0; i < files.length; i++) {
         http.MultipartFile mFile = http.MultipartFile.fromBytes(
             "photos[$i]", files[i].readAsBytesSync(),
-            filename: getFileName(files[i].path), contentType: getMediaTypeFromFile(files[i].path));
+            filename: getFileName(files[i].path),
+            contentType: getMediaTypeFromFile(files[i].path));
         multipartFiles.add(mFile);
       }
     }
@@ -100,7 +106,8 @@ class ApiHelper {
       headers.addAll({'Authorization': "Bearer " + token});
     } else if (context != null) {
       String savedToken =
-          await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken;
+          await Provider.of<AuthenticationProvider>(context, listen: false)
+              .authenticationToken;
       if (savedToken != null) {
         headers.addAll({'Authorization': "Bearer " + savedToken});
       }
@@ -130,10 +137,13 @@ class ApiHelper {
     var headers = {'Accept': 'Application/json'};
 
     if (context != null &&
-        Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken != null) {
+        Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken !=
+            null) {
       headers.addAll({
         'Authorization': "Bearer " +
-            await Provider.of<AuthenticationProvider>(context, listen: false).authenticationToken
+            await Provider.of<AuthenticationProvider>(context, listen: false)
+                .authenticationToken
       });
     }
 
@@ -172,7 +182,8 @@ class ApiHelper {
       case 500:
       default:
         throw FetchDataException(
-            'Request Error (code ${response.statusCode}). ' + message?.toString(),
+            'Request Error (code ${response.statusCode}). ' +
+                message?.toString(),
             response.statusCode);
     }
   }

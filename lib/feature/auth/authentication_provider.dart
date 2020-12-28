@@ -27,6 +27,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Lock authTokenLock = Lock(reentrant: true);
   set authenticationToken(val) => authTokenLock.synchronized(() => this._authenticationToken = val);
+
   Future<String> get authenticationToken async {
     return await authTokenLock.synchronized<String>(() => this._authenticationToken);
   }
