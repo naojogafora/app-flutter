@@ -24,7 +24,9 @@ class GroupDetailsScreen extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.share),
           onPressed: () => shareGroup(context),
-        )
+        ),
+        group.isModerator ? IconButton(icon: const Icon(Icons.edit), onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => GroupConfigurationFormScreen(group)))) : Container(),
       ]),
       body: Column(
         children: [
@@ -232,24 +234,6 @@ class _GroupConfigurationDetails extends StatelessWidget {
                     ? group.owner.fullName + " | " + group.owner.email
                     : "Não definido",
                 style: const TextStyle(color: Style.clearWhite)),
-            const Divider(height: 6, color: Colors.transparent),
-            Center(
-              child: MaterialButton(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.edit, color: Style.clearWhite),
-                    const VerticalDivider(color: Colors.transparent),
-                    const Text("Editar Grupo",
-                        style: TextStyle(color: Style.clearWhite)),
-                  ],
-                ),
-                color: Style.primaryColorDark,
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GroupConfigurationFormScreen(group))),
-              ),
-            )
           ]),
         );
       },
