@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
@@ -7,7 +8,14 @@ import 'package:trocado_flutter/feature/addresses/address_provider.dart';
 import 'package:trocado_flutter/model/address.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
 
-class AddressesScreen extends StatelessWidget {
+class AddressesScreen extends StatefulWidget {
+  @override
+  _AddressesScreenState createState() => _AddressesScreenState();
+}
+
+class _AddressesScreenState extends State<AddressesScreen> {
+  int nAddresses;
+
   @override
   Widget build(BuildContext context) {
     AddressProvider addressProvider = context.watch<AddressProvider>();
@@ -36,7 +44,7 @@ class AddressesScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: nAddresses != null && nAddresses >= 3 ? null : FloatingActionButton(
         child: const Icon(Icons.add, color: Style.clearWhite),
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => AddressFormScreen())),
@@ -45,6 +53,8 @@ class AddressesScreen extends StatelessWidget {
   }
 
   Widget buildList(List<UserAddress> addresses) {
+    nAddresses = addresses.length;
+
     return Expanded(
       child: ListView.builder(
         itemCount: addresses.length,

@@ -49,7 +49,7 @@ class _MyDonationsScreenState extends State<MyDonationsScreen> {
                     } else if (snapshot.hasError) {
                       return Text(snapshot.error.toString());
                     } else {
-                      return const CircularProgressIndicator();
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
