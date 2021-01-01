@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/registration_provider.dart';
 import 'package:trocado_flutter/widget/dialog.dart';
-import 'package:trocado_flutter/widget/standard_button.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -38,30 +37,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  Image.asset("assets/recycling.png", height: 160, fit: BoxFit.fitHeight),
+                  Image.asset("assets/recycling.png",
+                      height: 160, fit: BoxFit.fitHeight),
                   TextField(
                     decoration: const InputDecoration(hintText: "Nome"),
                     textInputAction: TextInputAction.next,
                     controller: nameController,
-                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusLastName),
+                    onSubmitted: (v) =>
+                        FocusScope.of(context).requestFocus(focusLastName),
                   ),
                   TextField(
                     decoration: const InputDecoration(hintText: "Sobrenome"),
                     textInputAction: TextInputAction.next,
                     controller: lastNameController,
                     focusNode: focusLastName,
-                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusEmail),
+                    onSubmitted: (v) =>
+                        FocusScope.of(context).requestFocus(focusEmail),
                   ),
                   TextField(
                     decoration: const InputDecoration(hintText: "Email"),
                     textInputAction: TextInputAction.next,
                     controller: emailController,
                     focusNode: focusEmail,
-                    onSubmitted: (v) => FocusScope.of(context).requestFocus(focusPassword),
+                    onSubmitted: (v) =>
+                        FocusScope.of(context).requestFocus(focusPassword),
                   ),
                   TextField(
-                    decoration:
-                        const InputDecoration(hintText: "Senha", fillColor: Style.primaryColorDark),
+                    decoration: const InputDecoration(
+                        hintText: "Senha", fillColor: Style.primaryColorDark),
                     textInputAction: TextInputAction.send,
                     obscureText: true,
                     controller: passwordController,
@@ -69,20 +72,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onSubmitted: (v) => register(),
                   ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                  loading
-                      ? const Center(child: CircularProgressIndicator())
-                      : StandardButton(
-                          "Criar Conta",
-                          register,
-                          Style.primaryColorDark,
-                          Style.clearWhite,
-                        ),
+                  MaterialButton(
+                    child: loading
+                        ? const CircularProgressIndicator()
+                        : const Text("Criar Conta"),
+                    onPressed: register,
+                    color: Style.primaryColorDark,
+                    textColor: Style.clearWhite,
+                    padding: const EdgeInsets.all(14),
+                  ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                   Center(
                     child: GestureDetector(
                         child: const Text("Já tem conta? Faça Login!",
-                            style: TextStyle(decoration: TextDecoration.underline)),
-                        onTap: () => Navigator.of(context).pushReplacementNamed("/login")),
+                            style: TextStyle(
+                                decoration: TextDecoration.underline)),
+                        onTap: () => Navigator.of(context)
+                            .pushReplacementNamed("/login")),
                   ),
                 ],
               ),
@@ -101,7 +107,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String email = emailController.value.text;
     String password = passwordController.text;
 
-    registerService.register(context, name, lastName, email, password).then((value) {
+    registerService
+        .register(context, name, lastName, email, password)
+        .then((value) {
       loading = false;
       setState(() {});
       DefaultDialog.show(context,

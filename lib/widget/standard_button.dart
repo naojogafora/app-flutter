@@ -19,9 +19,9 @@ class StandardButton extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: Container(
               alignment: Alignment.center,
-              height: 50.0,
+              height: 45.0,
               decoration:
-                  BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(100.0)),
+                  BoxDecoration(color: backgroundColor),
               child: Text(
                 title,
                 style: TextStyle(color: textColor, fontSize: 15),

@@ -6,7 +6,6 @@ import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/auth/password_reset_screen.dart';
 import 'package:trocado_flutter/feature/helpers.dart';
-import 'package:trocado_flutter/widget/standard_button.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   @override
