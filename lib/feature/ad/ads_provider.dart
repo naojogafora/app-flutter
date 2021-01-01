@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
@@ -7,7 +8,6 @@ import 'package:trocado_flutter/model/ad.dart';
 import 'package:trocado_flutter/model/question.dart';
 import 'package:trocado_flutter/model/transaction.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
-import 'package:pedantic/pedantic.dart';
 
 class AdsProvider extends ChangeNotifier {
   static const ADS_PUBLIC_URL = "ad/public_list";

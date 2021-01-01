@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/group/groups_provider.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
-import 'package:share/share.dart';
 
 import 'group_configuration_form_screen.dart';
 import 'group_join_list_screen.dart';

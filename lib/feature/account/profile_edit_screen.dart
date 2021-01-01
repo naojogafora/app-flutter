@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/model/user.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
-import 'package:pedantic/pedantic.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   final User user;

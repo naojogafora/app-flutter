@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/app_exception.dart';
 import 'package:trocado_flutter/model/group.dart';
@@ -6,7 +7,6 @@ import 'package:trocado_flutter/model/group_join_request.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
 import 'package:trocado_flutter/response/group_join.dart';
 import 'package:trocado_flutter/response/group_list.dart';
-import 'package:pedantic/pedantic.dart';
 
 class GroupsProvider extends ChangeNotifier {
   static const GROUPS_PUBLIC_URL = "group/public_list";

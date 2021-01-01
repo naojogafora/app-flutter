@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
@@ -11,7 +12,6 @@ import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/model/photo.dart';
 import 'package:trocado_flutter/widget/dialog.dart';
 import 'package:trocado_flutter/widget/trocado_app_bar.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'ads_provider.dart';
 

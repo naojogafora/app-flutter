@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
 import 'package:trocado_flutter/exception/UnauthorizedException.dart';
 import 'package:trocado_flutter/model/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trocado_flutter/response/basic_message_response.dart';
 
 class AuthenticationProvider extends ChangeNotifier {

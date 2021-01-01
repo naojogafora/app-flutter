@@ -1,15 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/exception/BadRequestException.dart';
 import 'package:trocado_flutter/exception/FetchDataException.dart';
 import 'package:trocado_flutter/exception/UnauthorizedException.dart';
-import 'package:mime/mime.dart';
-import 'package:http_parser/http_parser.dart';
-import 'dart:convert';
-import 'dart:async';
-
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 
 class ApiHelper {
