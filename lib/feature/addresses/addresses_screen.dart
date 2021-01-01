@@ -23,10 +23,19 @@ class _AddressesScreenState extends State<AddressesScreen> {
     return Scaffold(
       appBar: trocadoAppBar("Meus Endereços"),
       body: RefreshIndicator(
-        onRefresh: () => addressProvider.loadUserAddresses(context, forceLoad: true),
+        onRefresh: () =>
+            addressProvider.loadUserAddresses(context, forceLoad: true),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
+            const Padding(
+              padding: EdgeInsets.all(12),
+              child: Text(
+                  "Você pode cadastrar até 3 endereços. Endereços são usados"
+                  " para estimar a distância entre doador e receptor, e"
+                  " não são exibidos para ninguém.", textAlign: TextAlign.center),
+            ),
+            Divider(),
             FutureBuilder(
               future: addressProvider.loadUserAddresses(context),
               builder: (context, snapshot) {
@@ -44,11 +53,13 @@ class _AddressesScreenState extends State<AddressesScreen> {
           ],
         ),
       ),
-      floatingActionButton: nAddresses != null && nAddresses >= 3 ? null : FloatingActionButton(
-        child: const Icon(Icons.add, color: Style.clearWhite),
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AddressFormScreen())),
-      ),
+      floatingActionButton: nAddresses != null && nAddresses >= 3
+          ? null
+          : FloatingActionButton(
+              child: const Icon(Icons.add, color: Style.clearWhite),
+              onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddressFormScreen())),
+            ),
     );
   }
 

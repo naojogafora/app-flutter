@@ -36,7 +36,7 @@ class AddressListTile extends StatelessWidget {
               //       builder: (context) => AddressFormScreen(existingAddress: address))),
               // ),
               IconButton(
-                icon: const Icon(Icons.delete),
+                icon: const Icon(Icons.delete, color: Colors.red),
                 tooltip: "Apagar",
                 onPressed: () {
                   provider.deleteAddress(context, address).catchError((e) {
