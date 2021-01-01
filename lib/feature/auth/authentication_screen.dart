@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
@@ -89,7 +90,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         .login(context, email, password)
         .then((bool success) {
       if (success) {
-        Navigator.of(context).pop();
+        Phoenix.rebirth(context);
       }
     }).catchError(print);
   }

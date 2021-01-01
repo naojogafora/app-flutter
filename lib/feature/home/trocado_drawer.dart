@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/about.dart';
@@ -148,8 +149,8 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                 leading: const Icon(Icons.logout),
                 title: const Text("Sair"),
                 onTap: () {
-                  Navigator.of(context).pop();
                   authProvider.logout();
+                  Phoenix.rebirth(context);
                 },
               )
             : Container(),
