@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 import 'package:trocado_flutter/feature/auth/password_reset_screen.dart';
+import 'package:trocado_flutter/feature/helpers.dart';
 import 'package:trocado_flutter/widget/standard_button.dart';
 
 class AuthenticationScreen extends StatefulWidget {
@@ -13,6 +14,8 @@ class AuthenticationScreen extends StatefulWidget {
 }
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
+  bool loading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FocusNode focusPassword = FocusNode();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -20,6 +23,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Style.clearWhite,
       appBar: AppBar(title: const Text("Login")),
       body: Padding(
@@ -63,7 +67,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         context, MaterialPageRoute(builder: (context) => PasswordResetScreen())),
                   ),
                   const Divider(height: 6),
-                  StandardButton("Entrar", login, Style.primaryColorDark, Style.clearWhite),
+                  MaterialButton(child: loading ? const CircularProgressIndicator() : const Text("Entrar"), onPressed: login, color: Style.primaryColorDark, textColor: Style.clearWhite, padding: const EdgeInsets.all(14),),
                   const Divider(height: 6),
                   Center(
                     child: GestureDetector(
@@ -83,6 +87,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   void login() {
+    if(loading) return;
+    setState(() {
+      loading = true;
+    });
+
     String email = emailController.text;
     String password = passwordController.text;
 
@@ -92,6 +101,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       if (success) {
         Phoenix.rebirth(context);
       }
-    }).catchError(print);
+    }).catchError((e){
+      showErrorSnack(_scaffoldKey, e.toString());
+      setState(() {
+        loading = false;
+      });
+    });
   }
 }

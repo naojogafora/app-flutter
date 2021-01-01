@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/config/style.dart';
 import 'package:trocado_flutter/feature/ad/ads_provider.dart';
@@ -11,7 +12,8 @@ import 'package:trocado_flutter/feature/home/home_screen.dart';
 import 'package:trocado_flutter/feature/transactions/transactions_provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+      Phoenix( child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
           title: 'Não Joga Fora!',
           theme: Style.main,
           home: HomeScreen(),
+          debugShowCheckedModeBanner: false,
           routes: {
             '/home': (context) => HomeScreen(),
             '/login': (context) => AuthenticationScreen(),
