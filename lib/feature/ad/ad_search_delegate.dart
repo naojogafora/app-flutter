@@ -31,13 +31,13 @@ class AdSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (query.length < 3) {
+    if (query.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const Center(
             child: Text(
-              "Digite pelo menos três caracteres",
+              "Digite pelo menos um caracter",
             ),
           )
         ],
