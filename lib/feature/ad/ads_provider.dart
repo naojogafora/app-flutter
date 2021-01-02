@@ -81,7 +81,8 @@ class AdsProvider extends ChangeNotifier {
       if (query == null || query.isEmpty) {
         groupsAds = result;
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrintStack(stackTrace: st);
       result = AdsListResponse();
       groupsAds = result;
     } finally {
@@ -218,12 +219,7 @@ class AdsProvider extends ChangeNotifier {
   }
 
   List<Ad> sortByDistance(List<Ad> ads){
-    ads.sort((a1, a2) => a1.distance > a2.distance ? 1 : -1);
-    return ads;
-  }
-
-  List<Ad> sortByDate(List<Ad> ads){
-    ads.sort((a1, a2) => a1.updatedAt.isAfter(a2.updatedAt) ? 1 : -1);
+    ads.sort((a1, a2) => a1.distance != null && a2.distance != null && a1.distance > a2.distance ? 1 : -1);
     return ads;
   }
 }

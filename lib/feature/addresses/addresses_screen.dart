@@ -35,7 +35,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   " para estimar a distância entre doador e receptor, e"
                   " não são exibidos para ninguém.", textAlign: TextAlign.center),
             ),
-            Divider(),
+            const Divider(),
             FutureBuilder(
               future: addressProvider.loadUserAddresses(context),
               builder: (context, snapshot) {
