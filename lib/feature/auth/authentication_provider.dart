@@ -49,10 +49,14 @@ class AuthenticationProvider extends ChangeNotifier {
     };
 
     var responseJson = await apiHelper.post(context, LOGIN_URL, body: body);
+    saveLogin(responseJson);
+    return true;
+  }
+
+  void saveLogin(dynamic responseJson){
     parseAndSetUser(responseJson);
     saveAuthToStorage(responseJson);
     notifyListeners();
-    return true;
   }
 
   void parseAndSetUser(dynamic authJson) {

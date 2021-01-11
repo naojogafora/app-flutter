@@ -77,6 +77,9 @@ class _GroupFormScreenState extends State<GroupFormScreen> {
                     initialValue: false,
                     onSaved: (bool val) => group.private = val,
                   ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: const Text("(Atenção: Título e Descrição são sempre públicos e podem ser encontrados na busca. Os anúncios serão privados, e os usuários deverão solicitar entrada)", textAlign: TextAlign.center,)),
                   MaterialButton(
                     child: loading
                         ? const CircularProgressIndicator()

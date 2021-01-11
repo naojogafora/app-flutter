@@ -110,12 +110,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     registerService
         .register(context, name, lastName, email, password)
         .then((value) {
+
       loading = false;
       setState(() {});
       DefaultDialog.show(context,
           title: "Seja Bem-Vindo(a)",
-          message: "Sua conta foi criada com sucesso!",
-          okCallback: () => Navigator.of(context).pop());
+          message: "Sua conta foi criada com sucesso!", okCallback: () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      });
     }).catchError((error) {
       loading = false;
       setState(() {});

@@ -319,10 +319,10 @@ class _QuestionsListState extends State<QuestionsList> {
               title: Text(widget.ad.questions[i].question),
               subtitle: widget.ad.questions[i].answer == null
                   ? Text(widget.ad.questions[i].askDate +
-                      (authProvider.user.id != widget.ad.user.id
+                      (authProvider.user == null || authProvider.user.id != widget.ad.user.id
                           ? " - Aguardando Resposta"
                           : " - Clique para Responder"))
-                  : Text(widget.ad.questions[i].answer),
+                  : Text(widget.ad.questions[i].answerDate + " - " + widget.ad.questions[i].answer),
               onTap: authProvider.user != null && authProvider.user.id == widget.ad.user.id && widget.ad.questions[i].answer == null
                   ? () => showAnswerDialog(widget.ad.questions[i]) : null,
             );

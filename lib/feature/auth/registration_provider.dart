@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trocado_flutter/api/api_helper.dart';
+import 'package:trocado_flutter/feature/auth/authentication_provider.dart';
 
 class RegistrationProvider {
   ApiHelper apiHelper = ApiHelper();
@@ -19,6 +21,7 @@ class RegistrationProvider {
     };
 
     var responseJson = await apiHelper.post(context, REGISTER_URL, body: body);
+    Provider.of<AuthenticationProvider>(context, listen: false).saveLogin(responseJson);
     return responseJson;
   }
 }

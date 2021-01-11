@@ -13,6 +13,7 @@ import 'package:trocado_flutter/feature/transactions/transactions_provider.dart'
 
 void main() {
   runApp(
+
       Phoenix( child: MyApp()));
 }
 
