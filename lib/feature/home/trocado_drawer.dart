@@ -30,6 +30,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
             padding: const EdgeInsets.all(0),
             children: [
               DrawerHeader(
+
                 child: GestureDetector(
                   onTap: () => authProvider.isUserLogged
                       ? Navigator.of(context).push(MaterialPageRoute(

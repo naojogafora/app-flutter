@@ -42,7 +42,7 @@ class GroupsTab extends StatelessWidget {
                                 style: TextStyle(color: Style.primaryColorDark),
                               ),
                               subtitle: const Text(
-                                  "Não encontrou o que queria na busca? Crie o seu grupo! Vocẽ pode convidar amigos, colegas de trabalho ou conhecidos do bairro!"),
+                                  "Não encontrou o que queria na busca? Crie o seu grupo! Você pode convidar amigos, colegas de trabalho ou conhecidos do bairro!"),
                               onTap: () => Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) => GroupFormScreen())),

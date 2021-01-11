@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  final int tabCount = 2;
+  final int tabCount = 3;
   List<Widget> tabViews;
   TabController _tabController;
   int currentIndex = 0;
@@ -34,18 +34,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       },
     ));
 
-    if (!isLogged) {
-      tabViews.add(Consumer<GroupsProvider>(
-        builder: (BuildContext context, GroupsProvider provider, _) =>
-            GroupsTab(provider.publicGroups, () => provider.loadPublicGroups(forceLoad: true)),
-      ));
-    } else {
-      Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context);
-      tabViews.add(Consumer<GroupsProvider>(
-        builder: (BuildContext context, GroupsProvider provider, _) =>
-            GroupsTab(provider.userGroups, () => provider.loadUserGroups(context, forceLoad: true)),
-      ));
-    }
+    Provider.of<GroupsProvider>(context, listen: false).loadUserGroups(context).catchError((_){});
+    tabViews.add(
+        isLogged ? Consumer<GroupsProvider>(
+          builder: (BuildContext context, GroupsProvider provider, _) =>
+              GroupsTab(provider.userGroups, () => provider.loadUserGroups(context, forceLoad: true)),
+        ) : Center(child: Text("Faça login para ver seus grupos")));
+    tabViews.add(Consumer<GroupsProvider>(
+      builder: (BuildContext context, GroupsProvider provider, _) =>
+          GroupsTab(provider.publicGroups, () => provider.loadPublicGroups(forceLoad: true)),
+    ));
   }
 
   @override
@@ -79,8 +77,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             unselectedLabelColor: Colors.black54,
             indicatorColor: currentIndex == 0 ? Style.accentColor : Style.primaryColorDark,
             tabs: [
-              const Tab(text: "Anúncios Disponíveis"),
+              const Tab(text: "Anúncios"),
               const Tab(text: "Meus Grupos"),
+              const Tab(text: "Grupos Públicos"),
             ],
             controller: _tabController,
           ),

@@ -232,7 +232,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       ),
       const Padding(
         padding: EdgeInsets.only(top: 12, bottom: 6),
-        child: Text("Fotos (Até 5 imagens)"),
+        child: Text("Fotos (1 a 5 imagens)"),
       ),
       totalImageCount() < 5
           ? Padding(
@@ -304,7 +304,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
           nextPage(context);
         },
         padding: const EdgeInsets.all(14),
-        color: Style.accentColor,
+        color: imageList().isEmpty ? Colors.black45 : Style.accentColor,
         textColor: Style.clearWhite,
       ),
     ];
