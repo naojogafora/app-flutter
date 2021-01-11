@@ -29,8 +29,10 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
           child: ListView(
             padding: const EdgeInsets.all(0),
             children: [
-              DrawerHeader(
-
+              Container(
+                height: 140,
+                padding: const EdgeInsets.fromLTRB(12, 30, 12, 0),
+                margin: const EdgeInsets.all(0),
                 child: GestureDetector(
                   onTap: () => authProvider.isUserLogged
                       ? Navigator.of(context).push(MaterialPageRoute(
@@ -45,7 +47,7 @@ class _TrocadoDrawerState extends State<TrocadoDrawer> {
                         child: CircleAvatar(
                           backgroundImage:
                               authProvider.user?.avatarImage ?? User.profileImagePlaceholder,
-                          minRadius: 48,
+                          minRadius: 42,
                         ),
                       ),
                       const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),

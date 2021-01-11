@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         isLogged ? Consumer<GroupsProvider>(
           builder: (BuildContext context, GroupsProvider provider, _) =>
               GroupsTab(provider.userGroups, () => provider.loadUserGroups(context, forceLoad: true)),
-        ) : Center(child: Text("Faça login para ver seus grupos")));
+        ) : const Center(child: Text("Faça login para ver seus grupos")));
     tabViews.add(Consumer<GroupsProvider>(
       builder: (BuildContext context, GroupsProvider provider, _) =>
           GroupsTab(provider.publicGroups, () => provider.loadPublicGroups(forceLoad: true)),
