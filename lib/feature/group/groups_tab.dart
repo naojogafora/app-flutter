@@ -33,16 +33,19 @@ class GroupsTab extends StatelessWidget {
                               height: 24,
                             ),
                             ListTile(
-                              leading:
-                                  const Icon(Icons.add, color: Style.primaryColorDark, size: 28),
+                              contentPadding: const EdgeInsets.only(
+                                  left: 8, top: 0, right: 32, bottom: 0),
+                              leading: const Icon(Icons.add,
+                                  color: Style.primaryColorDark, size: 28),
                               title: const Text(
                                 "Criar Novo Grupo",
                                 style: TextStyle(color: Style.primaryColorDark),
                               ),
                               subtitle: const Text(
-                                  "Não encontrou o que queria? Crie o seu grupo! Vocẽ pode convidar amigos, colegas de trabalho ou conhecidos do bairro!"),
-                              onTap: () => Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) => GroupFormScreen())),
+                                  "Não encontrou o que queria na busca? Crie o seu grupo! Vocẽ pode convidar amigos, colegas de trabalho ou conhecidos do bairro!"),
+                              onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => GroupFormScreen())),
                             ),
                           ],
                         );

@@ -34,7 +34,7 @@ class DefaultDialog {
     );
   }
 
-  void defaultCallback(context) {
-    Navigator.of(context).pop();
+  void defaultCallback(ctx) {
+    Navigator.of(ctx).pop();
   }
 }
