@@ -36,11 +36,11 @@ class AddressProvider extends ChangeNotifier {
     var first = addresses.first;
     address.coordinates = TrocadoCoordinates(lat: first.coordinates.latitude, lng: first.coordinates.longitude);
 
-    await apiHelper.post(context, NEW_ADDRESS_URL, body: address.toJson());
+    dynamic response = await apiHelper.post(context, NEW_ADDRESS_URL, body: address.toJson());
     if (userAddresses == null){
       userAddresses = [];
     }
-    userAddresses.add(address);
+    userAddresses.add(UserAddress.fromJson(response));
     notifyListeners();
     return true; // If theres no exception, it means all went well.
   }
