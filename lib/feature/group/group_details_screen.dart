@@ -82,7 +82,7 @@ class GroupDetailsScreen extends StatelessWidget {
   void shareGroup(BuildContext context) {
     String message = "Entre no meu grupo do \"Não Joga Fora\" para receber e repassar itens usados!\n";
     message += "Digite na busca esse número do grupo: " + group.id.toString() + ". Ou encontre pelo nome: " + group.name + ".";
-    if(group.isModerator && group.private){
+    if(group.isModerator && group.private && group.inviteCode != null){
       message += "\nDepois, use o código de convite: " + group.inviteCode;
     }
     message += "\n\nNão tem o app? Baixe agora em https://play.google.com/store";
