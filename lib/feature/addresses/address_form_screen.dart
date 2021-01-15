@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:trocado_flutter/feature/addresses/address_provider.dart';
 import 'package:trocado_flutter/model/address.dart';
@@ -100,8 +101,10 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                           onPressed: () {
                             if (formKey.currentState.validate()) {
                               if (loading) return;
+                              setState((){
+                                loading = true;
+                              });
 
-                              loading = true;
                               formKey.currentState.save();
 
                               if (isEditing) {
@@ -127,15 +130,25 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
   }
 
   void successRoutine(bool success, BuildContext context) {
-    loading = false;
-    setState(() {});
+    setState((){
+      loading = false;
+    });
     Navigator.of(context).pop();
   }
 
-  void errorRoutine(err) {
+  void errorRoutine(err, st) {
     print(err);
-    loading = false;
-    setState(() {});
+    setState((){
+      loading = false;
+    });
+
+    if(err is PlatformException){
+      _scaffoldKey.currentState
+          .showSnackBar(const SnackBar(content: Text("Verifique o endereço digitado"), backgroundColor: Colors.red));
+      return;
+    }
+
+    debugPrintStack(stackTrace: st);
     _scaffoldKey.currentState
         .showSnackBar(SnackBar(content: Text(err.toString()), backgroundColor: Colors.red));
   }
