@@ -6,6 +6,7 @@ import 'package:trocado_flutter/feature/ad/ads_provider.dart';
 import 'package:trocado_flutter/feature/ad/create_ad_screen.dart';
 import 'package:trocado_flutter/feature/group/group_details_screen.dart';
 import 'package:trocado_flutter/feature/group/groups_provider.dart';
+import 'package:trocado_flutter/feature/helpers.dart';
 import 'package:trocado_flutter/model/group.dart';
 import 'package:trocado_flutter/response/ads_list.dart';
 import 'package:trocado_flutter/response/group_join.dart';
@@ -22,6 +23,7 @@ class GroupScreen extends StatefulWidget {
 
 class _GroupScreenState extends State<GroupScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool loadingJoin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,7 @@ class _GroupScreenState extends State<GroupScreen> {
                           ? Container()
                           : Center(
                               child: RaisedButton(
-                              child: const Text(
+                              child: loadingJoin ? const CircularProgressIndicator() : const Text(
                                 "Entrar no Grupo",
                                 style: TextStyle(color: Style.clearWhite),
                               ),
@@ -145,11 +147,23 @@ class _GroupScreenState extends State<GroupScreen> {
     if (widget.group.private) {
       showJoinDialog(context, provider);
     } else {
-      provider.joinGroup(context, widget.group).then(joinGroupResult);
+      if(loadingJoin) return;
+      setState((){
+        loadingJoin = true;
+      });
+      provider.joinGroup(context, widget.group).then(joinGroupResult).catchError((e){
+        setState((){
+          loadingJoin = false;
+        });
+        showErrorSnack(_scaffoldKey, e.toString());
+      });
     }
   }
 
   void joinGroupResult(JoinGroupResponse joinResponse) {
+    setState((){
+      loadingJoin = false;
+    });
     if (joinResponse.joined) {
       this.widget.group.isMember = true;
       setState(() {});
