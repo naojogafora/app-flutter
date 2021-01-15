@@ -51,10 +51,10 @@ class MyAdListTile extends StatelessWidget {
               onPressed: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => AdDetailsScreen(ad))),
             ),
-            IconButton(
-                icon: const Icon(Icons.edit, color: Colors.green),
-                onPressed: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => null))), //TODO Edit ad
+            // IconButton(
+            //     icon: const Icon(Icons.edit, color: Colors.green),
+            //     onPressed: () => Navigator.of(context)
+            //         .push(MaterialPageRoute(builder: (context) => null))), //TODO Edit ad
             IconButton(
                 icon: const Icon(
                   Icons.delete,
