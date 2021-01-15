@@ -5,8 +5,9 @@ class DefaultDialog {
   String title;
   String okButtonText;
   BuildContext context;
+  bool showCancel;
 
-  DefaultDialog.show(context, {message, title, okCallback, okButtonText}) {
+  DefaultDialog.show(context, {message, title, okCallback, okButtonText, showCancel = true}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -14,13 +15,13 @@ class DefaultDialog {
           title: Text(title),
           content: Text(message),
           actions: [
-            GestureDetector(
+            showCancel ? GestureDetector(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
                 child: const Text("Cancelar"),
               ),
               onTap: () => Navigator.of(context).pop(),
-            ),
+            ) : Container(),
             GestureDetector(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
